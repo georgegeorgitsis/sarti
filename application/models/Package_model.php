@@ -89,7 +89,7 @@ class Package_model extends CI_Model {
     public function getNonAllotmentPackages() {
         $qry = $this->db->select('*')
                 ->from('packages')
-                ->where('is_allotment', '0')
+                ->where('is_package_type!=1')
                 ->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();

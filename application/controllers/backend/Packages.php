@@ -31,7 +31,7 @@ class Packages extends MY_Controller {
 
     public function addPackage() {
         $this->form_validation->set_rules('package_type', 'Package Type', 'required|trim');
-        $this->form_validation->set_rules('is_allotment', 'Is Allotment', 'required|trim');
+        $this->form_validation->set_rules('is_package_type', 'Is Allotment', 'required|trim');
         $languages = $this->language_model->getLanguages();
 
         if (!$languages || empty($languages)) {
@@ -43,7 +43,7 @@ class Packages extends MY_Controller {
             $this->load->admintemplate('backend/packages/add_package_view', $this->view_data);
         } else {
             $packageData['package_type'] = $this->input->post('package_type');
-            $packageData['is_allotment'] = $this->input->post('is_allotment');
+            $packageData['is_package_type'] = $this->input->post('is_package_type');
 
             $package_locale = array();
             foreach ($languages as $language) {
@@ -89,7 +89,7 @@ class Packages extends MY_Controller {
         } else {
             $packageData['package_id'] = $this->input->post('package_id');
             $packageData['package_type'] = $this->input->post('package_type');
-            $packageData['is_allotment'] = $this->input->post('is_allotment');
+            $packageData['is_package_type'] = $this->input->post('is_package_type');
 
             $package_locale = array();
             foreach ($languages as $language) {

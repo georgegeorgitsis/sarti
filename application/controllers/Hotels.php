@@ -19,14 +19,26 @@ class Hotels extends MY_F_Controller {
     }
 
     public function index() {
-        $hotels = $this->hotel_model->getHotels();
+        $hotelsCount = $this->hotel_model->getFHotelsCount();
+        $this->load->library('pagination');
+        $config['base_url'] = base_url('hotels');
+        $config['total_rows'] = $hotelsCount['count'];
+        $config['per_page'] = 1;
+        $config["uri_segment"] = 3;
+        $this->pagination->initialize($config);
+        
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $hotels = $this->hotel_model->getFHotels($config["per_page"], $page);
 
         if (isset($hotels) && !empty($hotels)) {
             foreach ($hotels as $hotel_key => $hotel_val) {
                 $hotels[$hotel_key]['thumb'] = $this->hotel_model->getHotelThumb($hotel_val['hotel_id']);
+                
             }
         }
-
+        
+        $this->view_data['links'] = $this->pagination->create_links();
         $this->view_data['hotels'] = $hotels;
 
         $this->load->template('frontend/hotels_view', $this->view_data);

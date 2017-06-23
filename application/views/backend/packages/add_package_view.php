@@ -8,10 +8,11 @@
                         <input class="form-control" type="text" name="package_type" value="<?php echo set_value('package_type'); ?>"/>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label>Is Allotment</label>
-                        <select name="is_allotment">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label>Is Type</label>
+                        <select name="is_package_type">
+                            <option value="1">Allotment</option>
+                            <option value="2">7 Days</option>
+                            <option value="3">10 Days</option>
                         </select>
                     </div>
                     <div class="tabs">

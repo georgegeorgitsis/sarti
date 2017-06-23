@@ -27,6 +27,29 @@ class Hotel_model extends CI_Model {
             return $qry->row_array();
         return false;
     }
+    
+    public function getFHotelsCount() {
+        $qry = $this->db->select('count(hotel_id) as count')
+                ->from('hotels')
+                ->where('hotel_active', 1)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->row_array();
+        return false;
+    }
+
+    public function getFHotels($limit, $start) {
+        $qry = $this->db->select('*')
+                ->from('hotels')
+                ->where('hotel_active', 1)
+                ->limit($limit, $start)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
 
     public function getHotels() {
         $qry = $this->db->select('*')
@@ -78,8 +101,8 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
-    public function setThumbImage($hotel_image_id) {
-        $this->db->update('hotel_images', array('is_thumb' => 0));
+    public function setThumbImage($hotel_id, $hotel_image_id) {
+        $this->db->where('hotel_id', $hotel_id)->update('hotel_images', array('is_thumb' => 0));
         $this->db->where('hotel_image_id', $hotel_image_id)->update('hotel_images', array('is_thumb' => 1));
         if ($this->db->affected_rows() == 1)
             return TRUE;

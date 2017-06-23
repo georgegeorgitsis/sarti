@@ -292,7 +292,7 @@ class Hotels extends MY_Controller {
             $is_thumb = NULL;
             $is_thumb = $this->input->post('is_thumb');
             if ($is_thumb && !empty($is_thumb)) {
-                $this->hotel_model->setThumbImage($is_thumb);
+                $this->hotel_model->setThumbImage($hotel_id,$is_thumb);
             }
 
             $files = array();

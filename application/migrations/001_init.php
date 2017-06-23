@@ -809,6 +809,11 @@ class Migration_init extends CI_Migration {
                 'type' => 'INT',
                 'default' => '0',
             ),
+            'is_package_type' => array(
+                'type' => 'INT',
+                'default' => '1',
+            ),
+            
         ));
         $this->dbforge->add_field('package_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('package_id', TRUE);
