@@ -752,7 +752,7 @@ class Migration_init extends CI_Migration {
                 'type' => 'INT',
             ),
             'room_short_description' => array(
-                'type' => 'TEXR',
+                'type' => 'TEXT',
             ),
             'room_description' => array(
                 'type' => 'TEXT',

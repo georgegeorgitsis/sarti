@@ -273,28 +273,31 @@ class Rooms extends MY_Controller {
 
             $roomFacilities = $this->input->post('facilities');
 
-            if ($_FILES['room_thumb']['error'] == 0) {
-                $roomData = $this->room_model->getRoom($hotelId);
-                unlink($this->upload_dir . $roomData['room_thumb']);
-                $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["room_thumb"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
-                $uploadOk = 1;
-                $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+            /*
+              if ($_FILES['room_thumb']['error'] == 0) {
+              $roomData = $this->room_model->getRoom($hotelId);
+              unlink($this->upload_dir . $roomData['room_thumb']);
+              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["room_thumb"]["name"]);
+              $target_file = $this->upload_dir . $image_name;
+              $uploadOk = 1;
+              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-                if ($_FILES["room_thumb"]["size"] > 500000) {
-                    $uploadOk = 0;
-                }
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-                    $uploadOk = 0;
-                }
-                if ($uploadOk == 0) {
-                    
-                } else {
-                    if (move_uploaded_file($_FILES["room_thumb"]["tmp_name"], $target_file)) {
-                        $roomData['room_thumb'] = $image_name;
-                    }
-                }
-            }
+              if ($_FILES["room_thumb"]["size"] > 500000) {
+              $uploadOk = 0;
+              }
+              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
+              $uploadOk = 0;
+              }
+              if ($uploadOk == 0) {
+
+              } else {
+              if (move_uploaded_file($_FILES["room_thumb"]["tmp_name"], $target_file)) {
+              $roomData['room_thumb'] = $image_name;
+              }
+              }
+              }
+             * 
+             */
 
             $this->room_model->editRoom($roomData);
 

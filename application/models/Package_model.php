@@ -103,7 +103,7 @@ class Package_model extends CI_Model {
         return FALSE;
     }
 
-    public function addPackage($packageData, $packageLocaleData) {
+    public function addPackage($packageData) {
         $this->db->insert('packages', $packageData);
         if ($this->db->affected_rows() > 0)
             return $this->db->insert_id();
