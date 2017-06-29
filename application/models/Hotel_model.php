@@ -27,7 +27,7 @@ class Hotel_model extends CI_Model {
             return $qry->row_array();
         return false;
     }
-    
+
     public function getFHotelsCount() {
         $qry = $this->db->select('count(hotel_id) as count')
                 ->from('hotels')
@@ -49,6 +49,13 @@ class Hotel_model extends CI_Model {
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return false;
+    }
+
+    public function getAllotmentHotels($checkin, $checkout, $adults) {
+        $qry = $this->db->select('*')
+                ->from('hotels')
+                ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
+                ->get();
     }
 
     public function getHotels() {

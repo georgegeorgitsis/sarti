@@ -47,6 +47,8 @@ class Hotels extends MY_F_Controller {
         $checkin = $this->input->get('checkin');
         $checkout = $this->input->get('checkin');
         $adults = $this->input->get('adults');
+
+        $hotels = $this->hotel_model->getAllotmentHotels($checkin, $checkout, $adults);
     }
 
 }
