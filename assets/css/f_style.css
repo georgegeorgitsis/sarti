@@ -6,13 +6,37 @@ body {
     margin: 0px !important;
     font-size: 13px;
 }
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: inherit;
+}
+.no-padding {
+    padding: 0;
+}
+.no-padding-left {
+    padding-left: 0;
+}
+.no-padding-right {
+    padding-right: 0;
+}
+
+.accommodation-search {
+    padding: 5px;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
 
 .each-hotel {
+    background-color: #fff;
     margin-bottom: 15px;
+    font-weight: 300;
 }
+
 .hotels-list img {
     max-width: 100%;
 }
 .hotels-list h3 {
     margin: 0;
+}
+.hotel-box-wrapper {
+    padding: 10px;
 }

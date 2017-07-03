@@ -5,30 +5,37 @@ if (!defined('BASEPATH')) {
 }
 
 class MY_F_Controller extends CI_Controller {
+
     protected $view_data;
-    protected $credentials;
     protected $language;
-    
+    protected $lang_id;
+
     function __construct() {
         parent::__construct();
+        $this->handleLang();
+    }
 
+    public function handleLang() {
         $chose_lang = $this->session->userdata('language');
         $post_lang = $this->input->post('language');
 
         if (!empty($post_lang)) {
             $this->language = $post_lang;
-            $this->view_data['lang'] = $post_lang;
         } elseif (!empty($chose_lang)) {
             $this->language = $this->session->userdata('language');
-            $this->view_data['lang'] = $this->session->userdata('language');
         } else {
             $this->language = "gr";
             $this->session->set_userdata('language', 'gr');
-            $this->view_data['lang'] = 'gr';
-            $this->view_data['abbreviation'] = 'gr';
-            $this->view_data['lang_png'] = 'gr.png';
-            $this->view_data['language_name'] = "Ελληνικά";
         }
+        $this->view_data['lang'] = $this->language;
+
+        $this->load->model('language_model');
+        $language = $this->language_model->getLanguagePerAbbr($this->language);
+        //if lang is empty redirect and set the default 'gr' lang
+        if (!$language)
+            redirect(base_url('hotels'));
+
+        $this->lang_id = $language['lang_id'];
 
         $this->load->helper('language');
         if ($this->view_data['lang'] == 'gr') {

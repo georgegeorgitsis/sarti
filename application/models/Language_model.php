@@ -36,6 +36,16 @@ class Language_model extends CI_Model {
         return false;
     }
 
+    public function getLanguagePerAbbr($abbr) {
+        $qry = $this->db->select('*')
+                ->from('languages')
+                ->where('lang_abbreviation', $abbr)
+                ->get();
+        if ($qry->num_rows() == 1)
+            return $qry->row_array();
+        return false;
+    }
+
     public function addLanguage($languageData) {
         $this->db->insert('languages', $languageData);
         if ($this->db->affected_rows() == 1)
@@ -83,7 +93,7 @@ class Language_model extends CI_Model {
                 $this->db->insert('hotel_locales', array('lang_id' => $lang_id, 'hotel_id' => $f['hotel_id']));
             }
         }
-        
+
         //location locales
         $qry = $this->db->select('DISTINCT(location_id)')
                 ->from('location_locales')
@@ -94,7 +104,7 @@ class Language_model extends CI_Model {
                 $this->db->insert('location_locales', array('lang_id' => $lang_id, 'location_id' => $f['location_id']));
             }
         }
-        
+
         //package locales
         $qry = $this->db->select('DISTINCT(package_id)')
                 ->from('package_locales')
@@ -105,7 +115,7 @@ class Language_model extends CI_Model {
                 $this->db->insert('package_locales', array('lang_id' => $lang_id, 'package_id' => $f['package_id']));
             }
         }
-        
+
         //room locales
         $qry = $this->db->select('DISTINCT(room_id)')
                 ->from('room_locales')
