@@ -39,6 +39,7 @@ class Hotels extends MY_F_Controller {
 
         $this->paginateHotels();
         $hotels = $this->hotel_model->getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $this->conf['per_page'], $this->page, $this->lang_id);
+        var_dump($hotels);
         $hotels = $this->parseHotels($hotels);
 
         $this->view_data['hotels'] = $hotels;
@@ -62,7 +63,7 @@ class Hotels extends MY_F_Controller {
         $this->conf['per_page'] = 10;
         $this->conf["uri_segment"] = 3;
         $this->pagination->initialize($this->conf);
-        $this->page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $this->page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $this->view_data['links'] = $this->pagination->create_links();
     }
 

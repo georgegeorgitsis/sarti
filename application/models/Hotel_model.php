@@ -53,14 +53,20 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
-    public function getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $langId) {
+    public function getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $limit, $start, $lang_id) {
         $qry = $this->db->select('*')
                 ->from('hotels')
                 ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
                 ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
-                ->where('hotel_locales.lang_id', $langId)
+                ->join('locations', 'locations.location_id=hotels.location_id')
+                ->join('location_locales', 'location_locales.location_id=locations.location_id')
+                ->where('hotels.hotel_active', 1)
                 ->where('rooms.room_package_id', $packageType)
+                ->where('location_locales.lang_id', $lang_id)
+                ->where('hotel_locales.lang_id', $lang_id)
+                ->limit($limit, $start)
                 ->get();
+
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return FALSE;

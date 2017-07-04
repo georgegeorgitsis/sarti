@@ -20,10 +20,15 @@
                                         <?php if ($hotel['distance_from_center']) { ?>
                                             <span><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['distance_from_center'] ?>m</span>
                                         <?php } ?>
+                                        <?php if ($hotel['location_name']) { ?>
+                                            <span><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['location_name'] ?></span>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="hotel-desc">
-
+                                    <p>
+                                        <?= $hotel['hotel_short_description'] ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
