@@ -50,10 +50,18 @@
                             <h3>Accommodation Search</h3>
                         </div>
                         <div class="search">
+                            <div class="accommodation-search destination clearfix">
+                                Destination: 
+                                <select name="search_destination">
+                                    <?php foreach ($locations as $location) { ?>
+                                        <option value="<?= $location['location_id'] ?>"><?= $location['location_name'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                             <div class="accommodation-search clearfix">
                                 <form method="GET" action="<?= base_url('hotels/searchHotels/1') ?>">
                                     <div class="col-md-12">
-                                        <h4>Allotment</h4>
+                                        <h4>I have the days</h4>
                                     </div>
                                     <div class="col-md-12">
                                         <label>Checkin</label>
@@ -81,34 +89,7 @@
                             <div class="accommodation-search clearfix">
                                 <form method="GET" action="<?= base_url('hotels/searchHotels/2') ?>">
                                     <div class="col-md-12">
-                                        <h4>7 Days</h4>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label>Checkin</label>
-                                        <input type="text" name="checkin"/>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label>Checkout</label>
-                                        <input type="text" name="checkout"/>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label>Adults</label>
-                                        <select name="adults">
-                                            <?php for ($i = 0; $i <= 10; $i++) { ?>
-                                                <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-info">
-                                            Search
-                                        </button>
-                                    </div>
-                                </form></div>
-                            <div class="accommodation-search clearfix">
-                                <form method="GET" action="<?= base_url('hotels/searchHotels/3') ?>">
-                                    <div class="col-md-12">
-                                        <h4>10 Days</h4>
+                                        <h4>Show me the 7 days DEALS</h4>
                                     </div>
                                     <div class="col-md-12">
                                         <label>Checkin</label>
@@ -132,6 +113,66 @@
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                            <div class="accommodation-search clearfix">
+                                <form method="GET" action="<?= base_url('hotels/searchHotels/3') ?>">
+                                    <div class="col-md-12">
+                                        <h4>Show me the 9-10-11-12 days DEALS</h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Checkin</label>
+                                        <input type="text" name="checkin"/>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Checkout</label>
+                                        <input type="text" name="checkout"/>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Adults</label>
+                                        <select name="adults">
+                                            <?php for ($i = 0; $i <= 10; $i++) { ?>
+                                                <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-info">
+                                            Search
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="accommodation-search room-types clearfix">
+                                <div class="col-md-12">
+                                    <h4>Room Types</h4>
+                                </div>
+                                <?php foreach ($room_types as $type) { ?>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="room_type" class="room-type" value="<?= $type['room_type_id'] ?>"> <?= $type['room_type_name'] ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="accommodation-search boards clearfix">
+                                <div class="col-md-12">
+                                    <h4>Boards</h4>
+                                </div>
+                                <?php foreach ($boards as $board) { ?>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="board" class="board" value="<?= $board['board_id'] ?>"> <?= $board['board_name'] ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="accommodation-search facilities clearfix">
+                                <div class="col-md-12">
+                                    <h4>Facilities</h4>
+                                </div>
+                                <?php foreach ($facilities as $facility) { ?>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="facility" class="facility" value="<?= $facility['facility_id'] ?>"> 
+                                        <img src="<?= base_url('assets/uploads/' . $facility['facility_icon']) ?>"/>
+                                        <?= $facility['facility_name'] ?>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

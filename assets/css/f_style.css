@@ -19,12 +19,20 @@ body {
     padding-right: 0;
 }
 
+/* SIDE BAR */
 .accommodation-search {
     padding: 5px;
     background-color: #fff;
     margin-bottom: 10px;
 }
+.facilities img {
+    width: 20px;
+    height: 20px;
+}
 
+
+
+/* HOTELS LIST */
 .each-hotel {
     background-color: #fff;
     margin-bottom: 15px;

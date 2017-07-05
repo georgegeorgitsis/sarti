@@ -39,7 +39,6 @@ class Hotels extends MY_F_Controller {
 
         $this->paginateHotels();
         $hotels = $this->hotel_model->getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $this->conf['per_page'], $this->page, $this->lang_id);
-        var_dump($hotels);
         $hotels = $this->parseHotels($hotels);
 
         $this->view_data['hotels'] = $hotels;

@@ -43,8 +43,11 @@ class Hotel_model extends CI_Model {
         $qry = $this->db->select('*')
                 ->from('hotels')
                 ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
+                ->join('locations', 'locations.location_id=hotels.location_id')
+                ->join('location_locales', 'location_locales.location_id=locations.location_id')
                 ->where('hotel_active', 1)
                 ->where('hotel_locales.lang_id', $lang_id)
+                ->where('location_locales.lang_id', $lang_id)
                 ->limit($limit, $start)
                 ->get();
 

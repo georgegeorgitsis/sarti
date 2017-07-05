@@ -12,7 +12,16 @@ class MY_F_Controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('language_model');
+        $this->load->model('location_model');
+        $this->load->model('room_model');
+        $this->load->model('board_model');
+        $this->load->model('facility_model');
         $this->handleLang();
+        $this->getLocations();
+        $this->getRoomTypes();
+        $this->getBoards();
+        $this->getFacilities();
     }
 
     public function handleLang() {
@@ -29,7 +38,6 @@ class MY_F_Controller extends CI_Controller {
         }
         $this->view_data['lang'] = $this->language;
 
-        $this->load->model('language_model');
         $language = $this->language_model->getLanguagePerAbbr($this->language);
         //if lang is empty redirect and set the default 'gr' lang
         if (!$language)
@@ -49,6 +57,26 @@ class MY_F_Controller extends CI_Controller {
             $this->view_data['lang_png'] = 'en.png';
             $this->view_data['language_name'] = "English";
         }
+    }
+
+    protected function getLocations() {
+        $locations = $this->location_model->getFLocations($this->lang_id);
+        $this->view_data['locations'] = $locations;
+    }
+
+    protected function getRoomTypes() {
+        $roomTypes = $this->room_model->getRoomTypes();
+        $this->view_data['room_types'] = $roomTypes;
+    }
+
+    protected function getBoards() {
+        $boards = $this->board_model->getBoards();
+        $this->view_data['boards'] = $boards;
+    }
+
+    protected function getFacilities() {
+        $facilities = $this->facility_model->getFFacilities($this->lang_id);
+        $this->view_data['facilities'] = $facilities;
     }
 
 }

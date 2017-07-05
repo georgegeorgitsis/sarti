@@ -93,26 +93,26 @@ class Hotels extends MY_Controller {
             $hotelFacilitiesMain = $this->input->post('facilities_main');
 
             /*
-            if ($_FILES['hotel_thumb']['error'] == 0) {
-                $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
-                $uploadOk = 1;
-                $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+              if ($_FILES['hotel_thumb']['error'] == 0) {
+              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
+              $target_file = $this->upload_dir . $image_name;
+              $uploadOk = 1;
+              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-                if ($_FILES["hotel_thumb"]["size"] > 500000) {
-                    $uploadOk = 0;
-                }
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-                    $uploadOk = 0;
-                }
-                if ($uploadOk == 0) {
-                    
-                } else {
-                    if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
-                        $hotelData['hotel_thumb'] = $image_name;
-                    }
-                }
-            }
+              if ($_FILES["hotel_thumb"]["size"] > 500000) {
+              $uploadOk = 0;
+              }
+              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
+              $uploadOk = 0;
+              }
+              if ($uploadOk == 0) {
+
+              } else {
+              if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
+              $hotelData['hotel_thumb'] = $image_name;
+              }
+              }
+              }
              * 
              */
             $hotel_id = $this->hotel_model->addHotel($hotelData);
@@ -212,28 +212,31 @@ class Hotels extends MY_Controller {
             $hotelFacilities = $this->input->post('facilities');
             $hotelFacilitiesMain = $this->input->post('facilities_main');
 
-            if ($_FILES['hotel_thumb']['error'] == 0) {
-                $hotelData = $this->hotel_model->getHotel($hotelId);
-                unlink($this->upload_dir . $hotelData['hotel_thumb']);
-                $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
-                $uploadOk = 1;
-                $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+            /*
+              if ($_FILES['hotel_thumb']['error'] == 0) {
+              $hotelData = $this->hotel_model->getHotel($hotelId);
+              unlink($this->upload_dir . $hotelData['hotel_thumb']);
+              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
+              $target_file = $this->upload_dir . $image_name;
+              $uploadOk = 1;
+              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-                if ($_FILES["hotel_thumb"]["size"] > 500000) {
-                    $uploadOk = 0;
-                }
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-                    $uploadOk = 0;
-                }
-                if ($uploadOk == 0) {
-                    
-                } else {
-                    if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
-                        $hotelData['hotel_thumb'] = $image_name;
-                    }
-                }
-            }
+              if ($_FILES["hotel_thumb"]["size"] > 500000) {
+              $uploadOk = 0;
+              }
+              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
+              $uploadOk = 0;
+              }
+              if ($uploadOk == 0) {
+
+              } else {
+              if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
+              $hotelData['hotel_thumb'] = $image_name;
+              }
+              }
+              }
+             * 
+             */
 
             $this->hotel_model->editHotel($hotelData);
 
@@ -292,7 +295,7 @@ class Hotels extends MY_Controller {
             $is_thumb = NULL;
             $is_thumb = $this->input->post('is_thumb');
             if ($is_thumb && !empty($is_thumb)) {
-                $this->hotel_model->setThumbImage($hotel_id,$is_thumb);
+                $this->hotel_model->setThumbImage($hotel_id, $is_thumb);
             }
 
             $files = array();
