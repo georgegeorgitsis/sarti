@@ -10,7 +10,7 @@
         <title>Sarti.gr Front</title>
 
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=greek,latin' rel='stylesheet' type='text/css'>
-        <link href="<?= base_url('assets/css/bootstrap_f.min.css'); ?>" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="<?= base_url('assets/css/bootstrap-theme_f.min.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />    
         <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet">
@@ -22,9 +22,8 @@
             <?php endforeach; ?>
         <?php } ?>
 
-        <script src="<?= base_url('assets/js/jquery.js'); ?>"></script>
-        <script src="<?= base_url('assets/js/jquery-1.8.3.min.js'); ?>"></script>
-        <script src="<?= base_url('assets/js/bootstrap_f.min.js'); ?>"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/moment.js') ?>"></script>
         <script src="<?= base_url('assets/js/bootstrap-datetimepicker.min.js') ?>"></script>
@@ -49,6 +48,9 @@
                         <div class="title">
                             <h3>Accommodation Search</h3>
                         </div>
+                        <?php if (isset($is_search) && $is_search == 1) { ?>
+                            <a href="<?= base_url('hotels') ?>" class="btn btn-info">Show all Hotels</a>
+                        <?php } ?>
                         <div class="search">
                             <div class="accommodation-search destination clearfix">
                                 Destination: 

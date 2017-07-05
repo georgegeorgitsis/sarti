@@ -32,6 +32,7 @@ class Hotels extends MY_F_Controller {
     }
 
     public function searchHotels() {
+        $this->view_data['is_search'] = 1;
         $packageType = $this->uri->segment(3);
         $checkin = $this->input->get('checkin');
         $checkout = $this->input->get('checkin');
