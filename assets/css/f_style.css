@@ -1,6 +1,6 @@
 body {
     color: #797979;
-    background: #eeeeee;
+    background: #f5f5f5;
     font-family: 'Open sans', sans-serif;
     padding: 0px !important;
     margin: 0px !important;
@@ -8,6 +8,8 @@ body {
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: inherit;
+    margin: 0;
+    padding: 0;
 }
 .no-padding {
     padding: 0;
@@ -18,21 +20,74 @@ body {
 .no-padding-right {
     padding-right: 0;
 }
+.btn {
+    border-radius: 0px;
+}
+.bg-white {
+    background-color: #fff;
+}
+
 
 /* SIDE BAR */
+.hotels-count {
+    background-color: #fff;
+    padding: 5px 0px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 300;
+}
 .accommodation-search {
     padding: 5px;
     background-color: #fff;
-    margin-bottom: 10px;
 }
 .facilities img {
     width: 20px;
     height: 20px;
 }
-
-
+aside .form-group {
+    margin-bottom: 10px;
+}
+aside input[type='text'], aside select {
+    display: block;
+    width: 100%;
+    padding: 5px;
+}
+aside button[type='submit'] {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: block;
+}
+aside label {
+    display: block;
+    width: 100%;
+    font-weight: 300;
+}
+aside .title {
+    font-weight: 600;
+    font-size: 19px;
+    color: #60A0CF;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+aside .title:before {
+    content : "";
+    position: absolute;
+    left    : 0;
+    right: 0;
+    bottom  : 0;
+    height  : 1px;
+    width   : 40%;  /* or 100px */
+    margin: 0 auto;
+    /* border-bottom: 2px solid #60A0CF; */
+}
 
 /* HOTELS LIST */
+.hotels-sorting {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 10px 5px;
+}
 .each-hotel {
     background-color: #fff;
     margin-bottom: 15px;
