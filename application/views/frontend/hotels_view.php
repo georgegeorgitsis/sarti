@@ -4,6 +4,7 @@
         <img src="http://www.hare.com/wp-content/uploads/2015/05/yas-island-hotel-bridges2-1920x600.jpg"/>
     </div>
 </div>
+<?php //var_dump($hotels) ?>
 <div class="container">
     <div class="col-md-3">
         <?php require_once(VIEWPATH . 'frontend/sidebar.php'); ?>
@@ -75,9 +76,18 @@
                                                 <?php } ?>
                                             </div>
                                         </div>
+                                        <div class="hotel-main-facilities">
+                                            <?php if (isset($hotel['main_facilities']) && !empty($hotel['main_facilities'])) { ?>
+                                                <?php foreach ($hotel['main_facilities'] as $fac) { ?>
+                                                    <span class="main-facility">
+                                                        <img src="<?= base_url('assets/uploads/' . $fac['facility_icon']) ?>"/> <?= $fac['facility_name'] ?>
+                                                    </span>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
                                         <div class="hotel-desc">
                                             <p>
-                                                <?= $hotel['hotel_short_description'] ?>
+                                                <?= mb_substr($hotel['hotel_short_description'], 0, 100) ?>
                                             </p>
                                         </div>
                                     </div>

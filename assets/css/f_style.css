@@ -93,7 +93,10 @@ aside .title:before {
     margin-bottom: 15px;
     font-weight: 300;
 }
-
+.each-hotel .main-facility img {
+    max-width: 25px;
+    max-height: 25px;
+}
 .hotels-list img {
     max-width: 100%;
 }

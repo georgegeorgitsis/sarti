@@ -34,7 +34,7 @@
         <script type="text/javascript">
             $(window).load(function () {
                 $("input[name='checkin'], input[name='checkout']").datetimepicker({
-                    format: 'YYYY-MM-DD'
+                    format: 'DD-MM-YYYY'
                 });
 
                 $(".slider").bxSlider({

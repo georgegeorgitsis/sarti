@@ -15,6 +15,7 @@ class Hotels extends MY_F_Controller {
 
     protected $conf;
     protected $page;
+    protected $hotels;
 
     public function __construct() {
         parent::__construct();
@@ -22,12 +23,7 @@ class Hotels extends MY_F_Controller {
     }
 
     public function index() {
-        $this->paginateHotels();
-
-        $hotels = $this->hotel_model->getFHotels($this->conf["per_page"], $this->page, $this->lang_id);
-        $hotels = $this->parseHotels($hotels);
-
-        $this->view_data['hotels'] = $hotels;
+        $this->getHotels();
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
@@ -38,22 +34,28 @@ class Hotels extends MY_F_Controller {
         $checkout = $this->input->get('checkin');
         $adults = $this->input->get('adults');
 
-        $this->paginateHotels();
-        $hotels = $this->hotel_model->getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $this->conf['per_page'], $this->page, $this->lang_id);
-        $hotels = $this->parseHotels($hotels);
-        
-        
-        $this->view_data['hotels'] = $hotels;
+        $this->getHotels($checkin, $checkout, $adults, $packageType);
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
-    protected function parseHotels($hotels) {
-        if (isset($hotels) && !empty($hotels)) {
-            foreach ($hotels as $hotel_key => $hotel_val) {
-                $hotels[$hotel_key]['thumb'] = $this->hotel_model->getHotelThumb($hotel_val['hotel_id']);
+    protected function getHotels($checkin = null, $checkout = null, $adults = null, $packageType = null) {
+        $this->paginateHotels();
+        $this->hotels = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $this->conf['per_page'], $this->page, $this->lang_id);
+        $this->parseHotels();
+        $this->view_data['hotels'] = $this->hotels;
+    }
+
+    protected function parseHotels() {
+        if (isset($this->hotels) && !empty($this->hotels)) {
+            foreach ($this->hotels as $hotel_key => $hotel_val) {
+                $this->hotels[$hotel_key]['thumb'] = $this->hotel_model->getHotelThumb($hotel_val['hotel_id']);
+                $this->hotels[$hotel_key]['main_facilities'] = $this->hotel_model->getFHotelMainFacilities($hotel_val['hotel_id'], $this->lang_id);
             }
         }
-        return $hotels;
+    }
+    
+    protected function getRooms() {
+        
     }
 
     protected function paginateHotels() {

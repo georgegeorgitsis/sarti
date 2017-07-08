@@ -17,11 +17,14 @@ class MY_F_Controller extends CI_Controller {
         $this->load->model('room_model');
         $this->load->model('board_model');
         $this->load->model('facility_model');
+        $this->load->model('package_model');
         $this->handleLang();
         $this->getLocations();
         $this->getRoomTypes();
         $this->getBoards();
         $this->getFacilities();
+        $this->get7DaysPeriods();
+        $this->get10DaysPeriods();
     }
 
     public function handleLang() {
@@ -77,6 +80,16 @@ class MY_F_Controller extends CI_Controller {
     protected function getFacilities() {
         $facilities = $this->facility_model->getFFacilities($this->lang_id);
         $this->view_data['facilities'] = $facilities;
+    }
+
+    protected function get7DaysPeriods() {
+        $package_7_days = $this->package_model->getF7dayspackages();
+        $this->view_data['packages_7_days'] = $package_7_days;
+    }
+
+     protected function get10DaysPeriods() {
+        $package_10_days = $this->package_model->getF10dayspackages();
+        $this->view_data['packages_10_days'] = $package_10_days;
     }
 
 }

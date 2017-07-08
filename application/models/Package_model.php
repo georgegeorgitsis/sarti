@@ -17,6 +17,33 @@ class Package_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getF7dayspackages() {
+        $qry = $this->db->select('*')
+                ->from('package_periods')
+                ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->where('packages.package_type', 2)
+                ->where('package_periods.period_from >= CURDATE()')
+                ->order_by('package_periods.period_from')
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+
+    public function getF10dayspackages() {
+        $qry = $this->db->select('*')
+                ->from('package_periods')
+                ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->where('packages.is_package_type', 3)
+                ->where('package_periods.period_from >= CURDATE()')
+                ->order_by('package_periods.period_from')
+                ->get();
+        
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+
     public function getPackages() {
         $qry = $this->db->select('*')
                 ->from('packages')
