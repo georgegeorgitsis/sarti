@@ -671,42 +671,50 @@ class Migration_init extends CI_Migration {
             array (
                 'hotel_locale_id' => '1',
                 'hotel_id' => '1',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                'lang_id'=>'1'
             ),
             array (
                 'hotel_locale_id' => '2',
                 'hotel_id' => '1',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                'lang_id'=>'2'
             ),
              array (
                 'hotel_locale_id' => '3',
                 'hotel_id' => '2',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                 'lang_id'=>'1'
             ),
             array (
                 'hotel_locale_id' => '4',
                 'hotel_id' => '2',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                'lang_id'=>'2'
             ),
              array (
                 'hotel_locale_id' => '5',
                 'hotel_id' => '3',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                 'lang_id'=>'1'
             ),
             array (
                 'hotel_locale_id' => '6',
                 'hotel_id' => '3',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                'lang_id'=>'2'
             ),
              array (
                 'hotel_locale_id' => '7',
                 'hotel_id' => '4',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                 'lang_id'=>'1'
             ),
             array (
                 'hotel_locale_id' => '8',
                 'hotel_id' => '4',
-                'hotel_short_description' => 'hotel\'s short description'
+                'hotel_short_description' => 'hotel\'s short description',
+                'lang_id'=>'2'
             ),
            
         );
