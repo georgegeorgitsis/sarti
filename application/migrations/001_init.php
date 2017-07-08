@@ -618,28 +618,28 @@ class Migration_init extends CI_Migration {
             array(
                 'hotel_image_id' => '1',
                 'hotel_id' => '1',
-                'image_name' => 'hotel_1.png',
+                'image_name' => 'hotel_1.jpg',
                 'image_original_name' => 'original_hotel_1.jpg',
                 'is_thumb' => '1'
             ),
             array(
                 'hotel_image_id' => '2',
                 'hotel_id' => '2',
-                'image_name' => 'hotel_2.png',
+                'image_name' => 'hotel_2.jpg',
                 'image_original_name' => 'original_hotel_2.jpg',
                 'is_thumb' => '1'
             ),
             array(
                 'hotel_image_id' => '3',
                 'hotel_id' => '3',
-                'image_name' => 'hotel_3.png',
+                'image_name' => 'hotel_3.jpg',
                 'image_original_name' => 'original_hotel_3.jpg',
                 'is_thumb' => '1'
             ),
             array(
                 'hotel_image_id' => '4',
                 'hotel_id' => '4',
-                'image_name' => 'hotel_4.png',
+                'image_name' => 'hotel_4.jpg',
                 'image_original_name' => 'original_hotel_4.jpg',
                 'is_thumb' => '1'
             ),
