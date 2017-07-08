@@ -17,6 +17,17 @@ class Facility_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getFFacilities($lang_id) {
+        $qry = $this->db->select('*')
+                ->from('facilities')
+                ->join('facility_locales', 'facility_locales.facility_id=facilities.facility_id')
+                ->where('facility_locales.lang_id', $lang_id)
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
     public function getFacilities() {
         $qry = $this->db->select('*')
                 ->from('facilities')

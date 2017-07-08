@@ -5,30 +5,45 @@ if (!defined('BASEPATH')) {
 }
 
 class MY_F_Controller extends CI_Controller {
+
     protected $view_data;
-    protected $credentials;
     protected $language;
-    
+    protected $lang_id;
+
     function __construct() {
         parent::__construct();
+        $this->load->model('language_model');
+        $this->load->model('location_model');
+        $this->load->model('room_model');
+        $this->load->model('board_model');
+        $this->load->model('facility_model');
+        $this->handleLang();
+        $this->getLocations();
+        $this->getRoomTypes();
+        $this->getBoards();
+        $this->getFacilities();
+    }
 
+    public function handleLang() {
         $chose_lang = $this->session->userdata('language');
         $post_lang = $this->input->post('language');
 
         if (!empty($post_lang)) {
             $this->language = $post_lang;
-            $this->view_data['lang'] = $post_lang;
         } elseif (!empty($chose_lang)) {
             $this->language = $this->session->userdata('language');
-            $this->view_data['lang'] = $this->session->userdata('language');
         } else {
             $this->language = "gr";
             $this->session->set_userdata('language', 'gr');
-            $this->view_data['lang'] = 'gr';
-            $this->view_data['abbreviation'] = 'gr';
-            $this->view_data['lang_png'] = 'gr.png';
-            $this->view_data['language_name'] = "Ελληνικά";
         }
+        $this->view_data['lang'] = $this->language;
+
+        $language = $this->language_model->getLanguagePerAbbr($this->language);
+        //if lang is empty redirect and set the default 'gr' lang
+        if (!$language)
+            redirect(base_url('hotels'));
+
+        $this->lang_id = $language['lang_id'];
 
         $this->load->helper('language');
         if ($this->view_data['lang'] == 'gr') {
@@ -42,6 +57,26 @@ class MY_F_Controller extends CI_Controller {
             $this->view_data['lang_png'] = 'en.png';
             $this->view_data['language_name'] = "English";
         }
+    }
+
+    protected function getLocations() {
+        $locations = $this->location_model->getFLocations($this->lang_id);
+        $this->view_data['locations'] = $locations;
+    }
+
+    protected function getRoomTypes() {
+        $roomTypes = $this->room_model->getRoomTypes();
+        $this->view_data['room_types'] = $roomTypes;
+    }
+
+    protected function getBoards() {
+        $boards = $this->board_model->getBoards();
+        $this->view_data['boards'] = $boards;
+    }
+
+    protected function getFacilities() {
+        $facilities = $this->facility_model->getFFacilities($this->lang_id);
+        $this->view_data['facilities'] = $facilities;
     }
 
 }

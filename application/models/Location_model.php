@@ -17,6 +17,17 @@ class Location_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getFLocations($lang_id) {
+        $qry = $this->db->select('*')
+                ->from('locations')
+                ->join('location_locales', 'locations.location_id=location_locales.location_id')
+                ->where('location_locales.lang_id', $lang_id)
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+
     public function getLocations() {
         $qry = $this->db->select('*')
                 ->from('locations')
