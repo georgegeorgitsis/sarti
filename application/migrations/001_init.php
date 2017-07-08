@@ -279,6 +279,15 @@ class Migration_init extends CI_Migration {
             array(
                 'location_name' => 'Sikia',
             ),
+            array(
+                'location_name' => 'Polixrono',
+            ),
+            array(
+                'location_name' => 'Peukoxori',
+            ),
+            array(
+                'location_name' => 'Flogita',
+            ),
         );
         $this->db->insert_batch('locations', $data);
 
@@ -325,6 +334,36 @@ class Migration_init extends CI_Migration {
                 'lang_id' => '2',
                 'location_name' => 'Sikia'
             ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '1',
+                'location_name' => 'Polixrono'
+            ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '2',
+                'location_name' => 'Polixrono'
+            ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '1',
+                'location_name' => 'Peukoxori'
+            ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '2',
+                'location_name' => 'Peukoxori'
+            ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '1',
+                'location_name' => 'Flogita'
+            ),
+            array(
+                'location_id' => '2',
+                'lang_id' => '2',
+                'location_name' => 'Flogita'
+            ),
         );
         $this->db->insert_batch('location_locales', $data);
 
@@ -356,6 +395,18 @@ class Migration_init extends CI_Migration {
             ),
             array(
                 'facility_type' => 'Wifi',
+                'facility_icon' => 'test.png',
+            ),
+            array(
+                'facility_type' => 'Swimming pool',
+                'facility_icon' => 'test.png',
+            ),
+            array(
+                'facility_type' => 'Gym',
+                'facility_icon' => 'test.png',
+            ),
+            array(
+                'facility_type' => 'Air condition',
                 'facility_icon' => 'test.png',
             ),
         );
@@ -402,6 +453,36 @@ class Migration_init extends CI_Migration {
                 'facility_id' => '2',
                 'lang_id' => '2',
                 'facility_name' => 'Wifi'
+            ),
+            array(
+                'facility_id' => '3',
+                'lang_id' => '1',
+                'facility_name' => 'Swimming pool'
+            ),
+            array(
+                'facility_id' => '3',
+                'lang_id' => '2',
+                'facility_name' => 'Swimming pool'
+            ),
+            array(
+                'facility_id' => '4',
+                'lang_id' => '1',
+                'facility_name' => 'Gym'
+            ),
+            array(
+                'facility_id' => '4',
+                'lang_id' => '2',
+                'facility_name' => 'Gym'
+            ),
+            array(
+                'facility_id' => '5',
+                'lang_id' => '1',
+                'facility_name' => 'Air condition'
+            ),
+            array(
+                'facility_id' => '5',
+                'lang_id' => '2',
+                'facility_name' => 'Air condition'
             ),
         );
         $this->db->insert_batch('facility_locales', $data);
@@ -476,7 +557,43 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('hotel_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('hotel_id', TRUE);
         $this->dbforge->create_table('hotels');
-
+        $data = array(
+            array(
+                'hotel_id' => '1',
+                'hotel_name' => 'Nevada',
+                'package_id' => '2',
+                'location_id' => '1',
+                'distance_from_sea' => '500',
+                'stars'=>'3'
+            ),
+            array(
+                'hotel_id' => '2',
+                'hotel_name' => '12-Luxury',
+                'package_id' => '2',
+                'location_id' => '1',
+                'distance_from_sea' => '1000',
+                'stars'=>'5'
+            ),
+            array(
+                'hotel_id' => '3',
+                'hotel_name' => 'Plithari',
+                'package_id' => '1',
+                'location_id' => '1',
+                'distance_from_sea' => '500',
+                'stars'=>'4'
+            ),
+            array(
+                'hotel_id' => '4',
+                'hotel_name' => 'Maria\'s studio',
+                'package_id' => '2',
+                'location_id' => '1',
+                'distance_from_sea' => '500',
+                'stars'=>'2'
+            ),
+            
+        );
+        $this->db->insert_batch('hotels', $data);
+        
         // Drop table 'hotel_s_locales' if it exists
         $this->dbforge->drop_table('hotel_images', TRUE);
         $this->dbforge->add_field(array(
@@ -505,7 +622,18 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('hotel_image_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('hotel_image_id', TRUE);
         $this->dbforge->create_table('hotel_images');
-
+         $data = array(
+             array(
+                 'hotel_image_id' => '1',
+                 'hotel_id' =>'1',
+                 'image_name' =>'test.png',
+                 'image_original_name' => 'original_test.png',
+                 'is_thumb' => '1'
+             ),
+             
+         );        
+        $this->db->insert_batch('hotel_images', $data);
+        
         // Drop table 'hotel_s_locales' if it exists
         $this->dbforge->drop_table('hotel_locales', TRUE);
         $this->dbforge->add_field(array(
@@ -545,7 +673,23 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('hotel_locale_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('hotel_locale_id', TRUE);
         $this->dbforge->create_table('hotel_locales');
-
+        
+        $data = array(
+            array (
+                'hotel_locale_id' => '1',
+                'hotel_id' => '1',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+            array (
+                'hotel_locale_id' => '2',
+                'hotel_id' => '1',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+           
+        );
+        $this->db->insert_batch('hotel_locales', $data);
+        
+        
         // Drop table 'hotel_facilities' if it exists
         $this->dbforge->drop_table('hotel_facilities', TRUE);
         $this->dbforge->add_field(array(
@@ -567,7 +711,22 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('hotel_facility_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('hotel_facility_id', TRUE);
         $this->dbforge->create_table('hotel_facilities');
-
+        $data = array(
+            array (
+            'hotel_facility_id'=>'1',
+            'hotel_id'=>'1',
+            'facility_id'=>'1',
+            'is_main'=>'1'
+            ),
+            array (
+            'hotel_facility_id'=>'2',
+            'hotel_id'=>'1',
+            'facility_id'=>'2',
+            'is_main'=>'1'
+            ),
+        );
+        $this->db->insert_batch('hotel_facilities', $data);
+        
         // Drop table 'room_types' if it exists
         $this->dbforge->drop_table('room_types', TRUE);
         $this->dbforge->add_field(array(
@@ -707,7 +866,28 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('room_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('room_id', TRUE);
         $this->dbforge->create_table('rooms');
-
+        $data = array(
+            array(
+                'room_id'=>'1',
+                'hotel_id'=>'2',
+                'room_name'=>'monoklino',
+                'room_type_id'=>'1'
+            ),
+             array(
+                'room_id'=>'2',
+                'hotel_id'=>'2',
+                'room_name'=>'diklino',
+                'room_type_id'=>'2'
+            ),
+              array(
+                'room_id'=>'3',
+                'hotel_id'=>'2',
+                'room_name'=>'souita',
+                'room_type_id'=>'3'
+            ),
+        );
+        $this->db->insert_batch('rooms', $data);
+        
         // Drop table 'room_images' if it exists
         $this->dbforge->drop_table('room_images', TRUE);
         $this->dbforge->add_field(array(
@@ -773,8 +953,23 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('room_locale_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('room_locale_id', TRUE);
         $this->dbforge->create_table('room_locales');
-
-        // Drop table 'room_locales' if it exists
+        $data = array (
+            array(
+                'room_locale_id'=>'1',
+                'room_id'=>'1',
+                'lang_id'=>'1',
+                'room_short_description'=>'room short description1'
+            ),
+            array(
+                'room_locale_id'=>'2',
+                'room_id'=>'1',
+                'lang_id'=>'2',
+                'room_short_description'=>'room short description2'
+            )
+        );        
+        $this->db->insert_batch('room_locales', $data);
+        
+        // Drop table 'room_facilities' if it exists
         $this->dbforge->drop_table('room_facilities', TRUE);
         $this->dbforge->add_field(array(
             'room_facility_id' => array(
@@ -813,7 +1008,6 @@ class Migration_init extends CI_Migration {
                 'type' => 'INT',
                 'default' => '1',
             ),
-            
         ));
         $this->dbforge->add_field('package_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('package_id', TRUE);
