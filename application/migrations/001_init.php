@@ -335,39 +335,28 @@ class Migration_init extends CI_Migration {
                 'location_name' => 'Sikia'
             ),
             array(
-                'location_id' => '2',
+                'location_id' => '3',
                 'lang_id' => '1',
                 'location_name' => 'Polixrono'
             ),
             array(
-                'location_id' => '2',
+                'location_id' => '3',
                 'lang_id' => '2',
                 'location_name' => 'Polixrono'
             ),
             array(
-                'location_id' => '2',
-                'lang_id' => '1',
-                'location_name' => 'Peukoxori'
-            ),
+                'location_id' => '4',
+                'lang_id'=>'1',
+                'location_name'=>'Flogita'
+                ),
             array(
-                'location_id' => '2',
-                'lang_id' => '2',
-                'location_name' => 'Peukoxori'
-            ),
-            array(
-                'location_id' => '2',
-                'lang_id' => '1',
-                'location_name' => 'Flogita'
-            ),
-            array(
-                'location_id' => '2',
-                'lang_id' => '2',
-                'location_name' => 'Flogita'
-            ),
-        );
+                'location_id' => '4',
+                'lang_id'=>'2',
+                'location_name'=>'Flogita'
+                )
+            );    
+       
         $this->db->insert_batch('location_locales', $data);
-
-        // Drop table 'facilities' if it exists
         $this->dbforge->drop_table('facilities', TRUE);
         $this->dbforge->add_field(array(
             'facility_id' => array(
@@ -564,7 +553,8 @@ class Migration_init extends CI_Migration {
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
-                'stars'=>'3'
+                'stars'=>'3',
+                'hotel_active'=>'1'
             ),
             array(
                 'hotel_id' => '2',
@@ -572,7 +562,8 @@ class Migration_init extends CI_Migration {
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '1000',
-                'stars'=>'5'
+                'stars'=>'5',
+                'hotel_active'=>'1'
             ),
             array(
                 'hotel_id' => '3',
@@ -580,7 +571,8 @@ class Migration_init extends CI_Migration {
                 'package_id' => '1',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
-                'stars'=>'4'
+                'stars'=>'4',
+                'hotel_active'=>'1'
             ),
             array(
                 'hotel_id' => '4',
@@ -588,7 +580,8 @@ class Migration_init extends CI_Migration {
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
-                'stars'=>'2'
+                'stars'=>'2',
+                'hotel_active'=>'1'
             ),
             
         );
@@ -683,6 +676,36 @@ class Migration_init extends CI_Migration {
             array (
                 'hotel_locale_id' => '2',
                 'hotel_id' => '1',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+             array (
+                'hotel_locale_id' => '3',
+                'hotel_id' => '2',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+            array (
+                'hotel_locale_id' => '4',
+                'hotel_id' => '2',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+             array (
+                'hotel_locale_id' => '5',
+                'hotel_id' => '3',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+            array (
+                'hotel_locale_id' => '6',
+                'hotel_id' => '3',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+             array (
+                'hotel_locale_id' => '7',
+                'hotel_id' => '4',
+                'hotel_short_description' => 'hotel\'s short description'
+            ),
+            array (
+                'hotel_locale_id' => '8',
+                'hotel_id' => '4',
                 'hotel_short_description' => 'hotel\'s short description'
             ),
            
@@ -1013,6 +1036,25 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_key('package_id', TRUE);
         $this->dbforge->create_table('packages');
 
+        $data = array (
+            array(
+                'package_type'=>'allotment',
+                'is_allotment'=>'1',
+                'is_package_type'=>'1'                
+            ),
+            array(
+                'package_type'=>'7 days',
+                'is_allotment'=>'0',
+                'is_package_type'=>'2'  
+            ),
+             array(
+                'package_type'=>'10 days',
+                'is_allotment'=>'0',
+                'is_package_type'=>'3'  
+            )
+        );        
+        $this->db->insert_batch('packages', $data);
+        
         // Drop table 'room_locales' if it exists
         $this->dbforge->drop_table('package_locales', TRUE);
         $this->dbforge->add_field(array(
@@ -1035,7 +1077,41 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('package_locale_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('package_locale_id', TRUE);
         $this->dbforge->create_table('package_locales');
-
+        
+             $data = array (
+            array(
+                'package_id'=>'1',
+                'package_name'=>'allotment',
+                'lang_id'=>'1'                
+            ),
+             array(
+                'package_id'=>'1',
+                'package_name'=>'allotment',
+                'lang_id'=>'2'                
+            ),
+             array(
+                'package_id'=>'2',
+                'package_name'=>'7 days',
+                'lang_id'=>'1'                
+            ),
+             array(
+                'package_id'=>'2',
+                'package_name'=>'7 days',
+                'lang_id'=>'2'                
+            ),
+                  array(
+                'package_id'=>'3',
+                'package_name'=>'10 days',
+                'lang_id'=>'1'                
+            ),
+             array(
+                'package_id'=>'3',
+                'package_name'=>'10 days',
+                'lang_id'=>'2'                
+            ),
+        );        
+        $this->db->insert_batch('package_locales', $data);
+        
         // Drop table 'package_days' if it exists
         $this->dbforge->drop_table('package_periods', TRUE);
         $this->dbforge->add_field(array(
