@@ -77,7 +77,6 @@ class Hotel_model extends CI_Model {
     public function getFHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $limit, $start, $lang_id) {
         $this->db->select('*')
                 ->from('hotels')
-                ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
                 ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
                 ->join('locations', 'locations.location_id=hotels.location_id')
                 ->join('location_locales', 'location_locales.location_id=locations.location_id')
@@ -85,9 +84,6 @@ class Hotel_model extends CI_Model {
                 ->where('location_locales.lang_id', $lang_id)
                 ->where('hotel_locales.lang_id', $lang_id)
                 ->limit($limit, $start);
-
-        if ($packageType)
-            $this->db->where('rooms.room_package_id', $packageType);
 
         $qry = $this->db->get();
 
