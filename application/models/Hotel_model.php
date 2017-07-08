@@ -39,36 +39,57 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
-    public function getFHotels($limit, $start, $lang_id) {
-        $qry = $this->db->select('*')
-                ->from('hotels')
-                ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
-                ->join('locations', 'locations.location_id=hotels.location_id')
-                ->join('location_locales', 'location_locales.location_id=locations.location_id')
-                ->where('hotel_active', 1)
-                ->where('hotel_locales.lang_id', $lang_id)
-                ->where('location_locales.lang_id', $lang_id)
-                ->limit($limit, $start)
-                ->get();
+    /*
+      public function getFHotels($limit, $start, $lang_id) {
+      $qry = $this->db->select('*')
+      ->from('hotels')
+      ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
+      ->join('locations', 'locations.location_id=hotels.location_id')
+      ->join('location_locales', 'location_locales.location_id=locations.location_id')
+      ->where('hotel_active', 1)
+      ->where('hotel_locales.lang_id', $lang_id)
+      ->where('location_locales.lang_id', $lang_id)
+      ->limit($limit, $start)
+      ->get();
 
+      if ($qry->num_rows() > 0)
+      return $qry->result_array();
+      return false;
+      }
+     * 
+     */
+
+    public function getFHotelMainFacilities($hotel_id, $lang_id) {
+        $qry = $this->db->select('facility_locales.facility_name,facilities.facility_icon')
+                ->from('hotel_facilities')
+                ->join('hotels', 'hotels.hotel_id=hotel_facilities.hotel_id')
+                ->join('facilities', 'facilities.facility_id=hotel_facilities.facility_id')
+                ->join('facility_locales','facility_locales.facility_id=facilities.facility_id')
+                ->where('hotels.hotel_id', $hotel_id)
+                ->where('facility_locales.lang_id', $lang_id)
+                ->where('hotel_facilities.is_main', 1)
+                ->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();
-        return false;
+        return FALSE;
     }
 
-    public function getFHotelsPerPackage($checkin, $checkout, $adults, $packageType, $limit, $start, $lang_id) {
-        $qry = $this->db->select('*')
+    public function getFHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $limit, $start, $lang_id) {
+        $this->db->select('*')
                 ->from('hotels')
                 ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
                 ->join('hotel_locales', 'hotel_locales.hotel_id=hotels.hotel_id')
                 ->join('locations', 'locations.location_id=hotels.location_id')
                 ->join('location_locales', 'location_locales.location_id=locations.location_id')
                 ->where('hotels.hotel_active', 1)
-                ->where('rooms.room_package_id', $packageType)
                 ->where('location_locales.lang_id', $lang_id)
                 ->where('hotel_locales.lang_id', $lang_id)
-                ->limit($limit, $start)
-                ->get();
+                ->limit($limit, $start);
+
+        if ($packageType)
+            $this->db->where('rooms.room_package_id', $packageType);
+
+        $qry = $this->db->get();
 
         if ($qry->num_rows() > 0)
             return $qry->result_array();

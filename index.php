@@ -56,7 +56,7 @@
 
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-
+ini_set('xdebug.var_display_max_depth', 5);
 date_default_timezone_set('Europe/Athens');
 
 /*

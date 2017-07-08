@@ -76,11 +76,15 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin"/>
-                            </div>
-                            <div class="col-md-12">
-                                <label>Checkout</label>
-                                <input type="text" name="checkout"/>
+                                <select name="7_days" required="required">
+                                    <?php if (isset($packages_7_days) && !empty($packages_7_days)) { ?>
+                                        <?php foreach ($packages_7_days as $d) { ?>
+                                            <option value="<?= $d['package_period_id']; ?>"><?= date('d-m-Y', strtotime($d['period_from'])) . " - " . date('d-m-Y', strtotime($d['period_to'])); ?></option>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <option value="">No packages Available</option>
+                                    <?php } ?>
+                                </select>
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
@@ -108,11 +112,15 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin"/>
-                            </div>
-                            <div class="col-md-12">
-                                <label>Checkout</label>
-                                <input type="text" name="checkout"/>
+                                <select name="10_days" required="required">
+                                    <?php if (isset($packages_10_days) && !empty($packages_10_days)) { ?>
+                                        <?php foreach ($packages_10_days as $d) { ?>
+                                            <option value="<?= $d['package_period_id']; ?>"><?= date('d-m-Y', strtotime($d['period_from'])) . " - " . date('d-m-Y', strtotime($d['period_to'])); ?></option>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <option value="">No packages Available</option>
+                                    <?php } ?>
+                                </select>
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
