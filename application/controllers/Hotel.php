@@ -37,16 +37,19 @@ class Hotel extends MY_F_Controller {
         //var_dump($hotel_rooms_facilities);
 
         foreach ($hotel_rooms as $hotel_room) {
-            $hotel_rooms_facilities = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id']);
-            
+            $hotel_rooms_facilities = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id'], $this->lang_id);
+            $hotel_rooms_prices = $this->hotel_model->getFRoomsPrices($hotel_room['room_id']);
         }
-
+        
+        //var_dump($hotel_rooms_facilities);
+        var_dump($hotel_rooms_prices);
         $this->view_data['hotel'] = $hotel;
         $this->view_data['hotel_image'] = $hotel_image;
         $this->view_data['hotel_image_thumbs'] = $hotel_image_thumbs;
         $this->view_data['hotel_facilities'] = $hotel_facilities;
         $this->view_data['hotel_rooms'] = $hotel_rooms;
         $this->view_data['hotel_rooms_facilities'] = $hotel_rooms_facilities;
+        $this->view_data['hotel_rooms_prices'] = $hotel_rooms_prices;
         $this->load->template('frontend/hotel_view', $this->view_data);
     }
 
