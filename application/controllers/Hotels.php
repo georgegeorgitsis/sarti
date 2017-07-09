@@ -24,11 +24,13 @@ class Hotels extends MY_F_Controller {
     }
 
     public function index() {
+        $this->session->unset_userdata('search');
         $this->getHotels();
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
     public function searchHotels() {
+        $this->session->unset_userdata('search');
         $this->view_data['is_search'] = 1;
         $packageType = $this->uri->segment(3);
         $package_id = null;
@@ -41,6 +43,13 @@ class Hotels extends MY_F_Controller {
             $package_id = $this->input->get('p');
         }
         $adults = $this->input->get('a');
+
+        $search['packageType'] = $packageType;
+        $search['package_id'] = $package_id;
+        $search['checkin'] = $checkin;
+        $search['checkout'] = $checkout;
+        $search['adults'] = $adults;
+        $this->session->set_flashdata('search', $search);
 
         $this->getHotels($checkin, $checkout, $adults, $packageType, $package_id);
         $this->load->template('frontend/hotels_view', $this->view_data);

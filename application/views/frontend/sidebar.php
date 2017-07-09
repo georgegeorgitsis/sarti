@@ -13,7 +13,7 @@
         <?php if (isset($is_search) && $is_search == 1) { ?>
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
-                    <a href="<?= base_url('hotels') ?>" class="btn btn-info">Show all Hotels</a>
+                    <a href="<?= base_url('hotels') ?>" class="btn btn-info">Clear filters</a>
                 </div>
             </div>
         <?php } ?>
@@ -26,13 +26,13 @@
                             <div class="col-md-12">
                                 <h4 class="title">I have the days</h4>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 check-box">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin" required="required"/>
+                                <input type="text" name="checkin" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 check-box">
                                 <label>Checkout</label>
-                                <input type="text" name="checkout" required="required"/>
+                                <input type="text" name="checkout" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
@@ -59,7 +59,7 @@
                                 <h4 class="title">Show me the 7 days DEALS</h4>
                             </div>
                             <div class="col-md-12">
-                                <label>Checkin</label>
+                                <label>Periods</label>
                                 <select name="p" required="required">
                                     <?php if (isset($packages_7_days) && !empty($packages_7_days)) { ?>
                                         <?php foreach ($packages_7_days as $d) { ?>
@@ -95,7 +95,7 @@
                                 <h4 class="title">Show me the 9-10-11-12 days DEALS</h4>
                             </div>
                             <div class="col-md-12">
-                                <label>Checkin</label>
+                                <label>Periods</label>
                                 <select name="p" required="required">
                                     <?php if (isset($packages_10_days) && !empty($packages_10_days)) { ?>
                                         <?php foreach ($packages_10_days as $d) { ?>

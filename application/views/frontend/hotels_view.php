@@ -1,9 +1,11 @@
-<div class="slider-wrapper">
+
+<!--<div class="slider-wrapper">
     <div class="slider">
         <img src="http://pull1.sweeticecoltd.netdna-cdn.com/wp-content/uploads/2015/03/rev_slider_original_4.jpg?bc3caa"/>
         <img src="http://www.hare.com/wp-content/uploads/2015/05/yas-island-hotel-bridges2-1920x600.jpg"/>
     </div>
 </div>
+-->
 <?php //var_dump($hotels) ?>
 <div class="container">
     <div class="col-md-3">
@@ -60,37 +62,47 @@
                                 </div>
                                 <div class="col-md-8 no-padding">
                                     <div class="hotel-box-wrapper">
-                                        <div class="hotel-title">
-                                            <a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">
-                                                <h3><?= $hotel['hotel_name'] ?></h3>
-                                            </a>
-                                            <div class="distance">
-                                                <?php if ($hotel['distance_from_sea']) { ?>
-                                                    <span><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['distance_from_sea'] ?>m</span>
-                                                <?php } ?>
-                                                <?php if ($hotel['distance_from_center']) { ?>
-                                                    <span><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['distance_from_center'] ?>m</span>
-                                                <?php } ?>
-                                                <?php if ($hotel['location_name']) { ?>
-                                                    <span><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['location_name'] ?></span>
-                                                <?php } ?>
+                                        <div class="col-md-12 no-padding clearfix">
+                                            <div class="hotel-title">
+                                                <a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">
+                                                    <h3><?= $hotel['hotel_name'] ?></h3>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="hotel-main-facilities">
-                                            <?php if (isset($hotel['main_facilities']) && !empty($hotel['main_facilities'])) { ?>
-                                                <?php foreach ($hotel['main_facilities'] as $fac) { ?>
-                                                    <span class="main-facility">
-                                                        <img src="<?= base_url('assets/uploads/' . $fac['facility_icon']) ?>"/> <?= $fac['facility_name'] ?>
-                                                    </span>
+                                        <div class="col-md-12 clearfix no-padding">
+                                            <div class="location-distances clearfix">
+                                                <?php if ($hotel['location_name']) { ?>
+                                                    <span class="location-name"><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['location_name'] ?></span>
                                                 <?php } ?>
-                                            <?php } ?>
+                                                <span class="distance">
+                                                    <?php if ($hotel['distance_from_sea']) { ?>
+                                                        <span><i class="fa fa-car" aria-hidden="true"></i> <?= $hotel['distance_from_sea'] ?>m from sea</span>
+                                                    <?php } ?>
+                                                    <?php if ($hotel['distance_from_center']) { ?>
+                                                        <span><i class="fa fa-car" aria-hidden="true"></i> <?= $hotel['distance_from_center'] ?>m from center</span>
+                                                    <?php } ?>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="hotel-desc">
-                                            <p>
-                                                <?= mb_substr($hotel['hotel_short_description'], 0, 100) ?>
-                                            </p>
+                                        <?php if (isset($hotel['main_facilities']) && !empty($hotel['main_facilities'])) { ?>
+                                            <div class="col-md-12 no-padding clearfix">
+                                                <div class="hotel-main-facilities">
+                                                    <?php foreach ($hotel['main_facilities'] as $fac) { ?>
+                                                        <span class="main-facility">
+                                                            <img src="<?= base_url('assets/uploads/' . $fac['facility_icon']) ?>"/> <?= $fac['facility_name'] ?>
+                                                        </span>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                        <div class="col-md-12 no-padding clearfix">
+                                            <div class="hotel-desc">
+                                                <p>
+                                                    <?= mb_substr($hotel['hotel_short_description'], 0, 200) . "..." ?>
+                                                    <span class="read-more"><a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">Read more</a></span>
+                                                </p>
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

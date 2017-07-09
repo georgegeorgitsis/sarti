@@ -29,6 +29,16 @@ body {
 
 
 /* SIDE BAR */
+.check-box {
+    position: relative;
+}
+.check-box .fa {
+    font-size: 20px;
+    position: absolute;
+    right: 20px;
+    top: 51%;
+    color: #60a0cf;
+}
 .hotels-count {
     background-color: #fff;
     padding: 5px 0px;
@@ -51,6 +61,7 @@ aside input[type='text'], aside select {
     display: block;
     width: 100%;
     padding: 5px;
+    border:1px solid #bebebe;
 }
 aside button[type='submit'] {
     width: 50%;
@@ -65,10 +76,11 @@ aside label {
 }
 aside .title {
     font-weight: 600;
-    font-size: 19px;
+    font-size: 17px;
     color: #60A0CF;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-style: italic;
 }
 aside .title:before {
     content : "";
@@ -100,9 +112,31 @@ aside .title:before {
 .hotels-list img {
     max-width: 100%;
 }
-.hotels-list h3 {
-    margin: 0;
-}
 .hotel-box-wrapper {
     padding: 10px;
+}
+.each-hotel .hotel-title h3{
+    border-bottom: 1px solid #bebebe;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.each-hotel .location-name {
+    color: #60A0CF;
+    font-size: 14px;
+}
+.each-hotel .distance {
+    float: right;
+}
+.each-hotel .hotel-desc {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.each-hotel .hotel-main-facilities {
+    margin-top: 10px;
+}
+.each-hotel .location-distances {
+    margin-top: 5px;
+}
+.each-hotel .read-more a {
+    color: #60A0CF;
 }
