@@ -918,21 +918,33 @@ class Migration_init extends CI_Migration {
         $data = array(
             array(
                 'room_id' => '1',
-                'hotel_id' => '2',
+                'hotel_id' => '1',
                 'room_name' => 'monoklino',
-                'room_type_id' => '1'
+                'room_type_id' => '1',
+                'room_package_id' => 1,
+                'room_active' => 1,
+                'min_adults' => 2,
+                'max_adults' => 4
             ),
             array(
                 'room_id' => '2',
                 'hotel_id' => '2',
                 'room_name' => 'diklino',
-                'room_type_id' => '2'
+                'room_type_id' => '2',
+                'room_package_id' => 2,
+                'room_active' => 1,
+                'min_adults' => 3,
+                'max_adults' => 4
             ),
             array(
                 'room_id' => '3',
-                'hotel_id' => '2',
+                'hotel_id' => '3',
                 'room_name' => 'souita',
-                'room_type_id' => '3'
+                'room_type_id' => '3',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'min_adults' => 3,
+                'max_adults' => 4
             ),
         );
         $this->db->insert_batch('rooms', $data);
@@ -1004,14 +1016,32 @@ class Migration_init extends CI_Migration {
         $this->dbforge->create_table('room_locales');
         $data = array(
             array(
-                'room_locale_id' => '1',
                 'room_id' => '1',
                 'lang_id' => '1',
                 'room_short_description' => 'room short description1'
             ),
             array(
-                'room_locale_id' => '2',
                 'room_id' => '1',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '2',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '2',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '3',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '3',
                 'lang_id' => '2',
                 'room_short_description' => 'room short description2'
             )
@@ -1163,6 +1193,46 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_key('package_period_id', TRUE);
         $this->dbforge->create_table('package_periods');
 
+        $data = array(
+            array(
+                'package_id' => '2',
+                'period_from' => '2017-08-01',
+                'period_to' => '2017-08-08',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '2',
+                'period_from' => '2017-08-10',
+                'period_to' => '2017-08-17',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '2',
+                'period_from' => '2017-08-20',
+                'period_to' => '2017-08-27',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '3',
+                'period_from' => '2017-08-20',
+                'period_to' => '2017-08-30',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '3',
+                'period_from' => '2017-08-30',
+                'period_to' => '2017-09-9',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '3',
+                'period_from' => '2017-09-10',
+                'period_to' => '2017-09-21',
+                'package_active' => '1'
+            ),
+        );
+        $this->db->insert_batch('package_periods', $data);
+
         // Drop table 'package_days' if it exists
         $this->dbforge->drop_table('room_package_prices', TRUE);
         $this->dbforge->add_field(array(
@@ -1201,6 +1271,52 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_key('room_package_price_id', TRUE);
         $this->dbforge->create_table('room_package_prices');
 
+        $data = array(
+            array(
+                'package_period_id' => '1',
+                'room_id' => '2',
+                'adults' => '3',
+                'price' => '20',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '1',
+                'room_id' => '2',
+                'adults' => '4',
+                'price' => '30',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '2',
+                'room_id' => '2',
+                'adults' => '3',
+                'price' => '40',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '2',
+                'room_id' => '2',
+                'adults' => '4',
+                'price' => '50',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '3',
+                'room_id' => '2',
+                'adults' => '3',
+                'price' => '40',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '3',
+                'room_id' => '2',
+                'adults' => '4',
+                'price' => '50',
+                'is_active' => 1
+            ),
+            
+        );
+        $this->db->insert_batch('room_package_prices', $data);
 
         // Drop table 'room_locales' if it exists
         $this->dbforge->drop_table('clients', TRUE);

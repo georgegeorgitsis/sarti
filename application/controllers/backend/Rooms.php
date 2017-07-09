@@ -423,7 +423,7 @@ class Rooms extends MY_Controller {
 
             $room_id = $this->input->post('room_id');
             $room = $this->room_model->getRoom($room_id);
-            $packagePeriods = $this->package_model->getPeriodsPerPackage($room['package_id']);
+            $packagePeriods = $this->package_model->getPeriodsPerPackage($room['room_package_id']);
 
             $insertData = array();
             if ($packagePeriods && !empty($packagePeriods)) {
