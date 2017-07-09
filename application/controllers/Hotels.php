@@ -60,7 +60,7 @@ class Hotels extends MY_F_Controller {
                 $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
                 $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
                 $this->hotels[$hotel_id]['main_facilities'] = $this->hotel_model->getFHotelMainFacilities($hotel_id, $this->lang_id);
-                $this->hotels[$hotel_id]['rooms'] = $this->hotel_model->getFHotelRooms($hotel_id, $this->lang_id);
+                //$this->hotels[$hotel_id]['rooms'] = $this->hotel_model->getFHotelRooms($hotel_id, $this->lang_id);
                 $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
                 $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
             }
@@ -81,7 +81,7 @@ class Hotels extends MY_F_Controller {
         $this->conf['per_page'] = 10;
         $this->conf["uri_segment"] = 3;
         $this->pagination->initialize($this->conf);
-        $this->page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
         $this->view_data['links'] = $this->pagination->create_links();
     }
 

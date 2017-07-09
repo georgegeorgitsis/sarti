@@ -21,26 +21,10 @@
         <div class="search clearfix">
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
-                    <div class="accommodation-search destination clearfix">
-                        <div class="col-md-12">
-                            <label>
-                                Destination:
-                            </label>
-                            <select name="search_destination">
-                                <?php foreach ($locations as $location) { ?>
-                                    <option value="<?= $location['location_id'] ?>"><?= $location['location_name'] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group clearfix">
-                <div class="col-md-12 no-padding">
                     <div class="accommodation-search clearfix">
                         <form method="GET" action="<?= base_url('hotels/searchHotels/1') ?>">
                             <div class="col-md-12">
-                                <h4 class="title">I have the days</h4 class="title">
+                                <h4 class="title">I have the days</h4>
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
@@ -72,7 +56,7 @@
                     <div class="accommodation-search clearfix">
                         <form method="GET" action="<?= base_url('hotels/searchHotels/2') ?>">
                             <div class="col-md-12">
-                                <h4 class="title">Show me the 7 days DEALS</h4 class="title">
+                                <h4 class="title">Show me the 7 days DEALS</h4>
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
@@ -108,7 +92,7 @@
                     <div class="accommodation-search clearfix">
                         <form method="GET" action="<?= base_url('hotels/searchHotels/3') ?>">
                             <div class="col-md-12">
-                                <h4 class="title">Show me the 9-10-11-12 days DEALS</h4 class="title">
+                                <h4 class="title">Show me the 9-10-11-12 days DEALS</h4>
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
@@ -138,12 +122,28 @@
                         </form>
                     </div>
                 </div>  
-            </div>    
+            </div> 
+            <div class="form-group clearfix">
+                <div class="col-md-12 no-padding">
+                    <div class="accommodation-search destination clearfix">
+                        <div class="col-md-12">
+                            <h4 class="title">
+                                Destination:
+                            </h4>
+                            <select name="search_destination">
+                                <?php foreach ($locations as $location) { ?>
+                                    <option value="<?= $location['location_id'] ?>"><?= $location['location_name'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
                     <div class="accommodation-search room-types clearfix">
                         <div class="col-md-12">
-                            <h4 class="title">Room Types</h4 class="title">
+                            <h4 class="title">Room Types</h4>
                         </div>
                         <?php foreach ($room_types as $type) { ?>
                             <div class="col-md-12">
@@ -157,7 +157,7 @@
                 <div class="col-md-12 no-padding">
                     <div class="accommodation-search boards clearfix">
                         <div class="col-md-12">
-                            <h4 class="title">Boards</h4 class="title">
+                            <h4 class="title">Boards</h4>
                         </div>
                         <?php foreach ($boards as $board) { ?>
                             <div class="col-md-12">
@@ -171,7 +171,7 @@
                 <div class="col-md-12 no-padding">
                     <div class="accommodation-search facilities clearfix">
                         <div class="col-md-12">
-                            <h4 class="title">Facilities</h4 class="title">
+                            <h4 class="title">Facilities</h4>
                         </div>
                         <?php foreach ($facilities as $facility) { ?>
                             <div class="col-md-12">
@@ -189,7 +189,7 @@
 
 <script type="text/javascript">
     $(window).load(function () {
-        $("input[type='checkbox']").click(function() {
+        $("input[type='checkbox']").click(function () {
             $.ajax({
                 url: '<?= base_url('hotels/ajaxFilters') ?>'
             });
