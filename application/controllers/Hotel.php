@@ -23,7 +23,7 @@ class Hotel extends MY_F_Controller {
 
     public function index() {
         $hotel = $this->hotel_model->getFHotel($this->hotel_id, $this->lang_id);
-        var_dump($hotel);
+      var_dump($hotel);
         
         $this->view_data['hotel'] = $hotel;
         $this->load->template('frontend/hotel_view', $this->view_data);
