@@ -924,7 +924,8 @@ class Migration_init extends CI_Migration {
                 'room_package_id' => 1,
                 'room_active' => 1,
                 'min_adults' => 2,
-                'max_adults' => 4
+                'max_adults' => 4,
+                'board_id' => 1
             ),
             array(
                 'room_id' => '2',
@@ -934,7 +935,8 @@ class Migration_init extends CI_Migration {
                 'room_package_id' => 2,
                 'room_active' => 1,
                 'min_adults' => 3,
-                'max_adults' => 4
+                'max_adults' => 4,
+                'board_id' => 2
             ),
             array(
                 'room_id' => '3',
@@ -944,7 +946,8 @@ class Migration_init extends CI_Migration {
                 'room_package_id' => 3,
                 'room_active' => 1,
                 'min_adults' => 3,
-                'max_adults' => 4
+                'max_adults' => 4,
+                'board_id' => 1
             ),
         );
         $this->db->insert_batch('rooms', $data);

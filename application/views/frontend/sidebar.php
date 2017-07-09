@@ -44,15 +44,15 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin"/>
+                                <input type="text" name="checkin" required="required"/>
                             </div>
                             <div class="col-md-12">
                                 <label>Checkout</label>
-                                <input type="text" name="checkout"/>
+                                <input type="text" name="checkout" required="required"/>
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
-                                <select name="adults">
+                                <select name="a">
                                     <?php for ($i = 0; $i <= 10; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
-                                <select name="7_days" required="required">
+                                <select name="p" required="required">
                                     <?php if (isset($packages_7_days) && !empty($packages_7_days)) { ?>
                                         <?php foreach ($packages_7_days as $d) { ?>
                                             <option value="<?= $d['package_period_id']; ?>"><?= date('d-m-Y', strtotime($d['period_from'])) . " - " . date('d-m-Y', strtotime($d['period_to'])); ?></option>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
-                                <select name="adults">
+                                <select name="a">
                                     <?php for ($i = 0; $i <= 10; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Checkin</label>
-                                <select name="10_days" required="required">
+                                <select name="p" required="required">
                                     <?php if (isset($packages_10_days) && !empty($packages_10_days)) { ?>
                                         <?php foreach ($packages_10_days as $d) { ?>
                                             <option value="<?= $d['package_period_id']; ?>"><?= date('d-m-Y', strtotime($d['period_from'])) . " - " . date('d-m-Y', strtotime($d['period_to'])); ?></option>
@@ -124,7 +124,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>
-                                <select name="adults">
+                                <select name="a">
                                     <?php for ($i = 0; $i <= 10; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
@@ -186,3 +186,13 @@
         </div>
     </div>
 </aside>
+
+<script type="text/javascript">
+    $(window).load(function () {
+        $("input[type='checkbox']").click(function() {
+            $.ajax({
+                url: '<?= base_url('hotels/ajaxFilters') ?>'
+            });
+        });
+    });
+</script>

@@ -90,7 +90,19 @@
                                                 <?= mb_substr($hotel['hotel_short_description'], 0, 100) ?>
                                             </p>
                                         </div>
+
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="hotel-rooms">
+                                    <?php if (isset($hotel['rooms']) && !empty($hotel['rooms'])) { ?>
+                                        <?php foreach ($hotel['rooms'] as $room) { ?>
+                                            <div class="col-md-12">
+                                                <?= $room['room_name'] ?>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
