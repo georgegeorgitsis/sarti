@@ -94,17 +94,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="hotel-rooms">
-                                    <?php if (isset($hotel['rooms']) && !empty($hotel['rooms'])) { ?>
-                                        <?php foreach ($hotel['rooms'] as $room) { ?>
-                                            <div class="col-md-12">
-                                                <?= $room['room_name'] ?>
-                                            </div>
-                                        <?php } ?>
-                                    <?php } ?>
-                                </div>
-                            </div>
+                            <?php /* ?>
+                              <div class="col-md-12">
+                              <div class="hotel-rooms">
+                              <?php if (isset($hotel['rooms']) && !empty($hotel['rooms'])) { ?>
+                              <?php foreach ($hotel['rooms'] as $room) { ?>
+                              <div class="col-md-12">
+                              <?= $room['room_name'] ?>
+                              </div>
+                              <?php } ?>
+                              <?php } ?>
+                              </div>
+                              </div>
+                             * <?php */ ?>
                         </div>
                     </div>
                 <?php } ?>
