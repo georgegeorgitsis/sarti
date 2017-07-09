@@ -57,7 +57,7 @@
                         <select name="package_id" class="form-control">
                             <?php foreach ($packages as $package) { ?>
                                 <option value="<?= $package['package_id']; ?>" <?php
-                                if ($package['package_id'] == $room['package_id']) {
+                                if ($package['package_id'] == $room['room_package_id']) {
                                     echo "selected='selected'";
                                 }
                                 ?>><?= $package['package_type']; ?></option>

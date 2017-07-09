@@ -21,7 +21,7 @@ class Package_model extends CI_Model {
         $qry = $this->db->select('*')
                 ->from('package_periods')
                 ->join('packages', 'packages.package_id=package_periods.package_id')
-                ->where('packages.package_type', 2)
+                ->where('packages.is_package_type', 2)
                 ->where('package_periods.period_from >= CURDATE()')
                 ->order_by('package_periods.period_from')
                 ->get();
