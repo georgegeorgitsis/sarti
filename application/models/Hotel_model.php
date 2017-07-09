@@ -133,7 +133,74 @@ class Hotel_model extends CI_Model {
             return $qry->row_array();
         return false;
     }
+    //pairnw tin kentriki eikona tou hotel
+    public function getFHotelImage($hotelId)
+    {
+       $qry = $this->db->select('*')
+               ->from('hotel_images')
+               ->where('hotel_images.hotel_id', $hotelId)
+               ->get();
+       if($qry->num_rows() > 0)
+       {
+            return $qry->row_array();
+       }
+       return false;
+    }
+    //pairnw ta hotel thumbs
+     public function getFHotelImageThumbs($hotelId)
+    {
+       $qry = $this->db->select('hotel_Id','image_name','is_thumb')
+               ->from('hotel_images')
+               ->where('hotel_images.hotel_id', $hotelId)
+               ->where('hotel_images.is_thumb', '1')
+               ->get();
+       //echo $this->db->last_query();
+       if($qry->num_rows() > 0)
+       {
+            return $qry->result_array();
+       }
+       return false;
+    }
+    //pairnw ta facilities toy kathe gotel
+    public function getFHotelFacilities($hotelId,$lang_id) {
+        $qry = $this->db->select('hotel_facilities.*, facility_locales.*')
+                ->from('hotel_facilities')
+                ->where('hotel_id', $hotelId)
+                ->join('facility_locales', 'facility_locales.facility_id = hotel_facilities.facility_id', 'inner')
+                ->where('lang_id', $lang_id)
+                ->get();
+        
+        //echo $this->db->last_query();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+    //vriskw ta dwmatia gia kathe ksenodoxeio
+     public function getFRooms($hotelId) {
+        $qry = $this->db->select('*')
+                ->from('rooms')
+                ->where('hotel_id', $hotelId)
+                 ->join('room_types', 'room_types.room_type_id = rooms.room_type_id', 'inner')
+                ->get();
 
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+    /*
+    //vriskw ta facilities gia kathe dwmatio
+     public function getFRoomsFacilities($roomId) {
+        $qry = $this->db->select('*')
+                ->from('rooms')
+                ->where('hotel_id', $hotelId)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+     * */
+    
     public function getHotels() {
         $qry = $this->db->select('*')
                 ->from('hotels')

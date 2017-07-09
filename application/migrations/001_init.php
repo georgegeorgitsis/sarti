@@ -643,6 +643,13 @@ class Migration_init extends CI_Migration {
                 'image_original_name' => 'original_hotel_4.jpg',
                 'is_thumb' => '1'
             ),
+            array(
+                'hotel_image_id' => '5',
+                'hotel_id' => '4',
+                'image_name' => 'hotel_4.jpg',
+                'image_original_name' => 'original_hotel_4.jpg',
+                'is_thumb' => '1'
+            ),
         );
         $this->db->insert_batch('hotel_images', $data);
 
@@ -688,52 +695,52 @@ class Migration_init extends CI_Migration {
 
         $data = array(
             array(
-                'hotel_locale_id' => '1',
                 'hotel_id' => '1',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '1'
+                'lang_id' => '1',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '2',
                 'hotel_id' => '1',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '2'
+                'lang_id' => '2',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '3',
                 'hotel_id' => '2',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '1'
+                'lang_id' => '1',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '4',
                 'hotel_id' => '2',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '2'
+                'lang_id' => '2',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '5',
                 'hotel_id' => '3',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '1'
+                'lang_id' => '1',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '6',
                 'hotel_id' => '3',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '2'
+                'lang_id' => '2',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '7',
                 'hotel_id' => '4',
                 'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '1'
+                'lang_id' => '1',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
             array(
-                'hotel_locale_id' => '8',
                 'hotel_id' => '4',
-                'hotel_short_description' => 'hotel\'s short description',
-                'lang_id' => '2'
+                'hotel_short_description' => 'hotel\'s short description',                
+                'lang_id' => '2',
+                'hotel_long_description' => 'hotel\'s long description',
             ),
         );
         $this->db->insert_batch('hotel_locales', $data);
@@ -763,13 +770,13 @@ class Migration_init extends CI_Migration {
         $data = array(
             array(
                 'hotel_facility_id' => '1',
-                'hotel_id' => '1',
+                'hotel_id' => '4',
                 'facility_id' => '1',
                 'is_main' => '1'
             ),
             array(
                 'hotel_facility_id' => '2',
-                'hotel_id' => '1',
+                'hotel_id' => '4',
                 'facility_id' => '2',
                 'is_main' => '1'
             ),
