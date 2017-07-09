@@ -930,6 +930,7 @@ class Migration_init extends CI_Migration {
                 'room_type_id' => '1',
                 'room_package_id' => 1,
                 'room_active' => 1,
+                'floor' => 'basement',
                 'min_adults' => 2,
                 'max_adults' => 4,
                 'board_id' => 1
@@ -941,6 +942,7 @@ class Migration_init extends CI_Migration {
                 'room_type_id' => '2',
                 'room_package_id' => 2,
                 'room_active' => 1,
+                'floor' => 'basement',
                 'min_adults' => 3,
                 'max_adults' => 4,
                 'board_id' => 2
@@ -952,6 +954,7 @@ class Migration_init extends CI_Migration {
                 'room_type_id' => '3',
                 'room_package_id' => 3,
                 'room_active' => 1,
+                'floor' => 'basement',
                 'min_adults' => 3,
                 'max_adults' => 4,
                 'board_id' => 1
@@ -963,6 +966,7 @@ class Migration_init extends CI_Migration {
                 'room_type_id' => '2',
                 'room_package_id' => 3,
                 'room_active' => 1,
+                'floor' => 'basement',
                 'min_adults' => 3,
                 'max_adults' => 4,
                 'board_id' => 1
@@ -1338,10 +1342,17 @@ class Migration_init extends CI_Migration {
                 'is_active' => 1
             ),
             array(
-                'package_period_id' => '3',
-                'room_id' => '2',
+                'package_period_id' => '6',
+                'room_id' => '4',
                 'adults' => '4',
                 'price' => '50',
+                'is_active' => 1
+            ),
+             array(
+                'package_period_id' => '6',
+                'room_id' => '4',
+                'adults' => '2',
+                'price' => '100',
                 'is_active' => 1
             ),
             

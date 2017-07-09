@@ -44,36 +44,70 @@
                         <h3> hotel_long_description : <?= $hotel['hotel_long_description'] ?> </h3>
 
                     </div>
-                <!--facilities in hotel-->
-                <div class="col-md-12 no-padding clearfix">
-                    <?php
+                    <!--facilities in hotel-->
+                    <div class="col-md-12 no-padding clearfix">
+                        <?php
                         foreach ($hotel_facilities as $hotel_facility) {
                             ?>
                             <h3> facility name in this hotel is  : <?= $hotel_facility['facility_name'] ?> </h3>
                             <?php
                         }
                         ?>
-                  </div>
-                <!--room types in this hotel-->
-                 <div class="col-md-12 no-padding clearfix">
-                    <?php
+                    </div>
+                    <!--room types in this hotel-->
+                    <div class="col-md-12 no-padding clearfix">
+                        <?php
                         foreach ($hotel_rooms as $hotel_room) {
                             ?>
                             <h3> available room in this hotel is  : <?= $hotel_room['room_type_name'] ?> </h3>
                             <?php
                         }
                         ?>
-                  </div>
-                 <!--room facilities in this hotel-->
-                 <div class="col-md-12 no-padding clearfix">
-                    <?php
+                    </div>
+                    <!--room facilities in this hotel-->
+                    <div class="col-md-12 no-padding clearfix">
+                        <?php
                         foreach ($hotel_rooms_facilities as $hotel_rooms_facility) {
                             ?>
-                            <h3> available facility in this hotel is  : <?= $hotel_rooms_facility['facility_id'] ?> </h3>
+                            <h3> available facility in this room hotel is  : <?= $hotel_rooms_facility['facility_name'] ?> </h3>
                             <?php
                         }
                         ?>
-                  </div>
+                    </div>
+                    <!--room prices in this hotel-->
+                    <div class="col-md-12 no-padding clearfix">
+                        <table style="width:100%;height:200px;">                                
+
+                           
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Type of Room</th> 
+                                    <th>Max number of adults</th>
+                                     <?php
+                                    foreach ($hotel_rooms_prices as $hotel_rooms_price) 
+                                     {
+                                     ?>
+                                    <th><?=$hotel_rooms_price['period_from'];?> - <?=$hotel_rooms_price['period_to'];?></th>
+                                    <?php
+                                     }
+                                     ?>
+                                </tr>
+                            </thead>
+                              <?php
+                             foreach ($hotel_rooms_prices as $hotel_rooms_price) {
+                             ?>
+                            <tr>
+                                <td><?=$hotel_rooms_price['floor'];?></td>
+                                <td><?=$hotel_rooms_price['room_type_name'];?></td>                                
+                                 <td><?=$hotel_rooms_price['max_adults'];?></td>
+                                  <td><?=$hotel_rooms_price['price'];?></td>
+                            </tr>
+                                <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
