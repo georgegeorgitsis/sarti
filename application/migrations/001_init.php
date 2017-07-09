@@ -956,6 +956,17 @@ class Migration_init extends CI_Migration {
                 'max_adults' => 4,
                 'board_id' => 1
             ),
+            array(
+                'room_id' => '4',
+                'hotel_id' => '4',
+                'room_name' => 'souita',
+                'room_type_id' => '2',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'min_adults' => 3,
+                'max_adults' => 4,
+                'board_id' => 1
+            ),
         );
         $this->db->insert_batch('rooms', $data);
 
@@ -1076,7 +1087,16 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('room_facility_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('room_facility_id', TRUE);
         $this->dbforge->create_table('room_facilities');
-
+           $data = array(               
+                array(
+                'facility_id' => '1',
+                'room_id' => '4'                
+            )
+           );
+        
+        
+        
+        $this->db->insert_batch('room_facilities', $data);
         // Drop table 'room_locales' if it exists
         $this->dbforge->drop_table('packages', TRUE);
         $this->dbforge->add_field(array(

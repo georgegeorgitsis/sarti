@@ -54,6 +54,26 @@
                         }
                         ?>
                   </div>
+                <!--room types in this hotel-->
+                 <div class="col-md-12 no-padding clearfix">
+                    <?php
+                        foreach ($hotel_rooms as $hotel_room) {
+                            ?>
+                            <h3> available room in this hotel is  : <?= $hotel_room['room_type_name'] ?> </h3>
+                            <?php
+                        }
+                        ?>
+                  </div>
+                 <!--room facilities in this hotel-->
+                 <div class="col-md-12 no-padding clearfix">
+                    <?php
+                        foreach ($hotel_rooms_facilities as $hotel_rooms_facility) {
+                            ?>
+                            <h3> available facility in this hotel is  : <?= $hotel_rooms_facility['facility_id'] ?> </h3>
+                            <?php
+                        }
+                        ?>
+                  </div>
                 </div>
             </div>
         </div>
