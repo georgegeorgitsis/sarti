@@ -104,15 +104,6 @@ class Hotels extends MY_F_Controller {
         $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
         $this->view_data['links'] = $this->pagination->create_links();
     }
-
-    $array['rooms'] - loop 
-    $array['rooms']['room_id']
-    $array['rooms']['room_details']
-    $array['rooms']['package_periods'] - loop
-    $array['rooms']['package_periods']['details']
-    $array['rooms']['package_periods']['adults'] - loop
-    $array['rooms']['package_periods']['adults']['3']['price']
-    $array['rooms']['package_periods']['adults']['4']['price']
     
     
 }
