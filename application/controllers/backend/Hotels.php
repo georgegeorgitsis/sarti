@@ -27,7 +27,7 @@ class Hotels extends MY_Controller {
     }
 
     public function showHotels() {
-        $hotels = $this->hotel_model->getHotels();
+        $hotels = $this->hotel_model->getHotel_ids();
         $this->view_data['hotels'] = $hotels;
         $this->load->admintemplate('backend/hotels/hotels_view', $this->view_data);
     }

@@ -25,7 +25,9 @@ class Hotels extends MY_F_Controller {
 
     public function index() {
         $this->session->unset_userdata('search');
-        $this->getHotels();
+        $this->getHotel_ids();
+        $this->parseHotels();
+        $this->view_data['hotels'] = $this->hotels;
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
@@ -49,17 +51,17 @@ class Hotels extends MY_F_Controller {
         $search['checkin'] = $checkin;
         $search['checkout'] = $checkout;
         $search['adults'] = $adults;
-        $this->session->set_flashdata('search', $search);
+        $this->session->set_userdata('search', $search);
 
-        $this->getHotels($checkin, $checkout, $adults, $packageType, $package_id);
+        $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_id);
+        $this->parseHotels();
+        $this->view_data['hotels'] = $this->hotels;
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
-    protected function getHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_id = null) {
+    protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_id = null) {
         $this->paginateHotels();
         $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_id, $this->conf['per_page'], $this->page, $this->lang_id);
-        $this->parseHotels();
-        $this->view_data['hotels'] = $this->hotels;
     }
 
     protected function parseHotels() {
@@ -78,7 +80,16 @@ class Hotels extends MY_F_Controller {
 
     public function ajaxFilters() {
         if ($this->input->is_ajax_request()) {
-            var_dump($this->hotel_ids);
+            $search = $this->session->userdata('search');
+            $package_id = null;
+            $checkin = null;
+            $checkout = null;
+            $adults = null;
+            if ($search['packageType'] == 1) {
+                $checkin = $search['checkin'];
+                $checkout = $search['checkout'];
+                $adults = $search['adults'];
+            }
         }
     }
 
@@ -94,4 +105,14 @@ class Hotels extends MY_F_Controller {
         $this->view_data['links'] = $this->pagination->create_links();
     }
 
+    $array['rooms'] - loop 
+    $array['rooms']['room_id']
+    $array['rooms']['room_details']
+    $array['rooms']['package_periods'] - loop
+    $array['rooms']['package_periods']['details']
+    $array['rooms']['package_periods']['adults'] - loop
+    $array['rooms']['package_periods']['adults']['3']['price']
+    $array['rooms']['package_periods']['adults']['4']['price']
+    
+    
 }

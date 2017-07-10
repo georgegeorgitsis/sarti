@@ -38,10 +38,80 @@ class Package_model extends CI_Model {
                 ->where('package_periods.period_from >= CURDATE()')
                 ->order_by('package_periods.period_from')
                 ->get();
-        
+
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return false;
+    }
+
+    public function getMinMaxAdultsAllotment() {
+        $min_res = 0;
+        $max_res = 0;
+
+        $qry = $this->db->select('MIN(min_adults) as min_adults')
+                ->from('rooms')
+                ->where('room_package_id', 1)
+                ->get();
+
+        if ($qry->num_rows() == 1)
+            $min_res = $qry->row_array();
+
+        $qry = $this->db->select('MAX(max_adults) as max_adults')
+                ->from('rooms')
+                ->where('room_package_id', 1)
+                ->get();
+
+
+        if ($qry->num_rows() == 1)
+            $max_res = $qry->row_array();
+
+        return array('min_adults' => $min_res['min_adults'], 'max_adults' => $max_res['max_adults']);
+    }
+
+    public function getFMinMaxAdults7Days() {
+        $min_res = 0;
+        $max_res = 0;
+        
+        $qry = $this->db->select('MIN(min_adults) as min_adults')
+                ->from('rooms')
+                ->where('room_package_id', 2)
+                ->get();
+
+        if ($qry->num_rows() == 1)
+            $min_res = $qry->row_array();
+
+        $qry = $this->db->select('MAX(max_adults) as max_adults')
+                ->from('rooms')
+                ->where('room_package_id', 2)
+                ->get();
+
+        if ($qry->num_rows() == 1)
+            $max_res = $qry->row_array();
+
+        return array('min_adults' => $min_res['min_adults'], 'max_adults' => $max_res['max_adults']);
+    }
+
+    public function getFMinMaxAdults10Days() {
+        $min_res = 0;
+        $max_res = 0;
+        
+        $qry = $this->db->select('MIN(min_adults) as min_adults')
+                ->from('rooms')
+                ->where('room_package_id', 3)
+                ->get();
+
+        if ($qry->num_rows() == 1)
+            $min_res = $qry->row_array();
+
+        $qry = $this->db->select('MAX(max_adults) as max_adults')
+                ->from('rooms')
+                ->where('room_package_id', 3)
+                ->get();
+
+        if ($qry->num_rows() == 1)
+            $max_res = $qry->row_array();
+
+        return array('min_adults' => $min_res['min_adults'], 'max_adults' => $max_res['max_adults']);
     }
 
     public function getPackages() {

@@ -37,7 +37,7 @@
                             <div class="col-md-12">
                                 <label>Adults</label>
                                 <select name="a">
-                                    <?php for ($i = 0; $i <= 10; $i++) { ?>
+                                    <?php for ($i = $minMaxAllotment['min_adults']; $i <= $minMaxAllotment['max_adults']; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
                                 </select>
@@ -73,7 +73,7 @@
                             <div class="col-md-12">
                                 <label>Adults</label>
                                 <select name="a">
-                                    <?php for ($i = 0; $i <= 10; $i++) { ?>
+                                    <?php for ($i = $minMax7Days['min_adults']; $i <= $minMax7Days['max_adults']; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
                                 </select>
@@ -109,7 +109,7 @@
                             <div class="col-md-12">
                                 <label>Adults</label>
                                 <select name="a">
-                                    <?php for ($i = 0; $i <= 10; $i++) { ?>
+                                    <?php for ($i = $minMax10Days['min_adults']; $i <= $minMax10Days['max_adults']; $i++) { ?>
                                         <option value="<?= $i; ?>" <?= ($i == 2) ? "selected" : "" ?>><?= $i; ?></option>
                                     <?php } ?>
                                 </select>

@@ -1069,6 +1069,16 @@ class Migration_init extends CI_Migration {
                 'room_id' => '3',
                 'lang_id' => '2',
                 'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '4',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '4',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
             )
         );
         $this->db->insert_batch('room_locales', $data);
@@ -1091,16 +1101,14 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('room_facility_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('room_facility_id', TRUE);
         $this->dbforge->create_table('room_facilities');
-           $data = array(               
-                array(
+        $data = array(
+            array(
                 'facility_id' => '1',
-                'room_id' => '4'                
+                'room_id' => '4'
             )
-           );
-        
-        
-        
+        );
         $this->db->insert_batch('room_facilities', $data);
+
         // Drop table 'room_locales' if it exists
         $this->dbforge->drop_table('packages', TRUE);
         $this->dbforge->add_field(array(
@@ -1342,20 +1350,96 @@ class Migration_init extends CI_Migration {
                 'is_active' => 1
             ),
             array(
-                'package_period_id' => '6',
-                'room_id' => '4',
+                'package_period_id' => '3',
+                'room_id' => '2',
                 'adults' => '4',
                 'price' => '50',
                 'is_active' => 1
             ),
-             array(
-                'package_period_id' => '6',
-                'room_id' => '4',
-                'adults' => '2',
-                'price' => '100',
+            array(
+                'package_period_id' => '4',
+                'room_id' => '3',
+                'adults' => '3',
+                'price' => '30',
                 'is_active' => 1
             ),
-            
+            array(
+                'package_period_id' => '4',
+                'room_id' => '3',
+                'adults' => '4',
+                'price' => '35',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '3',
+                'adults' => '3',
+                'price' => '45',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '3',
+                'adults' => '4',
+                'price' => '53',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '3',
+                'adults' => '3',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '3',
+                'adults' => '4',
+                'price' => '76',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '4',
+                'room_id' => '4',
+                'adults' => '3',
+                'price' => '30',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '4',
+                'room_id' => '4',
+                'adults' => '4',
+                'price' => '35',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '4',
+                'adults' => '3',
+                'price' => '45',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '4',
+                'adults' => '4',
+                'price' => '53',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '4',
+                'adults' => '3',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '4',
+                'adults' => '4',
+                'price' => '76',
+                'is_active' => 1
+            ),
         );
         $this->db->insert_batch('room_package_prices', $data);
 

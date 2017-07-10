@@ -25,6 +25,9 @@ class MY_F_Controller extends CI_Controller {
         $this->getFacilities();
         $this->get7DaysPeriods();
         $this->get10DaysPeriods();
+        $this->getMinMaxAdults7Days();
+        $this->getMinMaxAdults10Days();
+        $this->getMinMaxAdultsAllotment();
     }
 
     public function handleLang() {
@@ -90,6 +93,21 @@ class MY_F_Controller extends CI_Controller {
      protected function get10DaysPeriods() {
         $package_10_days = $this->package_model->getF10dayspackages();
         $this->view_data['packages_10_days'] = $package_10_days;
+    }
+    
+    protected function getMinMaxAdultsAllotment() {
+        $minMaxAdultsAllotment = $this->package_model->getMinMaxAdultsAllotment();
+        $this->view_data['minMaxAllotment'] = $minMaxAdultsAllotment;
+    }
+    
+    protected function getMinMaxAdults7Days() {
+        $minMaxAdults7Days = $this->package_model->getFMinMaxAdults7Days();
+        $this->view_data['minMax7Days'] = $minMaxAdults7Days;
+    }
+    
+    protected function getMinMaxAdults10Days() {
+        $minMaxAdults10Days = $this->package_model->getFMinMaxAdults10Days();
+        $this->view_data['minMax10Days'] = $minMaxAdults10Days;
     }
 
 }
