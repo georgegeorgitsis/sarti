@@ -553,6 +553,7 @@ class Migration_init extends CI_Migration {
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
+                'distance_from_center' => '2400',
                 'stars' => '3',
                 'hotel_active' => '1'
             ),
@@ -562,6 +563,7 @@ class Migration_init extends CI_Migration {
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '1000',
+                'distance_from_center' => '350',
                 'stars' => '5',
                 'hotel_active' => '1'
             ),
@@ -571,15 +573,47 @@ class Migration_init extends CI_Migration {
                 'package_id' => '1',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
+                'distance_from_center' => '200',
                 'stars' => '4',
                 'hotel_active' => '1'
             ),
             array(
                 'hotel_id' => '4',
-                'hotel_name' => 'Maria\'s studio',
+                'hotel_name' => 'Polis',
                 'package_id' => '2',
                 'location_id' => '1',
                 'distance_from_sea' => '500',
+                'distance_from_center' => '200',
+                'stars' => '2',
+                'hotel_active' => '1'
+            ),
+            array(
+                'hotel_id' => '5',
+                'hotel_name' => 'White Luxury',
+                'package_id' => '2',
+                'location_id' => '1',
+                'distance_from_sea' => '1000',
+                'distance_from_center' => '800',
+                'stars' => '5',
+                'hotel_active' => '1'
+            ),
+            array(
+                'hotel_id' => '6',
+                'hotel_name' => 'Kyaki Akti',
+                'package_id' => '1',
+                'location_id' => '1',
+                'distance_from_sea' => '500',
+                'distance_from_center' => '800',
+                'stars' => '4',
+                'hotel_active' => '1'
+            ),
+            array(
+                'hotel_id' => '7',
+                'hotel_name' => 'Kassandra Villas',
+                'package_id' => '2',
+                'location_id' => '1',
+                'distance_from_sea' => '500',
+                'distance_from_center' => '200',
                 'stars' => '2',
                 'hotel_active' => '1'
             ),
@@ -616,37 +650,44 @@ class Migration_init extends CI_Migration {
         $this->dbforge->create_table('hotel_images');
         $data = array(
             array(
-                'hotel_image_id' => '1',
                 'hotel_id' => '1',
                 'image_name' => 'hotel_1.jpg',
                 'image_original_name' => 'original_hotel_1.jpg',
                 'is_thumb' => '1'
             ),
             array(
-                'hotel_image_id' => '2',
                 'hotel_id' => '2',
                 'image_name' => 'hotel_2.jpg',
                 'image_original_name' => 'original_hotel_2.jpg',
                 'is_thumb' => '1'
             ),
             array(
-                'hotel_image_id' => '3',
                 'hotel_id' => '3',
                 'image_name' => 'hotel_3.jpg',
                 'image_original_name' => 'original_hotel_3.jpg',
                 'is_thumb' => '1'
             ),
             array(
-                'hotel_image_id' => '4',
                 'hotel_id' => '4',
                 'image_name' => 'hotel_4.jpg',
                 'image_original_name' => 'original_hotel_4.jpg',
                 'is_thumb' => '1'
             ),
             array(
-                'hotel_image_id' => '5',
-                'hotel_id' => '4',
-                'image_name' => 'hotel_4.jpg',
+                'hotel_id' => '5',
+                'image_name' => 'hotel_5.jpg',
+                'image_original_name' => 'original_hotel_4.jpg',
+                'is_thumb' => '1'
+            ),
+            array(
+                'hotel_id' => '6',
+                'image_name' => 'hotel_6.jpg',
+                'image_original_name' => 'original_hotel_4.jpg',
+                'is_thumb' => '1'
+            ),
+            array(
+                'hotel_id' => '7',
+                'image_name' => 'hotel_7.jpg',
                 'image_original_name' => 'original_hotel_4.jpg',
                 'is_thumb' => '1'
             ),
@@ -738,6 +779,42 @@ class Migration_init extends CI_Migration {
             ),
             array(
                 'hotel_id' => '4',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '2',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '5',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '1',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '5',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '2',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '6',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '1',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '6',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '2',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '7',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+                'lang_id' => '1',
+                'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+            ),
+            array(
+                'hotel_id' => '7',
                 'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
                 'lang_id' => '2',
                 'hotel_short_description' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
@@ -971,6 +1048,102 @@ class Migration_init extends CI_Migration {
                 'max_adults' => 4,
                 'board_id' => 1
             ),
+            array(
+                'room_id' => '5',
+                'hotel_id' => '1',
+                'room_name' => 'monoklino',
+                'room_type_id' => '1',
+                'room_package_id' => 1,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 2,
+                'max_adults' => 4,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '6',
+                'hotel_id' => '2',
+                'room_name' => 'diklino',
+                'room_type_id' => '2',
+                'room_package_id' => 2,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 3,
+                'max_adults' => 4,
+                'board_id' => 2
+            ),
+            array(
+                'room_id' => '7',
+                'hotel_id' => '3',
+                'room_name' => 'souita',
+                'room_type_id' => '3',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 1,
+                'max_adults' => 2,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '8',
+                'hotel_id' => '4',
+                'room_name' => 'souita',
+                'room_type_id' => '2',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 2,
+                'max_adults' => 3,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '9',
+                'hotel_id' => '5',
+                'room_name' => 'souita',
+                'room_type_id' => '3',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 1,
+                'max_adults' => 2,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '10',
+                'hotel_id' => '6',
+                'room_name' => 'souita',
+                'room_type_id' => '2',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 2,
+                'max_adults' => 3,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '11',
+                'hotel_id' => '7',
+                'room_name' => 'souita',
+                'room_type_id' => '3',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 1,
+                'max_adults' => 2,
+                'board_id' => 1
+            ),
+            array(
+                'room_id' => '12',
+                'hotel_id' => '7',
+                'room_name' => 'souita',
+                'room_type_id' => '2',
+                'room_package_id' => 3,
+                'room_active' => 1,
+                'floor' => 'basement',
+                'min_adults' => 2,
+                'max_adults' => 3,
+                'board_id' => 1
+            ),
         );
         $this->db->insert_batch('rooms', $data);
 
@@ -1077,6 +1250,77 @@ class Migration_init extends CI_Migration {
             ),
             array(
                 'room_id' => '4',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '5',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '5',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '6',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '6',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '7',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '7',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '8',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '8',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            )
+            ,
+            array(
+                'room_id' => '9',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '9',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '10',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '10',
+                'lang_id' => '2',
+                'room_short_description' => 'room short description2'
+            ),
+            array(
+                'room_id' => '11',
+                'lang_id' => '1',
+                'room_short_description' => 'room short description1'
+            ),
+            array(
+                'room_id' => '11',
                 'lang_id' => '2',
                 'room_short_description' => 'room short description2'
             )
@@ -1437,6 +1681,62 @@ class Migration_init extends CI_Migration {
                 'package_period_id' => '6',
                 'room_id' => '4',
                 'adults' => '4',
+                'price' => '76',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '5',
+                'adults' => '3',
+                'price' => '45',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '5',
+                'adults' => '4',
+                'price' => '53',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '6',
+                'adults' => '3',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '6',
+                'adults' => '4',
+                'price' => '76',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '7',
+                'adults' => '1',
+                'price' => '45',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '5',
+                'room_id' => '7',
+                'adults' => '2',
+                'price' => '53',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '8',
+                'adults' => '2',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '6',
+                'room_id' => '8',
+                'adults' => '3',
                 'price' => '76',
                 'is_active' => 1
             ),

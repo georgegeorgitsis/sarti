@@ -80,16 +80,38 @@ class Hotels extends MY_F_Controller {
 
     public function ajaxFilters() {
         if ($this->input->is_ajax_request()) {
-            $search = $this->session->userdata('search');
-            $package_id = null;
-            $checkin = null;
-            $checkout = null;
-            $adults = null;
+            $this->handleSessionSearch();
+            $destination = $this->input->post('destination');
+            $boards = $this->input->post('boards');
+            $room_types = $this->input->post('room_types');
+            $facilities = $this->input->post('facilities');
+            
+            var_dump($destination);
+            var_dump($boards);
+            var_dump($room_types);
+            var_dump($facilities);
+        }
+    }
+
+    protected function handleSessionSearch() {
+        $search = $this->session->userdata('search');
+        $package_id = null;
+        $checkin = null;
+        $checkout = null;
+        $adults = null;
+        if (isset($search) && !empty($search)) {
             if ($search['packageType'] == 1) {
                 $checkin = $search['checkin'];
                 $checkout = $search['checkout'];
                 $adults = $search['adults'];
+            } else {
+                $packageType = $search['packageType'];
+                $package_id = $search['package_id'];
+                $adults = $search['adults'];
             }
+            $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_id);
+        } else {
+            $this->getHotel_ids();
         }
     }
 
@@ -104,6 +126,5 @@ class Hotels extends MY_F_Controller {
         $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
         $this->view_data['links'] = $this->pagination->create_links();
     }
-    
-    
+
 }
