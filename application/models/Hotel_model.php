@@ -125,6 +125,7 @@ class Hotel_model extends CI_Model {
     public function getFHotelsFiltered($hotels_array, $destination = null, $boards = null, $room_types = null, $facilities = null) {
         $this->db->select('DISTINCT(hotels.hotel_id)')
                 ->from('hotels')
+                ->where('hotels.hotel_active', 1)
                 ->where_in('hotels.hotel_id', $hotels_array);
 
         if ($destination) {
