@@ -131,6 +131,22 @@ class Hotel_model extends CI_Model {
             $this->db->where('hotels.location_id', $destination);
         }
 
+        if ($boards || $room_types || $facilities) {
+            $this->db->join('rooms', 'rooms.hotel_id=hotels.hotel_id');
+        }
+
+        if ($boards) {
+            $this->db->where_in('rooms.board_id', $boards);
+        }
+
+        if ($room_types) {
+            $this->db->where_in('rooms.room_type_id', $room_types);
+        }
+
+        if ($facilities) {
+            $this->db->join('room_facilities', 'rooms.room_id=room_facilities.room_id');
+            $this->db->where_in('room_facilities.facility_id', $facilities);
+        }
 
         $qry = $this->db->get();
         if ($qry->num_rows() > 0)

@@ -131,6 +131,7 @@
                                 Destination:
                             </h4>
                             <select name="search_destination">
+                                <option value="">All Destinations</option>
                                 <?php foreach ($locations as $location) { ?>
                                     <option value="<?= $location['location_id'] ?>"><?= $location['location_name'] ?></option>
                                 <?php } ?>
@@ -222,7 +223,8 @@
 
         })
                 .done(function (result) {
-                    //var new_data = jQuery.parseJSON(result);
+                    $(".hotels-list").html();
+                    $(".hotels-list").html(result);
                 })
                 .fail(function () {
                     alert("An error occured while calculating the total price. Please contact the adminstrator for further information");

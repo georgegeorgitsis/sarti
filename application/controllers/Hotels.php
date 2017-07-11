@@ -83,10 +83,13 @@ class Hotels extends MY_F_Controller {
         foreach ($this->hotel_ids as $h_id) {
             array_push($hotels_array, $h_id['hotel_id']);
         }
-        
+
         if ($hotels_array && !empty($hotels_array)) {
-            $filteredHotels = $this->hotel_model->getFHotelsFiltered($hotels_array, $destination, $boards, $room_types, $facilities);
-            var_dump($filteredHotels);
+            $this->hotel_ids = $this->hotel_model->getFHotelsFiltered($hotels_array, $destination, $boards, $room_types, $facilities);
+            $this->parseHotels();
+            $this->view_data['hotels'] = $this->hotels;
+            $hotels_view = $this->load->view('frontend/hotels_list', $this->view_data, TRUE);
+            echo $hotels_view;
         }
     }
 
@@ -97,7 +100,7 @@ class Hotels extends MY_F_Controller {
             $boards = $this->input->post('boards');
             $room_types = $this->input->post('room_types');
             $facilities = $this->input->post('facilities');
-
+            
             $this->filterHotels($destination, $boards, $room_types, $facilities);
         }
     }
