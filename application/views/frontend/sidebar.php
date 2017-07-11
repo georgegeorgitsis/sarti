@@ -190,23 +190,28 @@
 <script type="text/javascript">
     function grabData() {
         var search_destination = $("select[name='search_destination']").val();
+
         var selected_room_types = [];
         $("input[name='room_type']:checked").each(function () {
             selected_room_types.push($(this).val());
         });
+
         var selected_boards = [];
         $("input[name='board']:checked").each(function () {
             selected_boards.push($(this).val());
         });
+
         var selected_facilities = [];
         $("input[name='facility']:checked").each(function () {
             selected_facilities.push($(this).val());
         });
+
         var jsonFilters = new Object();
         jsonFilters.destination = search_destination;
         jsonFilters.room_types = selected_room_types;
         jsonFilters.boards = selected_boards;
         jsonFilters.facilities = selected_facilities;
+
         return jsonFilters;
     }
 
@@ -217,7 +222,7 @@
 
         })
                 .done(function (result) {
-                    var new_data = jQuery.parseJSON(result);
+                    //var new_data = jQuery.parseJSON(result);
                 })
                 .fail(function () {
                     alert("An error occured while calculating the total price. Please contact the adminstrator for further information");

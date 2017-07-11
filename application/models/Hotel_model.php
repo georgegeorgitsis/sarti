@@ -122,6 +122,22 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
+    public function getFHotelsFiltered($hotels_array, $destination = null, $boards = null, $room_types = null, $facilities = null) {
+        $this->db->select('DISTINCT(hotels.hotel_id)')
+                ->from('hotels')
+                ->where_in('hotels.hotel_id', $hotels_array);
+
+        if ($destination) {
+            $this->db->where('hotels.location_id', $destination);
+        }
+
+
+        $qry = $this->db->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
     public function getFHotel($hotelId, $langId) {
         $qry = $this->db->select('*')
                 ->from('hotels')
@@ -214,7 +230,7 @@ class Hotel_model extends CI_Model {
                 ->where('package_periods.package_active', '1')
                 ->join('room_package_prices', 'room_package_prices.package_period_id = package_periods.package_period_id', 'inner')
                 ->get();
-       // echo $this->db->last_query().'<br/>';
+        // echo $this->db->last_query().'<br/>';
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return false;

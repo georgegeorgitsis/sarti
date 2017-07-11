@@ -78,6 +78,18 @@ class Hotels extends MY_F_Controller {
         }
     }
 
+    public function filterHotels($destination = null, $boards = null, $room_types = null, $facilities = null) {
+        $hotels_array = array();
+        foreach ($this->hotel_ids as $h_id) {
+            array_push($hotels_array, $h_id['hotel_id']);
+        }
+        
+        if ($hotels_array && !empty($hotels_array)) {
+            $filteredHotels = $this->hotel_model->getFHotelsFiltered($hotels_array, $destination, $boards, $room_types, $facilities);
+            var_dump($filteredHotels);
+        }
+    }
+
     public function ajaxFilters() {
         if ($this->input->is_ajax_request()) {
             $this->handleSessionSearch();
@@ -85,11 +97,8 @@ class Hotels extends MY_F_Controller {
             $boards = $this->input->post('boards');
             $room_types = $this->input->post('room_types');
             $facilities = $this->input->post('facilities');
-            
-            var_dump($destination);
-            var_dump($boards);
-            var_dump($room_types);
-            var_dump($facilities);
+
+            $this->filterHotels($destination, $boards, $room_types, $facilities);
         }
     }
 

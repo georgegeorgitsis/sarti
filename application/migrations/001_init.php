@@ -347,10 +347,20 @@ class Migration_init extends CI_Migration {
             array(
                 'location_id' => '4',
                 'lang_id' => '1',
-                'location_name' => 'Flogita'
+                'location_name' => 'Peukoxori'
             ),
             array(
                 'location_id' => '4',
+                'lang_id' => '2',
+                'location_name' => 'Peukoxori'
+            ),
+            array(
+                'location_id' => '5',
+                'lang_id' => '1',
+                'location_name' => 'Flogita'
+            ),
+            array(
+                'location_id' => '5',
                 'lang_id' => '2',
                 'location_name' => 'Flogita'
             )
@@ -571,7 +581,7 @@ class Migration_init extends CI_Migration {
                 'hotel_id' => '3',
                 'hotel_name' => 'Plithari',
                 'package_id' => '1',
-                'location_id' => '1',
+                'location_id' => '2',
                 'distance_from_sea' => '500',
                 'distance_from_center' => '200',
                 'stars' => '4',
@@ -581,7 +591,7 @@ class Migration_init extends CI_Migration {
                 'hotel_id' => '4',
                 'hotel_name' => 'Polis',
                 'package_id' => '2',
-                'location_id' => '1',
+                'location_id' => '3',
                 'distance_from_sea' => '500',
                 'distance_from_center' => '200',
                 'stars' => '2',
@@ -591,7 +601,7 @@ class Migration_init extends CI_Migration {
                 'hotel_id' => '5',
                 'hotel_name' => 'White Luxury',
                 'package_id' => '2',
-                'location_id' => '1',
+                'location_id' => '4',
                 'distance_from_sea' => '1000',
                 'distance_from_center' => '800',
                 'stars' => '5',
@@ -601,7 +611,7 @@ class Migration_init extends CI_Migration {
                 'hotel_id' => '6',
                 'hotel_name' => 'Kyaki Akti',
                 'package_id' => '1',
-                'location_id' => '1',
+                'location_id' => '5',
                 'distance_from_sea' => '500',
                 'distance_from_center' => '800',
                 'stars' => '4',
@@ -611,7 +621,7 @@ class Migration_init extends CI_Migration {
                 'hotel_id' => '7',
                 'hotel_name' => 'Kassandra Villas',
                 'package_id' => '2',
-                'location_id' => '1',
+                'location_id' => '5',
                 'distance_from_sea' => '500',
                 'distance_from_center' => '200',
                 'stars' => '2',
