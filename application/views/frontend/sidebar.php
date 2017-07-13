@@ -28,11 +28,11 @@
                             </div>
                             <div class="col-md-12 check-box">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <input type="text" name="checkin" value="<?= date('d-m-Y') ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-12 check-box">
                                 <label>Checkout</label>
-                                <input type="text" name="checkout" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <input type="text" name="checkout" value="<?= date('d-m-Y', strtotime(' +1 day')) ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-12">
                                 <label>Adults</label>

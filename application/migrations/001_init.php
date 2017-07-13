@@ -1526,6 +1526,24 @@ class Migration_init extends CI_Migration {
                 'period_to' => '2017-09-21',
                 'package_active' => '1'
             ),
+             array(
+                'package_id' => '1',
+                'period_from' => '2017-08-01',
+                'period_to' => '2017-08-08',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '1',
+                'period_from' => '2017-08-10',
+                'period_to' => '2017-08-17',
+                'package_active' => '1'
+            ),
+            array(
+                'package_id' => '1',
+                'period_from' => '2017-08-20',
+                'period_to' => '2017-08-27',
+                'package_active' => '1'
+            ),
         );
         $this->db->insert_batch('package_periods', $data);
 
@@ -1746,6 +1764,49 @@ class Migration_init extends CI_Migration {
             array(
                 'package_period_id' => '6',
                 'room_id' => '8',
+                'adults' => '3',
+                'price' => '76',
+                'is_active' => 1
+            ),
+            
+            array(
+                'package_period_id' => '7',
+                'room_id' => '1',
+                'adults' => '2',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '7',
+                'room_id' => '1',
+                'adults' => '3',
+                'price' => '76',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '8',
+                'room_id' => '1',
+                'adults' => '3',
+                'price' => '45',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '8',
+                'room_id' => '1',
+                'adults' => '4',
+                'price' => '53',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '9',
+                'room_id' => '1',
+                'adults' => '2',
+                'price' => '65',
+                'is_active' => 1
+            ),
+            array(
+                'package_period_id' => '9',
+                'room_id' => '1',
                 'adults' => '3',
                 'price' => '76',
                 'is_active' => 1

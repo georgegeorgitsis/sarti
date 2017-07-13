@@ -109,6 +109,20 @@ class Hotel_model extends CI_Model {
         return FALSE;
     }
 
+    public function findFPackagePeriodsPerDay($day) {
+        $qry = $this->db->select('packages.package_id')
+                ->from('package_periods')
+                ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->where('packages.is_package_type', 1)
+                ->where('package_periods.period_from<=', $day)
+                ->where('package_periods.period_to>=', $day)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
     public function getFHotelLocationName($hotel_id, $lang_id) {
         $qry = $this->db->select('location_locales.location_name as location_name')
                 ->from('hotels')

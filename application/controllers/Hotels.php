@@ -40,7 +40,7 @@ class Hotels extends MY_F_Controller {
         $checkout = null;
         if ($packageType == 1) {
             $checkin = $this->input->get('checkin');
-            $checkout = $this->input->get('checkin');
+            $checkout = $this->input->get('checkout');
         } else {
             $package_id = $this->input->get('p');
         }
@@ -61,7 +61,38 @@ class Hotels extends MY_F_Controller {
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_id = null) {
         $this->paginateHotels();
-        $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_id, $this->conf['per_page'], $this->page, $this->lang_id);
+        if (isset($package_id) && is_numeric($package_id)) {
+            $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_id, $this->conf['per_page'], $this->page, $this->lang_id);
+        } elseif ($checkin && $checkout) {
+            $begin = new DateTime($checkin);
+            $end = new DateTime($checkout);
+
+            $interval = DateInterval::createFromDateString('1 day');
+            $period = new DatePeriod($begin, $interval, $end);
+
+            $legit_packages = array();
+            foreach ($period as $dt) {
+                $legit_day_packages = array();
+                $day = $dt->format("Y-m-d");
+                $periods_found = $this->hotel_model->findFPackagePeriodsPerDay($day);
+
+                if ($periods_found) {
+                    foreach ($periods_found as $p_f_key => $p_f) {
+                        array_push($legit_day_packages, $p_f['package_id']);
+                    }
+                }
+                array_push($legit_packages, $legit_day_packages);
+            }
+
+            $first = $legit_packages[0];
+            for ($i = 1; $i < count($legit_packages); $i++) {
+                $result = array_intersect($first, $legit_packages[$i]);
+                $first = $result;
+            }
+            var_dump($result);
+
+            die();
+        }
     }
 
     protected function parseHotels() {
@@ -100,7 +131,7 @@ class Hotels extends MY_F_Controller {
             $boards = $this->input->post('boards');
             $room_types = $this->input->post('room_types');
             $facilities = $this->input->post('facilities');
-            
+
             $this->filterHotels($destination, $boards, $room_types, $facilities);
         }
     }
