@@ -61,7 +61,7 @@ class Hotels extends MY_F_Controller {
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_id = null) {
         $this->paginateHotels();
-        if (isset($package_id) && is_numeric($package_id)) {
+        if (!$checkin && !$checkout) {
             $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_id, $this->conf['per_page'], $this->page, $this->lang_id);
         } elseif ($checkin && $checkout) {
             $begin = new DateTime($checkin);
@@ -89,10 +89,8 @@ class Hotels extends MY_F_Controller {
                 $result = array_intersect($first, $legit_packages[$i]);
                 $first = $result;
             }
-            var_dump($result);
-
-            die();
-        }
+            
+        } 
     }
 
     protected function parseHotels() {

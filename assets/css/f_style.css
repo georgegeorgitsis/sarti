@@ -113,12 +113,13 @@ aside .title:before {
     max-width: 100%;
 }
 .hotel-box-wrapper {
-    padding: 10px;
+    padding: 5px 10px;
 }
 .each-hotel .hotel-title h3{
     border-bottom: 1px solid #bebebe;
-    margin-bottom: 5px;
     padding-bottom: 5px;
+    padding-left: 15px;
+    padding-top: 5px;
 }
 .each-hotel .location-name {
     color: #60A0CF;
@@ -130,6 +131,7 @@ aside .title:before {
 .each-hotel .hotel-desc {
     margin-top: 10px;
     font-size: 14px;
+    text-align: justify
 }
 .each-hotel .hotel-main-facilities {
     margin-top: 10px;
@@ -139,4 +141,7 @@ aside .title:before {
 }
 .each-hotel .read-more a {
     color: #60A0CF;
+}
+.each-hotel .hotel-title a {
+    display: block;
 }
