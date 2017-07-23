@@ -123,6 +123,18 @@ class Hotel_model extends CI_Model {
         return FALSE;
     }
 
+    public function getFHotelsPerRoomForPackagePeriod($package_id) {
+        $qry = $this->db->select('DISTINCT(hotels.hotel_id)')
+                ->from('hotels')
+                ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
+                ->where('rooms.room_package_id', $package_id)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
     public function getFHotelLocationName($hotel_id, $lang_id) {
         $qry = $this->db->select('location_locales.location_name as location_name')
                 ->from('hotels')

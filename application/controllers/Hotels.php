@@ -89,8 +89,22 @@ class Hotels extends MY_F_Controller {
                 $result = array_intersect($first, $legit_packages[$i]);
                 $first = $result;
             }
-            
-        } 
+
+            //to result krataei osa pakets periods exoun sinexomenes imeres, gia tis imeres pou epsakse o xristis
+            //gia kathe package period id, prepei na vroume ta dwmatia pou to ipostirizoun, ara kai ta hotels toys
+            foreach ($result as $package_id) {
+                $valid_hotels = array();
+                $valid_hotels = $this->hotel_model->getFHotelsPerRoomForPackagePeriod($package_id);
+                var_dump($valid_hotels);
+                if ($valid_hotels) {
+                    foreach ($valid_hotels as $hotel) {
+                        array_push($this->hotel_ids, $hotel['hotel_id']);
+                    }
+                }
+            }
+
+            var_dump($this->hotel_ids);
+        }
     }
 
     protected function parseHotels() {
@@ -162,7 +176,7 @@ class Hotels extends MY_F_Controller {
         $this->conf['base_url'] = base_url('hotels');
         $this->conf['total_rows'] = $hotelsCount['count'];
         $this->conf['per_page'] = 10;
-        $this->conf["uri_segment"] = 3;
+        $this->conf['uri_segment'] = 3;
         $this->pagination->initialize($this->conf);
         $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
         $this->view_data['links'] = $this->pagination->create_links();
