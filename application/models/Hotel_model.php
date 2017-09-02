@@ -127,7 +127,24 @@ class Hotel_model extends CI_Model {
         $qry = $this->db->select('DISTINCT(hotels.hotel_id)')
                 ->from('hotels')
                 ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
+                ->join('room_package_prices', 'room_package_prices.room_id=rooms.room_id')
                 ->where('rooms.room_package_id', $package_id)
+                ->where('room_package_prices.price>', 0)
+                ->get();
+
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
+    public function getFRoomsForPackagePeriod($hotel_id, $package_id) {
+        $qry = $this->db->select('DISTINCT(rooms.room_id), room_package_prices.price')
+                ->from('hotels')
+                ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
+                ->join('room_package_prices', 'room_package_prices.room_id=rooms.room_id')
+                ->where('hotels.hotel_id', $hotel_id)
+                ->where('rooms.room_package_id', $package_id)
+                ->where('room_package_prices.price>', 0)
                 ->get();
 
         if ($qry->num_rows() > 0)
@@ -146,6 +163,32 @@ class Hotel_model extends CI_Model {
         if ($qry->num_rows() > 0)
             return $qry->row_array();
         return false;
+    }
+
+    public function getFRoomsPerCriteria($hotel_id, $checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
+        $qry = $this->db->select('*')
+                ->from('rooms')
+                ->where('rooms.hotel_id', $hotel_id);
+
+        if ($adults) {
+            $this->db->where('rooms.min_adults<=', $adults);
+            $this->db->where('rooms.min_adults>=', $adults);
+        }
+
+        if ($packageType) {
+            $this->db->where('rooms.room_package_id', $packageType);
+        }
+
+        if ($package_period_id) {
+            $this->db->join('room_package_prices', 'rooms.room_id=room_package_prices.room_id');
+            $this->db->where('room_package_prices.price>', '0');
+        }
+
+
+        $qry = $this->db->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
     }
 
     public function getFHotelsFiltered($hotels_array, $destination = null, $boards = null, $room_types = null, $facilities = null) {

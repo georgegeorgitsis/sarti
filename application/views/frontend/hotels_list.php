@@ -54,7 +54,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4 no-padding">
-
+                                <div class="from-div">
+                                    <span class="from-label">From</span>
+                                    <span class="from-price">1230</span>
+                                </div>
                             </div>
                         </div>
                     </div>
