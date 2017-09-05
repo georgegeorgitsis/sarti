@@ -12,9 +12,9 @@
                 <div class="col-md-12 form-group">
                     <label>Is Type</label>
                     <select name="is_package_type">
-                        <option value="1" <?php if ($package['is_allotment'] == 1) echo "selected='selected'"; ?>>Allotment</option>
-                        <option value="2" <?php if ($package['is_allotment'] == 2) echo "selected='selected'"; ?>>7 Days</option>
-                        <option value="3" <?php if ($package['is_allotment'] == 3) echo "selected='selected'"; ?>>10 Days</option>
+                        <option value="1" <?php if ($package['is_package_type'] == 1) echo "selected='selected'"; ?>>Allotment</option>
+                        <option value="2" <?php if ($package['is_package_type'] == 2) echo "selected='selected'"; ?>>7 Days</option>
+                        <option value="3" <?php if ($package['is_package_type'] == 3) echo "selected='selected'"; ?>>10 Days</option>
                     </select>
                 </div>
                 <div class="col-md-12">

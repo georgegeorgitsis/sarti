@@ -409,6 +409,7 @@ class Rooms extends MY_Controller {
                         }
                     }
                 }
+                
             } else {
                 $this->session->set_flashdata('error', "There are no periods for selected package. Please add periods");
                 redirect($this->admin_url . 'packages/showPackagePeriods');

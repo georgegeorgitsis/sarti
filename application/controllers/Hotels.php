@@ -52,15 +52,30 @@ class Hotels extends MY_F_Controller {
         $search['checkout'] = $checkout;
         $search['adults'] = $adults;
         $this->session->set_userdata('search', $search);
-
+        
         $this->parseHotels($checkin, $checkout, $adults, $packageType, $package_period_id);
         $this->view_data['hotels'] = $this->hotels;
 
-        echo "<pre>";
-        var_dump($this->view_data);
-        echo "</pre>";
-
         $this->load->template('frontend/hotels_view', $this->view_data);
+    }
+
+    protected function parseHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
+        //!!!!!!!! Auto spaei ta filtra !!!!!!!!!!!!!
+        $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
+
+        if (isset($this->hotel_ids) && !empty($this->hotel_ids)) {
+            foreach ($this->hotel_ids as $hotel) {
+                $hotel_id = $hotel['hotel_id'];
+                $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
+                $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
+                $this->hotels[$hotel_id]['main_facilities'] = $this->hotel_model->getFHotelMainFacilities($hotel_id, $this->lang_id);
+
+                $this->hotels[$hotel_id]['rooms'] = $this->getRoomsPerHotelId($hotel_id, $checkin, $checkout, $adults, $packageType, $package_period_id);
+
+                $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
+                $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
+            }
+        }
     }
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
@@ -116,9 +131,6 @@ class Hotels extends MY_F_Controller {
     protected function getRoomsPerHotelId($hotel_id, $checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
         if (!$checkin && !$checkout) {
             $rooms = $this->hotel_model->getFRoomsPerCriteria($hotel_id, $checkin, $checkout, $adults, $packageType, $package_period_id);
-            
-            var_dump($rooms);
-            
         } else {
             //psakse gia ta package period pou kaliptoyn olo to fasma tou checkin checkout, kai checkare na kaliptoun kathe imera anazitisis
             $begin = new DateTime($checkin);
@@ -159,24 +171,6 @@ class Hotels extends MY_F_Controller {
             }
         }
         return $rooms;
-    }
-
-    protected function parseHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
-        $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
-
-        if (isset($this->hotel_ids) && !empty($this->hotel_ids)) {
-            foreach ($this->hotel_ids as $hotel) {
-                $hotel_id = $hotel['hotel_id'];
-                $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
-                $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
-                $this->hotels[$hotel_id]['main_facilities'] = $this->hotel_model->getFHotelMainFacilities($hotel_id, $this->lang_id);
-
-                $this->hotels[$hotel_id]['rooms'] = $this->getRoomsPerHotelId($hotel_id, $checkin, $checkout, $adults, $packageType, $package_period_id);
-
-                $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
-                $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
-            }
-        }
     }
 
     public function filterHotels($destination = null, $boards = null, $room_types = null, $facilities = null) {
