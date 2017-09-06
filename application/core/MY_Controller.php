@@ -9,6 +9,9 @@ class MY_F_Controller extends CI_Controller {
     protected $view_data;
     protected $language;
     protected $lang_id;
+    protected $lang_name;
+    protected $lang_icon;
+    protected $all_langs;
 
     function __construct() {
         parent::__construct();
@@ -31,6 +34,7 @@ class MY_F_Controller extends CI_Controller {
     }
 
     public function handleLang() {
+        $this->all_langs = $this->language_model->getLanguages();
         $chose_lang = $this->session->userdata('language');
         $post_lang = $this->input->post('language');
 
@@ -50,19 +54,22 @@ class MY_F_Controller extends CI_Controller {
             redirect(base_url('hotels'));
 
         $this->lang_id = $language['lang_id'];
+        $this->lang_name = $language['lang_name'];
+        $this->lang_icon = $language['lang_icon'];
 
         $this->load->helper('language');
         if ($this->view_data['lang'] == 'gr') {
             $this->lang->load('site', 'greek');
-            $this->view_data['abbreviation'] = 'gr';
-            $this->view_data['lang_png'] = 'gr.png';
-            $this->view_data['language_name'] = "Ελληνικά";
+            $this->view_data['abbreviation'] = $this->language;
+            $this->view_data['lang_png'] = $this->lang_icon;
+            $this->view_data['language_name'] = $this->lang_name;
         } elseif ($this->view_data['lang'] == 'en') {
             $this->lang->load('site', 'english');
-            $this->view_data['abbreviation'] = 'en';
-            $this->view_data['lang_png'] = 'en.png';
-            $this->view_data['language_name'] = "English";
+            $this->view_data['abbreviation'] = $this->language;
+            $this->view_data['lang_png'] = $this->lang_icon;
+            $this->view_data['language_name'] = $this->lang_name;
         }
+        $this->view_data['all_langs'] = $this->all_langs;
     }
 
     protected function getLocations() {

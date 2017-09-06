@@ -45,8 +45,62 @@
         </script>
     </head>
     <body>
-        <header>
-            Header
+        <header class="header-lrg">
+            <div class="top_header container flex">
+                <a href="<?= base_url() ?>" class="brand-container auto-mr">
+                    <img src="<?= base_url('assets/images/logo.gif')?>" alt="Rooms Sarti logo">
+                </a>
+            </div>
+            <div class="bottom_header">
+            <nav class="navbar navbar-flat">
+                <div class="container">
+                
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">Link</a></li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                    
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <img class="flag-icon" src="<?= base_url('assets/images/langs/').$lang_png ?>" alt="<?= $language_name ?>"> 
+                            <?= $language_name ?>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php foreach($all_langs as $lang){ ?>
+                            <li>
+                                <a href="#">
+                                    <img class="flag-icon" src="<?= base_url('assets/images/langs/').$lang['lang_icon'] ?>" alt="<?= $lang['lang_name'] ?>">
+                                    <?=$lang['lang_name']?>
+                                </a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                        </li>
+                    </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+            </div>
         </header>
         <div class="wrapper">
 

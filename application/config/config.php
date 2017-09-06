@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 $config['base_url'] = 'http://localhost/sarti/';
 $config['admin_url'] = 'http://localhost/sarti/backend/';
-$config['upload_dir'] = 'C:/wamp64/www/sarti/assets/uploads/';
+$config['upload_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/';
 /*
   |--------------------------------------------------------------------------
   | Index File

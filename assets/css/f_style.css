@@ -1,10 +1,10 @@
 body {
     color: #797979;
-    background: #f5f5f5;
+    background: #FAFAFA;
     font-family: 'Open sans', sans-serif;
     padding: 0px !important;
     margin: 0px !important;
-    font-size: 13px;
+    font-size: 1.2rem;
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: inherit;
@@ -144,4 +144,76 @@ aside .title:before {
 }
 .each-hotel .hotel-title a {
     display: block;
+}
+
+.flag-icon{
+    width: 18px;
+    height: 18px;
+}
+
+.flat{
+    border-radius: 0;
+}
+
+.navbar-flat{
+    border: none;
+    border-radius: 0;
+    background-image: none;
+    box-shadow: 0;
+    border-bottom: 5px solid #64a1fd;
+}
+
+.navbar-flat li{
+    border-radius: 2px 0 2px 0;
+}
+
+.navbar-flat li a, .navbar-flat li.active a{
+    background-image: none;
+}
+
+.navbar-flat li.active a{
+    color: #fff;
+    background-color: #64a1fd;
+}
+
+.header-lrg{
+    background-color: #FFFFFF;
+    min-height: 125px;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.flex-start{
+    justify-content: flex-start;
+}
+
+.flex-end{
+    justify-content: flex-end;
+}
+
+.flex-between{
+    justify-content: space-between;
+}
+
+.flex-around{
+    justify-content: space-around;
+}
+
+.auto-ml{
+    margin-left: auto;
+}
+
+.auto-mr{
+    margin-right: auto;
+}
+
+.auto-mh{
+    margin-left: auto;
+    margin-right: auto;
 }

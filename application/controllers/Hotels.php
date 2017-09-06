@@ -25,6 +25,7 @@ class Hotels extends MY_F_Controller {
 
     public function index() {
         $this->session->unset_userdata('search');
+        $this->getHotel_ids();
         $this->parseHotels();
         $this->view_data['hotels'] = $this->hotels;
 
@@ -52,7 +53,7 @@ class Hotels extends MY_F_Controller {
         $search['checkout'] = $checkout;
         $search['adults'] = $adults;
         $this->session->set_userdata('search', $search);
-        
+        $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
         $this->parseHotels($checkin, $checkout, $adults, $packageType, $package_period_id);
         $this->view_data['hotels'] = $this->hotels;
 
@@ -61,7 +62,7 @@ class Hotels extends MY_F_Controller {
 
     protected function parseHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
         //!!!!!!!! Auto spaei ta filtra !!!!!!!!!!!!!
-        $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
+        // $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
 
         if (isset($this->hotel_ids) && !empty($this->hotel_ids)) {
             foreach ($this->hotel_ids as $hotel) {

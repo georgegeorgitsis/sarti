@@ -46,6 +46,16 @@ class Language_model extends CI_Model {
         return false;
     }
 
+    public function getLanguageIcon($id){
+        $qry = $this->db->select('lang_icon')
+            ->from('languages')
+            ->where('lang_id', $langId)
+            ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->row_array();
+        return false;
+    }
+
     public function addLanguage($languageData) {
         $this->db->insert('languages', $languageData);
         if ($this->db->affected_rows() == 1)
