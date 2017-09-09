@@ -1,12 +1,4 @@
 
-<!--<div class="slider-wrapper">
-    <div class="slider">
-        <img src="http://pull1.sweeticecoltd.netdna-cdn.com/wp-content/uploads/2015/03/rev_slider_original_4.jpg?bc3caa"/>
-        <img src="http://www.hare.com/wp-content/uploads/2015/05/yas-island-hotel-bridges2-1920x600.jpg"/>
-    </div>
-</div>
--->
-<?php //var_dump($hotels) ?>
 <div class="container">
     <div class="col-md-3">
         <?php require_once(VIEWPATH . 'frontend/sidebar.php'); ?>

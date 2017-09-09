@@ -18,6 +18,7 @@ class Hotel extends MY_F_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('hotel_model');
+        $this->load->model('location_model');
         $this->hotel_id = $this->uri->segment(2);
     }
 
@@ -27,7 +28,14 @@ class Hotel extends MY_F_Controller {
         $hotel_image_thumbs = $this->hotel_model->getFHotelImageThumbs($this->hotel_id);
         $hotel_facilities = $this->hotel_model->getFHotelFacilities($this->hotel_id, $this->lang_id);
         $hotel_rooms = $this->hotel_model->getFRooms($this->hotel_id);
+        $location_locales = $this->location_model->getLocationLocalesForLang($hotel['location_id'], $this->lang_id);
 
+        if($location_locales)
+            $location = $location_locales;
+        else
+            $location = $this->location_model->getLocation($hotel['location_id']);
+        
+        
         foreach ($hotel_rooms as $hotel_room) {
             $hotel_rooms_facilities = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id'], $this->lang_id);
             $hotel_rooms_prices = $this->hotel_model->getFRoomsPrices($hotel_room['room_id']);
@@ -40,6 +48,7 @@ class Hotel extends MY_F_Controller {
         $this->view_data['hotel_rooms'] = $hotel_rooms;
         $this->view_data['hotel_rooms_facilities'] = $hotel_rooms_facilities;
         $this->view_data['hotel_rooms_prices'] = $hotel_rooms_prices;
+        $this->view_data['location'] = $location;
         $this->load->template('frontend/hotel_view', $this->view_data);
     }
 

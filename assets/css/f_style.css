@@ -217,3 +217,83 @@ aside .title:before {
     margin-left: auto;
     margin-right: auto;
 }
+
+.text-semibold{
+    font-weight: 600;
+}
+
+.header-row{
+    padding: 0 10px 20px 10px;
+    border-bottom: 2px solid #EB5916;
+}
+
+
+
+/* Twiter button */
+
+.tweet{
+    margin-right: 2px;
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    padding: 0 6px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #1b95e0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    text-decoration: none;
+    transition: background-color .2s ease;
+}
+/* transform scale(1) */
+.tweet i{
+  position: relative;
+  top: 4px;
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 11px;
+  background-image: url("http://andreasstorm.com/lib/tweet.svg");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 144px 11px;  
+}
+.tweet span{
+  position: relative;
+  top: 4px;
+  left: -2px;
+  vertical-align: top;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+}
+.tweet:hover{
+  background-color: #0c7abf;
+}
+.tweet:hover i{
+  animation: tweet .6s steps(7) infinite;
+}
+
+@-moz-keyframes tweet {
+	100% {
+		background-position: -126px 0;
+	}
+}
+
+@-webkit-keyframes tweet {
+	100% {
+		background-position: -126px 0;
+	}
+}
+
+@-o-keyframes tweet {
+	100% {
+		background-position: -126px 0;
+	}
+}
+
+@keyframes tweet {
+	100% {
+		background-position: -126px 0;
+	}
+}
