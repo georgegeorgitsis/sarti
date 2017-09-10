@@ -248,6 +248,18 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
+     //pairnw oles tis eikones tou hotel
+     public function getFHotelImages($hotelId) {
+        $qry = $this->db->select('*')
+                ->from('hotel_images')
+                ->where('hotel_images.hotel_id', $hotelId)
+                ->get();
+        if ($qry->num_rows() > 0) {
+            return $qry->result_array();
+        }
+        return false;
+    }
+
     //pairnw ta hotel thumbs
     public function getFHotelImageThumbs($hotelId) {
         $qry = $this->db->select('hotel_Id', 'image_name', 'is_thumb')
@@ -264,14 +276,14 @@ class Hotel_model extends CI_Model {
 
     //pairnw ta facilities toy kathe gotel
     public function getFHotelFacilities($hotelId, $lang_id) {
-        $qry = $this->db->select('hotel_facilities.*, facility_locales.*')
+        $qry = $this->db->select('hotel_facilities.*, facility_locales.*, facilities.facility_icon')
                 ->from('hotel_facilities')
                 ->where('hotel_id', $hotelId)
+                ->join('facilities', 'facilities.facility_id = hotel_facilities.facility_id', 'inner')
                 ->join('facility_locales', 'facility_locales.facility_id = hotel_facilities.facility_id', 'inner')
                 ->where('lang_id', $lang_id)
                 ->get();
 
-        //echo $this->db->last_query();
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return false;

@@ -245,8 +245,8 @@ class Hotels extends MY_Controller {
                 $addHotelFacilities = array();
                 $addHotelFacilities['hotel_id'] = $hotelData['hotel_id'];
                 foreach ($hotelFacilities as $h_f_key => $h_f) {
-                    $addHotelFacilities['facility_id'] = $h_f['facility_id'];
-                    if (in_array($h_f['facility_id'], $hotelFacilitiesMain)) {
+                    $addHotelFacilities['facility_id'] = $h_f;
+                    if (in_array($h_f, $hotelFacilitiesMain)) {
                         $addHotelFacilities['is_main'] = 1;
                     } else {
                         $addHotelFacilities['is_main'] = 0;

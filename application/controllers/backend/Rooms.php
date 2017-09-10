@@ -216,10 +216,13 @@ class Rooms extends MY_Controller {
         if ($this->form_validation->run() == FALSE) {
             $roomId = $this->uri->segment(4);
             $roomData = $this->room_model->getRoom($roomId);
+
             $tempRoomLocales = $this->room_model->getRoomLocales($roomId);
             $roomLocales = array();
-            foreach ($tempRoomLocales as $r_l_key => $r_l) {
-                $roomLocales[$r_l['lang_id']] = $r_l;
+            if($tempRoomLocales){
+                foreach ($tempRoomLocales as $r_l_key => $r_l) {
+                    $roomLocales[$r_l['lang_id']] = $r_l;
+                }   
             }
 
             $roomFacilities = $this->room_model->getRoomFacilities($roomId);

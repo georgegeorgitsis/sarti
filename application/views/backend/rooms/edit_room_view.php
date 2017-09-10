@@ -18,8 +18,8 @@
                                     <?php } ?>
                                 <?php } ?>
                             </ul>
-                            <?php if (isset($languages) && !empty($languages)) { ?>
-                                <?php foreach ($languages as $language) { ?>
+                            <?php if (isset($languages) && !empty($languages)): ?>
+                                <?php foreach ($languages as $language): ?>
                                     <div id="tabs-<?= $language['lang_id'] ?>">
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Short Description</label>
@@ -46,8 +46,8 @@
                                             <textarea class="form-control" name="room_friendly_url_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_friendly_url']; ?></textarea>
                                         </div>
                                     </div>
-                                <?php } ?>
-                            <?php } ?>
+                                <?php endforeach;?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
