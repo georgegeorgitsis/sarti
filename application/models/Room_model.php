@@ -79,6 +79,18 @@ class Room_model extends CI_Model {
         return false;
     }
 
+    // public function getFPackagePeriods($package_id){
+    //     $qry = $this->db->select('*')
+    //         ->from('package_periods')
+    //         ->where('room_package_prices.room_id', $roomId)
+    //         ->where('room_package_prices.package_period_id', $packagePeriodId)
+    //         ->where('room_package_prices.adults', $adults)
+    //         ->get();
+    //     if ($qry->num_rows() > 0)
+    //         return $qry->row_array();
+    //     return false;
+    // }
+
     public function getRoomPeriodPrices($roomId, $packagePeriodId, $adults) {
         $qry = $this->db->select('*')
                 ->from('room_package_prices')
@@ -88,6 +100,17 @@ class Room_model extends CI_Model {
                 ->get();
         if ($qry->num_rows() > 0)
             return $qry->row_array();
+        return false;
+    }
+
+    public function getRoomPeriodPricesWithoutAd($roomId, $packagePeriodId) {
+        $qry = $this->db->select('*')
+                ->from('room_package_prices')
+                ->where('room_package_prices.room_id', $roomId)
+                ->where('room_package_prices.package_period_id', $packagePeriodId)
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
         return false;
     }
 

@@ -9,40 +9,25 @@
 
         <title>Sarti.gr Front</title>
 
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=greek,latin' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:200,400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=greek,latin' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="<?= base_url('assets/css/bootstrap-theme_f.min.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />    
         <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datetimepicker.min.css'); ?>"/>
+        <link href="<?= base_url('assets/css/jCalendar.css'); ?>" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.min.css'); ?>"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.12/jquery.bxslider.min.css"/>
 
 
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/f_style.css'); ?>"/>
-        <?php if (isset($css_files)) { ?>
+        <?php if (isset($css_files) && count($css_files) > 0): ?>
             <?php foreach ($css_files as $file): ?>
                 <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
             <?php endforeach; ?>
-        <?php } ?>
+        <?php endif; ?>
 
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/moment.js') ?>"></script>
-        <script src="<?= base_url('assets/js/bootstrap-datetimepicker.min.js') ?>"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-        <script type="text/javascript">
-            $(window).load(function () {
-                $("input[name='checkin'], input[name='checkout']").datetimepicker({
-                    format: 'DD-MM-YYYY'
-                });
-
-                $(".slider").bxSlider({
-                    pager: false
-                });
-            })
-
-        </script>
+        
     </head>
     <body>
         <header class="header-lrg">
@@ -81,7 +66,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <img class="flag-icon" src="<?= base_url('assets/images/langs/').$lang_png ?>" alt="<?= $language_name ?>"> 
+                            <img class="flag-icon" src="<?= base_url('assets/uploads/langs/').$lang_png ?>" alt="<?= $language_name ?>"> 
                             <?= $language_name ?>
                             <span class="caret"></span>
                         </a>
@@ -89,7 +74,7 @@
                             <?php foreach($all_langs as $lang){ ?>
                             <li>
                                 <a href="#">
-                                    <img class="flag-icon" src="<?= base_url('assets/images/langs/').$lang['lang_icon'] ?>" alt="<?= $lang['lang_name'] ?>">
+                                    <img class="flag-icon" src="<?= base_url('assets/uploads/langs/').$lang['lang_icon'] ?>" alt="<?= $lang['lang_name'] ?>">
                                     <?=$lang['lang_name']?>
                                 </a>
                             </li>

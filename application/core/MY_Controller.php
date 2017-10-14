@@ -12,6 +12,8 @@ class MY_F_Controller extends CI_Controller {
     protected $lang_name;
     protected $lang_icon;
     protected $all_langs;
+    protected $styles = [];
+    protected $scripts = [];
 
     function __construct() {
         parent::__construct();
@@ -31,6 +33,10 @@ class MY_F_Controller extends CI_Controller {
         $this->getMinMaxAdults7Days();
         $this->getMinMaxAdults10Days();
         $this->getMinMaxAdultsAllotment();
+        
+        
+        // $this->loadSidebarStylesheet();
+        // $this->loadScripts();
     }
 
     public function handleLang() {
@@ -72,6 +78,14 @@ class MY_F_Controller extends CI_Controller {
         $this->view_data['all_langs'] = $this->all_langs;
     }
 
+    protected function loadScripts(){
+        $this->view_data['script_files'] = $this->scripts ;
+    }
+
+    protected function loadStyles(){
+        $this->view_data['css_files'] = $this->styles ;
+    }
+
     protected function getLocations() {
         $locations = $this->location_model->getFLocations($this->lang_id);
         $this->view_data['locations'] = $locations;
@@ -100,6 +114,7 @@ class MY_F_Controller extends CI_Controller {
      protected function get10DaysPeriods() {
         $package_10_days = $this->package_model->getF10dayspackages();
         $this->view_data['packages_10_days'] = $package_10_days;
+
     }
     
     protected function getMinMaxAdultsAllotment() {

@@ -17,7 +17,7 @@
                         <input class="form-control" type="file" name="lang_icon" value="<?php echo set_value('lang_icon'); ?>"/>
                     </div>
                     <div class="col-md-12 form-group">
-                        <img style="max-width:50px;" src="<?= base_url('assets/uploads/') . $language['lang_icon'] ?>"/>
+                        <img style="max-width:50px;" src="<?= base_url('assets/uploads/langs/') . $language['lang_icon'] ?>"/>
                     </div>
                     <div class="col-md-12 form-group">
                         <button type="submit" class="btn btn-success">Add</button>

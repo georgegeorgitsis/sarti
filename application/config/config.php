@@ -225,7 +225,7 @@ $config['allow_get_array'] = TRUE;
   | your log files will fill up very fast.
   |
  */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 2;
 
 /*
   |--------------------------------------------------------------------------
@@ -313,7 +313,7 @@ $config['cache_path'] = '';
   |	             of query parameters.
   |
  */
-$config['cache_query_string'] = FALSE;
+$config['cache_query_string'] = TRUE;
 
 /*
   |--------------------------------------------------------------------------

@@ -53,7 +53,7 @@ class Facilities extends MY_Controller {
 
             if ($_FILES['facility_icon']['error'] == 0) {
                 $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["facility_icon"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
+                $target_file = $this->upload_dir ."facilities/". $image_name;
                 $uploadOk = 1;
                 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
@@ -119,7 +119,7 @@ class Facilities extends MY_Controller {
                 $facilityData = $this->facility_model->getFacility($facilityId);
                 unlink($this->upload_dir . $facilityData['facility_icon']);
                 $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["facility_icon"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
+                $target_file = $this->upload_dir . "facilities/" . $image_name;
                 $uploadOk = 1;
                 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 

@@ -244,12 +244,12 @@ class Migration_init extends CI_Migration {
         $data = array(
             array(
                 'lang_name' => 'English',
-                'lang_icon' => 'test.png',
+                'lang_icon' => 'us-01.png',
                 'lang_abbreviation' => 'en',
             ),
             array(
                 'lang_name' => 'Greek',
-                'lang_icon' => 'test.png',
+                'lang_icon' => 'gr-01.png',
                 'lang_abbreviation' => 'gr',
             ),
         );
@@ -390,23 +390,23 @@ class Migration_init extends CI_Migration {
         $data = array(
             array(
                 'facility_type' => 'Hair Dryer',
-                'facility_icon' => 'test.png',
+                'facility_icon' => 'hair-dryer.png',
             ),
             array(
                 'facility_type' => 'Wifi',
-                'facility_icon' => 'test.png',
+                'facility_icon' => 'wifi.png',
             ),
             array(
                 'facility_type' => 'Swimming pool',
-                'facility_icon' => 'test.png',
+                'facility_icon' => 'pool.png',
             ),
             array(
                 'facility_type' => 'Gym',
-                'facility_icon' => 'test.png',
+                'facility_icon' => 'gym.png',
             ),
             array(
                 'facility_type' => 'Air condition',
-                'facility_icon' => 'test.png',
+                'facility_icon' => 'air-cond.png',
             ),
         );
         $this->db->insert_batch('facilities', $data);
@@ -1009,6 +1009,23 @@ class Migration_init extends CI_Migration {
         $this->dbforge->add_field('room_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('room_id', TRUE);
         $this->dbforge->create_table('rooms');
+
+        $this->dbforge->drop_table('room_packages', TRUE);
+        $this->dbforge->add_field(array(
+            'room_id' => array(
+                'type' => 'INT',
+                'unsigned' => TRUE
+            ),
+            'package_id' => array(
+                'type' => 'INT',
+                'unsigned' => TRUE
+            )
+        ));
+        $this->dbforge->add_field('room_packages_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
+        $this->dbforge->add_key('room_id', TRUE);
+        $this->dbforge->add_key('package_id', TRUE);
+        $this->dbforge->create_table('room_packages');
+
         $data = array(
             array(
                 'room_id' => '1',

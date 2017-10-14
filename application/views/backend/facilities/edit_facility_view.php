@@ -35,7 +35,7 @@
                         <input class="form-control" type="file" name="facility_icon" value=""/>
                     </div>
                     <div class="col-md-12 form-group">
-                        <img style="max-width:50px;" src="<?= base_url('assets/uploads/') . $facility['facility_icon'] ?>"/>
+                        <img style="max-width:50px;" src="<?= base_url('assets/uploads/facilities/') . $facility['facility_icon'] ?>"/>
                     </div>
                     <div class="col-md-12 form-group">
                         <button type="submit" class="btn btn-success">Add</button>

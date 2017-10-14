@@ -17,30 +17,64 @@ class Package_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getF7dayspackages() {
-        $qry = $this->db->select('*')
-                ->from('package_periods')
-                ->join('packages', 'packages.package_id=package_periods.package_id')
-                ->where('packages.is_package_type', 2)
-                ->where('package_periods.period_from >= CURDATE()')
-                ->order_by('package_periods.period_from')
-                ->get();
+    public function getFPackagesByDate($date){
+        $qry = $this->db->select('package_periods.*, packages.package_type, rooms.*, hotels.hotel_name, hotels.hotel_id')
+            ->from('package_periods')
+            ->join('packages', 'packages.package_id=package_periods.package_id')
+            ->join('rooms', 'packages.package_id=rooms.room_package_id')
+            ->join('hotels', 'rooms.hotel_id=hotels.hotel_id')
+            ->where('package_periods.period_from <=', date('Y-m-d ', strtotime($date)))
+            ->where('package_periods.period_to >=', date('Y-m-d', strtotime($date)))
+            ->order_by('package_periods.period_from')
+            ->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return false;
     }
 
-    public function getF10dayspackages() {
-        $qry = $this->db->select('*')
+    public function getF7dayspackages($fromDate = NULL, $toDate = NULL) {
+        $this->db->select('*')
                 ->from('package_periods')
                 ->join('packages', 'packages.package_id=package_periods.package_id')
-                ->where('packages.is_package_type', 3)
-                ->where('package_periods.period_from >= CURDATE()')
-                ->order_by('package_periods.period_from')
-                ->get();
+                ->where('packages.is_package_type', 2);
 
+        if($fromDate){        
+            $this->db->where('package_periods.period_from >=', $fromDate);
+        }
+        else{
+            $this->db->where('package_periods.period_from >= CURDATE()');
+        }
+        if($toDate){
+            $this->db->where('package_periods.period_from <=', $toDate);
+        }        
+        $this->db->order_by('package_periods.period_from');
+        $qry = $this->db->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();
+        return false;
+    }
+
+    public function getF10dayspackages($fromDate = NULL, $toDate = NULL) {
+        $this->db->select('*')
+                ->from('package_periods')
+                ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->where('packages.is_package_type', 3);
+
+        if($fromDate){
+            $this->db->where('package_periods.period_from >=', $fromDate);
+        }
+        else{
+            $this->db->where('package_periods.period_from >= CURDATE()');
+        }
+        if($toDate){
+            $this->db->where('package_periods.period_from <=', $toDate);
+        }  
+        $this->db->order_by('package_periods.period_from');
+        $qry = $this->db->get();
+        
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        
         return false;
     }
 
@@ -194,7 +228,8 @@ class Package_model extends CI_Model {
     }
 
     public function setMassSpecialOffer($packagePeriodId, $specialOffer) {
-        $this->db->where('package_period_id', $packagePeriodId)->update('room_package_prices', array('special_offer' => $specialOffer));
+        $this->db->where('package_period_id', $packagePeriodId)
+                ->update('room_package_prices', array('special_offer' => $specialOffer));
         if ($this->db->affected_rows() > 0)
             return TRUE;
         return FALSE;
@@ -236,7 +271,8 @@ class Package_model extends CI_Model {
     }
 
     public function editPackagePeriod($packagePeriod) {
-        $this->db->where('package_id', $packagePeriod['package_period_id'])->update('package_periods', $packagePeriod);
+        $this->db->where('package_id', $packagePeriod['package_period_id'])
+        ->update('package_periods', $packagePeriod);
         if ($this->db->affected_rows() == 1)
             return TRUE;
         return FALSE;

@@ -21,7 +21,7 @@
                                 <td><?= $language['lang_id'] ?></td>
                                 <td><?= $language['lang_name'] ?></td>
                                 <td><?= $language['lang_abbreviation'] ?></td>
-                                <td><img style="max-width: 50px;" src="<?= base_url('assets/uploads/') . $language['lang_icon'] ?> "/></td>
+                                <td><img style="max-width: 50px;" src="<?= base_url('assets/uploads/langs/') . $language['lang_icon'] ?> "/></td>
                                 <td>
                                     <a class='btn btn-info' href='<?= $admin_url . 'languages/editLanguage/' . $language['lang_id']; ?>'>Edit</a>
                                     <a class='btn btn-danger' href='<?= $admin_url . 'languages/deleteLanguage/' . $language['lang_id']; ?>' onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>

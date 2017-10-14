@@ -34,7 +34,7 @@ class Languages extends MY_Controller {
 
             if ($_FILES['lang_icon']['error'] == 0) {
                 $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["lang_icon"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
+                $target_file = $this->upload_dir ."/langs". $image_name;
                 $uploadOk = 1;
                 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
@@ -105,7 +105,7 @@ class Languages extends MY_Controller {
 
             if ($_FILES['lang_icon']['error'] == 0) {
                 $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["lang_icon"]["name"]);
-                $target_file = $this->upload_dir . $image_name;
+                $target_file = $this->upload_dir ."/langs". $image_name;
                 $uploadOk = 1;
                 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 

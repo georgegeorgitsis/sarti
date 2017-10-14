@@ -19,21 +19,23 @@
                         </span>
                         <h5> <?= $hotel['distance_from_center'] ?>m </h5>
                     </span>
-                    <?php foreach ($rooms_distinct_type as $hotel_room): ?>
-                        <span class="icon-sign">
-                            <span class="flex flex-center">
-                                <?php for($i = 0; $i < $hotel_room['min_adults']; $i++): ?>
-                                    <img class="people-img icon" src="<?= base_url('assets/images/person/person-black.png') ?>" alt="">
-                                <?php endfor;?> 
-                                <?php if( $hotel_room['max_adults'] > $hotel_room['min_adults'] ): ?>
-                                    <?php for( $i = 0; $i < ($hotel_room['max_adults'] - $hotel_room['min_adults']); $i++ ): ?>
-                                        <img class="people-img icon" src="<?= base_url('assets/images/person/pesron-grey.png') ?>" alt="">
+                    <?php if(isset($rooms_distinct_type) && $rooms_distinct_type): ?>
+                        <?php foreach ($rooms_distinct_type as $hotel_room): ?>
+                            <span class="icon-sign">
+                                <span class="flex flex-center">
+                                    <?php for($i = 0; $i < $hotel_room['min_adults']; $i++): ?>
+                                        <img class="people-img icon" src="<?= base_url('assets/images/person/person-black.png') ?>" alt="">
                                     <?php endfor;?> 
-                                <?php endif;?>
+                                    <?php if( $hotel_room['max_adults'] > $hotel_room['min_adults'] ): ?>
+                                        <?php for( $i = 0; $i < ($hotel_room['max_adults'] - $hotel_room['min_adults']); $i++ ): ?>
+                                            <img class="people-img icon" src="<?= base_url('assets/images/person/pesron-grey.png') ?>" alt="">
+                                        <?php endfor;?> 
+                                    <?php endif;?>
+                                </span>
+                                <h5> <?= $hotel_room['room_type_name'] ?> </h5>
                             </span>
-                            <h5> <?= $hotel_room['room_type_name'] ?> </h5>
-                        </span>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php endif;?>
                 </div>
             </div>
             <div class="col-md-12 clearfix">
@@ -71,7 +73,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 clearfix">
+            <div class="col-md-12 clearfix no-padding">
                 <div id="hotel-image-carousel" class="carousel slide fixed-carousel" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <?php foreach($hotel_images as $h_i_key => $h_i):?>
@@ -128,66 +130,77 @@
 
         <div class="row mt">
             <?php if(isset($hotel_facilities) && $hotel_facilities): ?>
+                <div class="panel panel-flat">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                            Facilities
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body flex flex-center">
+                            <?php foreach ($hotel_facilities as $hotel_facility): ?>
+                                <span class="icon-sign">
+                                    <span class="flex flex-center">
+                                        <img class="icon" src="<?= base_url('assets/uploads/facilities/'.$hotel_facility['facility_icon']) ?>" alt="Facility icon">
+                                    </span>
+                                    <h5><?= $hotel_facility['facility_name'] ?> </h5>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php else:?>
                 <div class="col-md-12 no-padding flex flex-center">
-                    <?php foreach ($hotel_facilities as $hotel_facility): ?>
-                        <span class="icon-sign">
-                            <span class="flex flex-center">
-                                <img class="icon" src="<?= base_url('assets/uploads/'.$hotel_facility['facility_icon']) ?>" alt="Facility icon">
-                            </span>
-                            <h5><?= $hotel_facility['facility_name'] ?> </h5>
-                        </span>
-                    <?php endforeach; ?>
+                <h4> No facilities registered for this property... </h4>
                 </div>
             <?php endif;?>
         </div>
 
-        <div class="row mt">
-            <div class="col-md-12 no-padding clearfix">
-                <?php foreach ($hotel_rooms as $hotel_room): ?>
-                    <h3> available room in this hotel is  : <?= $hotel_room['room_type_name'] ?> </h3>
+        <?php if(isset($hotel_rooms) && $hotel_rooms):?>
+            <div class="row mt flex flex-center">
+                <?php foreach ($hotel_rooms as $room): ?>
+                    <?php if(isset($room['has_prices']) && $room['has_prices']): ?>
+                        <div class="col-md-5 room-prices">
+                            <h4 class="text-center text-semibold"> <?= $room['room_name'] ?> </h4>
+                            <table class="table table-responsive room-prices-table">                                
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>From</th>
+                                        <th>To</th> 
+                                        <?php for($i = $room['min_adults']; $i <= $room['max_adults']; $i++): ?>
+                                            <th class="text-center"><?= $i ?> occupants</th>
+                                        <?php endfor; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($room['available_periods'] as $room_period): ?>
+                                        <?php if($room_period['all_prices']): ?>
+                                            <tr class="text-center">
+                                                <td><?= $room_period['period_from'] ?></td>
+                                                <td><?= $room_period['period_to'] ?></td>
+                                                <?php for($i = $room['min_adults']; $i <= $room['max_adults']; $i++): ?>
+                                                    <?php if(isset($room_period['all_prices'][$i - $room['min_adults']])): ?>
+                                                        <td><?= $room_period['all_prices'][$i - $room['min_adults']]['price'] ?> &euro;</td>
+                                                    <?php else: ?>
+                                                        <td> - </td>
+                                                    <?php endif;?>
+                                                <?php endfor;?>
+                                                <td>
+                                                    <a href="<?= base_url('hotel/requestBooking/'. $room['room_id'].'/'.$room_period['package_period_id']) ?>" type="button" class="btn btn-success small-btn">
+                                                        Book
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endif;?>
+                                    <?php endforeach; ?> 
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
-            <!--room facilities in this hotel-->
-            <div class="col-md-12 no-padding clearfix">
-                <?php foreach ($hotel_rooms_facilities as $hotel_rooms_facility): ?>
-
-                    <h3> available facility in this room hotel is  : <?= $hotel_rooms_facility['facility_name'] ?> </h3>
-                    
-                <?php endforeach; ?>
-            </div>
-            <!--room prices in this hotel-->
-            <div class="col-md-12 no-padding clearfix">
-                <table style="width:100%;height:200px;">                                
-
-
-                    <thead>
-                        <tr>
-                            <th>Period</th>
-                            <th>Type of Room</th> 
-                            <th>Max number of adults</th>
-                            <?php
-                            foreach ($hotel_rooms_prices as $hotel_rooms_price) {
-                                ?>
-                                <th><?= $hotel_rooms_price['period_from']; ?> - <?= $hotel_rooms_price['period_to']; ?></th>
-                                <?php
-                            }
-                            ?>
-                        </tr>
-                    </thead>
-                    <?php
-                    foreach ($hotel_rooms_prices as $hotel_rooms_price) {
-                        ?>
-                        <tr>
-                            <td><?= $hotel_rooms_price['floor']; ?></td>
-                            <td><?= $hotel_rooms_price['room_type_name']; ?></td>                                
-                            <td><?= $hotel_rooms_price['max_adults']; ?></td>
-                            <td><?= $hotel_rooms_price['price']; ?></td>
-                        </tr>
-                        <?php
-                    }
-                    ?>
-                </table>
-            </div>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>

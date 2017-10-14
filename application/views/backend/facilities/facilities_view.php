@@ -13,8 +13,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (isset($facilities) && !empty($facilities)) { ?>
-                        <?php foreach ($facilities as $facility) { ?>
+                    <?php if (isset($facilities) && !empty($facilities)) : ?>
+                        <?php foreach ($facilities as $facility): ?>
                             <tr>
                                 <td><?= $facility['facility_id'] ?></td>
                                 <td><?= $facility['facility_type'] ?></td>
@@ -24,8 +24,8 @@
                                     <a class='btn btn-danger' href='<?= $admin_url . 'facilities/deleteFacility/' . $facility['facility_id']; ?>' onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
                                 </td>
                             </tr>
-                        <?php } ?>
-                    <?php } ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
 

@@ -1,0 +1,137 @@
+/* PERSON RATING/COUNTING STYLING */
+
+.person-allot-selection {
+    padding-top: 5px;
+    font-size: 0;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+}
+.person-allot-selection > input {
+    display: none;
+}
+.person-allot-selection > input + label {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.person-allot-selection > input + label {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+}
+.person-allot-selection > input:checked ~ label, .person-allot-selection > input + label:hover ~ label,
+ .person-allot-selection > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-allot-selection:hover > input + label{
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-allot-selection:hover > input + label:hover, .person-allot-selection:hover > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+
+
+
+.person-7pack-selection {
+    padding-top: 5px;
+    font-size: 0;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+}
+.person-7pack-selection > input {
+    display: none;
+}
+.person-7pack-selection > input + label {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.person-7pack-selection > input + label {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+}
+.person-7pack-selection > input:checked ~ label, .person-7pack-selection > input + label:hover ~ label,
+ .person-7pack-selection > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-7pack-selection:hover > input + label{
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-7pack-selection:hover > input + label:hover, .person-7pack-selection:hover > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+
+
+
+.person-10pack-selection {
+    padding-top: 5px;
+    font-size: 0;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+}
+.person-10pack-selection > input {
+    display: none;
+}
+.person-10pack-selection > input + label {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.person-10pack-selection > input + label {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+}
+.person-10pack-selection > input:checked ~ label, .person-10pack-selection > input + label:hover ~ label,
+ .person-10pack-selection > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-10pack-selection:hover > input + label{
+    background-image: url("../images/person/hollow-person.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+.person-10pack-selection:hover > input + label:hover, .person-10pack-selection:hover > input + label:hover {
+    background-image: url("../images/person/person-black.png");
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+}

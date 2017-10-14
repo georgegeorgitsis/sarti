@@ -23,27 +23,51 @@
                                     <div id="tabs-<?= $language['lang_id'] ?>">
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Short Description</label>
-                                            <input class="form-control" type="text" name="room_short_description_<?= $language['lang_id'] ?>" value="<?= $roomLocale[$language['lang_id']]['room_short_description']; ?>"/>
+                                            <input class="form-control" type="text" name="room_short_description_<?= $language['lang_id'] ?>" 
+                                                value="<?php
+                                                    if(isset($roomLocale[$language['lang_id']]['room_short_description']) && $roomLocale[$language['lang_id']]['room_short_description']) {
+                                                        echo $roomLocale[$language['lang_id']]['room_short_description'] ;
+                                                    } ?>"/>
                                         </div>
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Long Description</label>
-                                            <textarea class="form-control" name="room_description_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_description']; ?></textarea>
+                                            <textarea class="form-control" name="room_description_<?= $language['lang_id'] ?>">
+                                                <?php if(isset($roomLocale[$language['lang_id']]['room_description']) && $roomLocale[$language['lang_id']]['room_description']){
+                                                    echo  $roomLocale[$language['lang_id']]['room_description']; 
+                                                }?>
+                                            </textarea>
                                         </div>
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Seo Title</label>
-                                            <textarea class="form-control" name="room_seo_title_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_seo_title']; ?></textarea>
+                                            <textarea class="form-control" name="room_seo_title_<?= $language['lang_id'] ?>">
+                                                <?php if(isset( $roomLocale[$language['lang_id']]['room_seo_title']) && $roomLocale[$language['lang_id']]['room_seo_title']){
+                                                    echo $roomLocale[$language['lang_id']]['room_seo_title'];
+                                                } ?>
+                                            </textarea>
                                         </div>
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Seo Meta Title</label>
-                                            <textarea class="form-control" name="room_seo_meta_description_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_seo_meta_description']; ?></textarea>
+                                            <textarea class="form-control" name="room_seo_meta_description_<?= $language['lang_id'] ?>">
+                                                <?php if(isset( $roomLocale[$language['lang_id']]['room_seo_meta_description']) && $roomLocale[$language['lang_id']]['room_seo_meta_description']){
+                                                    echo $roomLocale[$language['lang_id']]['room_seo_meta_description'];
+                                                } ?>
+                                            </textarea>
                                         </div>
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Seo Keywords</label>
-                                            <textarea class="form-control" name="room_seo_keywords_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_seo_keywords']; ?></textarea>
+                                            <textarea class="form-control" name="room_seo_keywords_<?= $language['lang_id'] ?>">
+                                                <?php if(isset($roomLocale[$language['lang_id']]['room_seo_keywords']) && $roomLocale[$language['lang_id']]['room_seo_keywords']){
+                                                    echo $roomLocale[$language['lang_id']]['room_seo_keywords'];
+                                                } ?>
+                                            </textarea>
                                         </div>
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Hotel Friendly URL</label>
-                                            <textarea class="form-control" name="room_friendly_url_<?= $language['lang_id'] ?>"><?= $roomLocale[$language['lang_id']]['room_friendly_url']; ?></textarea>
+                                            <textarea class="form-control" name="room_friendly_url_<?= $language['lang_id'] ?>">
+                                                <?php if(isset($roomLocale[$language['lang_id']]['room_friendly_url']) && $roomLocale[$language['lang_id']]['room_friendly_url']){
+                                                    echo $roomLocale[$language['lang_id']]['room_friendly_url'];
+                                                } ?>
+                                            </textarea>
                                         </div>
                                     </div>
                                 <?php endforeach;?>
