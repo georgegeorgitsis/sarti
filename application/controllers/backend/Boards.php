@@ -42,7 +42,7 @@ class Boards extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'boards');
+            redirect($this->admin_url . 'boards/editBoard/'.$boardId);
         }
     }
 
@@ -64,7 +64,7 @@ class Boards extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'boards');
+            redirect($this->admin_url . 'boards/editBoard/'.$boardId);
         }
     }
 

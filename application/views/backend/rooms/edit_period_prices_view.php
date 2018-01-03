@@ -33,18 +33,11 @@
                                                         <input type="text" class="form-control" name="price_<?= $package_period_new['package_period_id'] ?>_<?= $Adult_key; ?>" placeholder="Price" value="<?= $perPeriodAdult['price'] ?>"/>
                                                     </div>
                                                 <?php } ?>
-                                                <div class="col-md-1">
-                                                    <label>SpecialOffer%</label>
+                                                <div class="col-md-2">
+                                                    <label>Special Offer %</label>
                                                     <input type="text" class="form-control" value="<?= $package_period_new['extras']['special_offer'] ?>" name="special_offer_<?= $package_period_new['package_period_id'] ?>"/>
                                                 </div>
-                                                <div class="col-md-1">
-                                                    <label>E. Booking%</label>
-                                                    <input type="text" class="form-control" value="<?= $package_period_new['extras']['early_booking'] ?>" name="early_booking_<?= $package_period_new['package_period_id'] ?>"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <label>E. B. Until</label>
-                                                    <input type="text" class="form-control early_booking_until" value="<?= $package_period_new['extras']['early_booking_until'] ?>" name="early_booking_until_<?= $package_period_new['package_period_id'] ?>"/>
-                                                </div>
+                                                
                                                 <div class="col-md-1">
                                                     <label>Is Active</label>
                                                     <select name="is_active_<?= $package_period_new['package_period_id'] ?>">
@@ -70,13 +63,3 @@
         </div>
     </section>
 </section>
-
-<script type="text/javascript">
-
-    $(window).load(function () {
-        $(".early_booking_until").datetimepicker({
-            format: 'YYYY-MM-DD'
-        });
-    })
-
-</script>

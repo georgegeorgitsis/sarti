@@ -8,10 +8,26 @@
                     </div>
                     <div class="col-md-8 no-padding clearfix">
                         <div class="col-md-12 no-padding clearfix">
-                            <div class="hotel-title">
-                                <a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">
-                                    <h3><?= $hotel['hotel_name'] ?></h3>
-                                </a>
+                            <div class="row hotel-title no-margin flex align-center">    
+                                <div class="col-md-6">
+                                    <a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">
+                                        <h3><?= $hotel['hotel_name'] ?></h3>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 flex flex-end align-center">
+                                    <span class="icon-sign flex align-center">
+                                        <span class="flex flex-center">
+                                            <img class="icon-small" src="<?= base_url('assets/images/beach.png') ?>" alt="">
+                                        </span>
+                                        <h5> <?= $hotel['distance_from_sea']  ?>m </h5>
+                                    </span>
+                                    <span class="icon-sign flex align-center">
+                                        <span class="flex flex-center">
+                                            <img class="icon-small" src="<?= base_url('assets/images/city.png') ?>" alt="">
+                                        </span>
+                                        <h5> <?= $hotel['distance_from_center'] ?>m </h5>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 no-padding clearfix">
@@ -23,23 +39,18 @@
                                             <?php if ($hotel['location_name']): ?>
                                                 <span class="location-name"><i class="fa fa-map-marker" aria-hidden="true"></i> <?= $hotel['location_name'] ?></span>
                                             <?php endif; ?>
-                                            <span class="distance">
-                                                <?php if ($hotel['distance_from_sea']): ?>
-                                                    <span><i class="fa fa-car" aria-hidden="true"></i> <?= $hotel['distance_from_sea'] ?>m from sea</span>
-                                                <?php endif; ?>
-                                                <?php if ($hotel['distance_from_center']): ?>
-                                                    <span><i class="fa fa-car" aria-hidden="true"></i> <?= $hotel['distance_from_center'] ?>m from center</span>
-                                                <?php endif; ?>
-                                            </span>
                                         </div>
                                     </div>
-                                    <?php if (isset($hotel['main_facilities']) && !empty($hotel['main_facilities'])): ?>
+                                    <?php if (isset($hotel['facilities']) && !empty($hotel['facilities'])): ?>
                                         <div class="col-md-12 no-padding clearfix">
                                             <div class="hotel-main-facilities">
-                                                <?php foreach ($hotel['main_facilities'] as $fac): ?>
+                                                <?php foreach ($hotel['facilities'] as $fac): ?>
+                                                    <?php if($fac['fac_is_main']): ?>
                                                     <span class="main-facility">
-                                                        <img src="<?= base_url('assets/uploads/facilities/' . $fac['facility_icon']) ?>"/> <?= $fac['facility_name'] ?>
+                                                        <img width="32px" src="<?= base_url('assets/uploads/facilities/' . $fac['facility_icon']) ?>"/> 
+                                                        <?= $fac['facility_name'] ?>
                                                     </span>
+                                                    <?php endif;?>
                                                 <?php endforeach; ?>
                                             </div>
                                         </div>
@@ -59,7 +70,7 @@
                                     <span class="from-label">Starting from:</span>
                                     <span class="from-price"><?= $hotel['min_price']['price']?> &euro;</span>
                                     <a type="button" href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>" class="btn btn-success">
-                                        Book Now!
+                                        Request Now!
                                     </a>
                                 <?php else: ?>
                                     <h5>No offers available at the moment...</h5>

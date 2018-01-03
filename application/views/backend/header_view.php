@@ -15,7 +15,8 @@
         <link href="<?= base_url('assets/css/style.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/style-responsive.css'); ?>" rel="stylesheet" />
         <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datetimepicker.min.css'); ?>"/>
+        <link href="<?= base_url('assets/css/select2.min.css'); ?>" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.min.css'); ?>"/>
         <?php if (isset($css_files)) { ?>
             <?php foreach ($css_files as $file): ?>
         <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
@@ -28,9 +29,10 @@
         <script src="<?= base_url('assets/js/bootstrap.min.js'); ?>"></script>
         <script src="<?= base_url('assets/js/jquery.nicescroll.js'); ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/js/scripts.js'); ?>"></script>
+        <script src="<?= base_url('assets/js/select2.full.min.js'); ?>"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/moment.js') ?>"></script>
-        <script src="<?= base_url('assets/js/bootstrap-datetimepicker.min.js') ?>"></script>
+        <script src="<?= base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
         
         <?php if (isset($js_files)) { ?>
             <?php foreach ($js_files as $file): ?>
@@ -151,6 +153,8 @@
                                 <span class="menu-arrow arrow_carrot-right"></span>
                             </a>
                             <ul class="sub" <?php if($controller == "facilities") echo "style='display:block'" ?>>
+                                <li><a class="" href="<?= $admin_url . 'facilities/categories' ?>">Facility Categories</a></li>
+                                <li><a class="" href="<?= $admin_url . 'facilities/addCategory' ?>">Add Category</a></li>
                                 <li><a class="" href="<?= $admin_url . 'facilities' ?>">All Facilities</a></li>
                                 <li><a class="" href="<?= $admin_url . 'facilities/addFacility' ?>">Add Facility</a></li>
                             </ul>

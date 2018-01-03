@@ -30,6 +30,27 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Category</label>
+                            <select class='form-control' name="category_id" id="category_id">
+                                <option value="0">None</option>
+                                <?php foreach ($categories as $category) : ?>
+                                <?php if($facility['category_id'] == $category['id']) :?>
+                                <option value="<?= $category['id']?>" selected><?= $category['description']?></option>
+                                <?php else :?>
+                                <option value="<?= $category['id']?>"><?= $category['description']?></option>
+                                <?php endif;?>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Is Main</label>
+                            <input type="checkbox" name="is_main" <?= ($facility['is_main'] == 1) ? "checked" : "" ?> />
+                        </div>
+                    </div>
                     <div class="col-md-12 form-group">
                         <label>Facility Icon</label>
                         <input class="form-control" type="file" name="facility_icon" value=""/>

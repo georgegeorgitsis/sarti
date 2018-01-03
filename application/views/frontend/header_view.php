@@ -7,17 +7,22 @@
         <meta name="keyword" content="Sarti.gr Backend">
         <link rel="shortcut icon" href="img/favicon.png">
 
-        <title>Sarti.gr Front</title>
+        <title>Sarti.gr</title>
 
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:200,400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=greek,latin' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:300,400,500&amp;subset=latin-ext" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <link href="<?= base_url('assets/css/bootstrap-theme_f.min.css'); ?>" rel="stylesheet">
+        <link href="<?= base_url('assets/css/front/flexbox.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />    
-        <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet">
-        <link href="<?= base_url('assets/css/jCalendar.css'); ?>" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.min.css'); ?>"/>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.12/jquery.bxslider.min.css"/>
+        <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet"/>
+        <link href="<?= base_url('assets/css/jCalendar.css'); ?>" rel="stylesheet"/>
 
+        <link href="<?= base_url('assets/css/vendor/lightslider.min.css'); ?>" rel="stylesheet"/>
+        <link href="<?= base_url('assets/css/vendor/lightgallery.min.css'); ?>" rel="stylesheet"/>
+
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.min.css'); ?>"/>
 
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/f_style.css'); ?>"/>
         <?php if (isset($css_files) && count($css_files) > 0): ?>
@@ -38,7 +43,7 @@
             </div>
             <div class="bottom_header">
             <nav class="navbar navbar-flat">
-                <div class="container">
+                <div class="container no-padding">
                 
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">

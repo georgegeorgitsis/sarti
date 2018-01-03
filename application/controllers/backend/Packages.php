@@ -45,6 +45,10 @@ class Packages extends MY_Controller {
             $packageData['package_type'] = $this->input->post('package_type');
             $packageData['is_package_type'] = $this->input->post('is_package_type');
 
+            $packageData['early_booking'] = $this->input->post('early_booking');
+            $packageData['early_booking_until'] = $this->input->post('early_booking_until');
+            $packageData['eb_is_active'] = $this->input->post('eb_is_active');
+            
             $package_locale = array();
             foreach ($languages as $language) {
                 $temp = array();
@@ -64,7 +68,7 @@ class Packages extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'packages/showPackages');
+            redirect($this->admin_url . 'packages/editPackage/'.$packageId);
         }
     }
 
@@ -90,6 +94,10 @@ class Packages extends MY_Controller {
             $packageData['package_id'] = $this->input->post('package_id');
             $packageData['package_type'] = $this->input->post('package_type');
             $packageData['is_package_type'] = $this->input->post('is_package_type');
+            
+            $packageData['early_booking'] = $this->input->post('early_booking');
+            $packageData['early_booking_until'] = $this->input->post('early_booking_until');
+            $packageData['eb_is_active'] = $this->input->post('eb_is_active');
 
             $package_locale = array();
             foreach ($languages as $language) {
@@ -110,7 +118,7 @@ class Packages extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'packages/showPackages');
+            redirect($this->admin_url . 'packages/seditPackage/'.$packageData['package_id']);
         }
     }
 
@@ -186,12 +194,16 @@ class Packages extends MY_Controller {
                 redirect($this->admin_url . 'packages/showPackagePeriods');
             }
         } else {
-            $packagePeriod['package_period_id'] = $this->input->post('package_period_id');
-            $packagePeriod['period_from'] = $this->input->post('period_from');
-            $packagePeriod['period_to'] = $this->input->post('period_to');
+            // $packagePeriod['package_period_id'] = $this->input->post('package_period_id');
+            $timeFrom = strtotime($this->input->post('period_from'));
+            $dateFrom = date('Y-m-d', $timeFrom);
+            $timeTo = strtotime($this->input->post('period_to'));
+            $dateTo = date('Y-m-d', $timeTo);
+            $packagePeriod['period_from'] = $dateFrom;
+            $packagePeriod['period_to'] = $dateTo;
             $packagePeriod['package_active'] = $this->input->post('package_active');
 
-            if ($this->package_model->editPackagePeriod($packagePeriod)) {
+            if ($this->package_model->editPackagePeriod($this->input->post('package_period_id'), $packagePeriod)) {
                 $this->session->set_flashdata('message', 'Row Updated');
             } else {
                 $this->session->set_flashdata('error', 'Row Problem');

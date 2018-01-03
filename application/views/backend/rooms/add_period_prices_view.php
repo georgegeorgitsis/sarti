@@ -43,8 +43,11 @@
 <script type="text/javascript">
 
     $(window).load(function () {
-        $("input[name='period_from']").datetimepicker({
-            format: 'YYYY-MM-DD'
+        $("input[name='period_from']").datepicker({
+            format: 'dd-mm-yyyy',
+            minDate: new Date(),
+            startDate: new Date(),
+            autoclose: true
         });
     })
 

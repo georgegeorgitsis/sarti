@@ -21,7 +21,7 @@
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/searchHotels/2') ?>">
+                        <form method="GET" action="<?= base_url('hotels/searchHotels/2') ?>"> 
                             <div class="col-md-12">
                                 <h4 class="title">Show me the 7 days DEALS</h4>
                             </div>
@@ -37,7 +37,7 @@
                                     <span class="tcenter col-md-12 no-padding tbold label-span">Capacity</span>
                                     <span class="person-7pack-selection col-md-12 no-padding">
                                         <?php for ($i = $minMax7Days['max_adults']; $i >= 1; $i--): ?>
-                                            <?php if($i == $minMax7Days['min_adults']):?>
+                                            <?php if($i == $minMax7Days['min_adults'] || $i == 2):?>
                                                 <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" checked>
                                                 <label for="7per-rating-<?=$i?>"><?=$i?></label>
                                             <?php else:?>
@@ -77,7 +77,7 @@
                                     <span class="tcenter col-md-12 no-padding tbold label-span">Capacity</span>
                                     <span class="person-10pack-selection col-md-12 no-padding">
                                         <?php for ($i = $minMax10Days['max_adults']; $i >= 1; $i--): ?>
-                                            <?php if($i == $minMax10Days['min_adults']):?>
+                                            <?php if($i == $minMax10Days['min_adults'] || $i = 2):?>
                                                 <input type="radio" id="10per-rating-<?=$i?>" name="a" value="<?=$i?>" checked>
                                                 <label for="10per-rating-<?=$i?>"><?=$i?></label>
                                             <?php else:?>
@@ -106,11 +106,11 @@
                             </div>
                             <div class="col-md-12 check-box">
                                 <label>Checkin</label>
-                                <input type="text" name="checkin" value="<?= date('d/m/Y') ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <input type="text" name="checkin" value="<?= date('d-m-Y') ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-12 check-box">
                                 <label>Checkout</label>
-                                <input type="text" name="checkout" value="<?= date('d/m/Y', strtotime(' +1 day')) ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <input type="text" name="checkout" value="<?= date('d-m-Y', strtotime(' +1 day')) ?>" required="required"/> <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-12">
                                 <div class="row clearfix">
@@ -189,11 +189,15 @@
                             <h4 class="title">Facilities</h4>
                         </div>
                         <?php foreach ($facilities as $facility):  ?>
+                            <?php if($facility['is_main']): ?>
                             <div class="col-md-12">
-                                <input type="checkbox" name="facility" class="facility" value="<?= $facility['facility_id'] ?>"> 
+                                <input type="checkbox" name="facility" class="facility" value="<?= $facility['facility_id'] ?>">
+                                <?php if(isset($facility['facility_icon']) && trim($facility['facility_icon']) != ""): ?> 
                                 <img src="<?= base_url('assets/uploads/facilities/' . $facility['facility_icon']) ?>"/>
+                                <?php endif;?>
                                 <?= $facility['facility_name'] ?>
                             </div>
+                            <?php endif;?>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -281,15 +285,24 @@
     $(window).load(function () {
         
         
-        $("input[name='checkin'], input[name='checkout']").datepicker({
-            format: 'dd/mm/yyyy',
+        $("input[name='checkout']").datepicker({
+            format: 'dd-mm-yyyy',
             autoclose: true,
             minDate: new Date()
+        });
+        $("input[name='checkin']").datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            minDate: new Date()
+        }).on("changeDate", function(e){
+            console.log(e);
+            $("input[name='checkout']").datepicker('setDate', e.date);
+            $("input[name='checkout']").datepicker('setStartDate', e.date);
         });
 
         $("#p-7-dp").datepicker({
             minDate: new Date(),
-            format: "M/yyyy",
+            format: "M-yyyy",
             viewMode: "months", 
             minViewMode: "months",
             autoclose: true,

@@ -70,20 +70,30 @@ class Hotel_model extends CI_Model {
                 ->from('hotels')
                 ->join('rooms', 'rooms.hotel_id=hotels.hotel_id')
                 ->where('rooms.room_active', 1)
-                ->where('hotels.hotel_active', 1)
-                ->limit($limit, $start);
+                ->where('hotels.hotel_active', 1);
+                
 
         if ($packageType) {
-            $this->db->where('rooms.room_package_id', $packageType);
+            $this->db->join('packages', 'rooms.room_package_id=packages.package_id');
+            $this->db->where('packages.is_package_type', $packageType);
+            // $this->db->where('rooms.room_package_id', $packageType);
         }
-        if ($package_id && $adults) {
+        if ($checkin && $checkout) {
+            $this->db->join('package_periods', 'package_periods.package_id=packages.package_id');
+            $this->db->where('package_periods.period_from>=', $checkin);
+            $this->db->where('package_periods.period_to<=', $checkout);
+        }
+        if ($adults) {
             $this->db->join('room_package_prices', 'room_package_prices.room_id=rooms.room_id');
-            $this->db->where('room_package_prices.package_period_id', $package_id);
+            // $this->db->where('room_package_prices.package_period_id', $package_id);
             $this->db->where('room_package_prices.adults', $adults);
             $this->db->where('room_package_prices.price>', 0);
         }
-
+        $this->db->limit($limit, $start);
+        // var_dump($this->db->get_compiled_select());
+        // die();
         $qry = $this->db->get();
+        
         if ($qry->num_rows() > 0)
             return $qry->result_array();
         return FALSE;
@@ -278,7 +288,7 @@ class Hotel_model extends CI_Model {
 
     //pairnw ta facilities toy kathe gotel
     public function getFHotelFacilities($hotelId, $lang_id) {
-        $qry = $this->db->select('hotel_facilities.*, facility_locales.*, facilities.facility_icon')
+        $qry = $this->db->select('hotel_facilities.*, facility_locales.*, facilities.facility_icon, facilities.is_main as fac_is_main')
                 ->from('hotel_facilities')
                 ->where('hotel_id', $hotelId)
                 ->join('facilities', 'facilities.facility_id = hotel_facilities.facility_id', 'inner')
@@ -293,9 +303,10 @@ class Hotel_model extends CI_Model {
 
     //vriskw ta dwmatia gia kathe ksenodoxeio
     public function getFRooms($hotelId) {
-        $qry = $this->db->select('rooms.*, room_types.*')
+        $qry = $this->db->select('rooms.*, room_types.*, ground_plans.*')
                 ->from('rooms')
                 ->where('hotel_id', $hotelId)
+                ->join('ground_plans', 'rooms.ground_plan_id = ground_plans.ground_plan_id', 'left')
                 ->join('room_types', 'room_types.room_type_id = rooms.room_type_id', 'inner')
                 ->get();
         //echo $this->db->last_query();
@@ -306,11 +317,12 @@ class Hotel_model extends CI_Model {
 
     //vriskw ta facilities gia kathe dwmatio
     public function getFRoomsFacilities($room_id, $lang_id) {
-        $qry = $this->db->select('rooms.room_id, room_facilities.*, facility_locales.*')
+        $qry = $this->db->select('rooms.room_id, room_facilities.*, facility_locales.*, facilities.*')
                 ->from('rooms')
                 ->where('rooms.room_id', $room_id)
                 ->join('room_facilities', 'room_facilities.room_id = rooms.room_id', 'inner')
                 ->join('facility_locales', 'facility_locales.facility_id = room_facilities.facility_id', 'inner')
+                ->join('facilities', 'facilities.facility_id = facility_locales.facility_id')
                 ->where('facility_locales.lang_id', $lang_id)
                 ->get();
         // echo $this->db->last_query().'<br/>';
@@ -320,18 +332,18 @@ class Hotel_model extends CI_Model {
     }
 
     public function getFRoomsMinPrice($hotelId) {
-        $qry = $this->db->select('rooms.*, packages.package_id, package_periods.*, room_package_prices.*, room_types.*')
-                ->from('rooms')
-                ->where('rooms.hotel_id', $hotelId)
-                ->join('packages', 'packages.package_id = rooms.room_package_id', 'inner')
-                ->join('package_periods', 'package_periods.package_id = packages.package_id', 'inner')
-                ->join('room_types', 'room_types.room_type_id = rooms.room_type_id', 'inner')
+        $qry = $this->db->select('rooms.*, room_package_prices.*')
+                ->from('room_package_prices')
+                ->join('rooms', 'room_package_prices.room_id = rooms.room_id', 'inner')
+                ->join('package_periods', 'package_periods.package_period_id = room_package_prices.package_period_id', 'inner')
                 ->where('package_periods.package_active', '1')
-                ->join('room_package_prices', 'room_package_prices.package_period_id = package_periods.package_period_id', 'inner')
+                ->where('rooms.hotel_id', $hotelId)
+                ->where('room_package_prices.price >', 0)
                 ->order_by('room_package_prices.price', 'ASC')
                 ->limit(1)
                 ->get();
-        // echo $this->db->last_query().'<br/>';
+        // var_dump($qry->row_array());
+        
         if ($qry->num_rows() > 0)
             return $qry->row_array();
         return false;

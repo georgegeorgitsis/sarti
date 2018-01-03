@@ -27,6 +27,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['base_url'] = 'http://localhost/sarti/';
 $config['admin_url'] = 'http://localhost/sarti/backend/';
 $config['upload_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/';
+
+$config['ground_plans_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/ground_plans/';
+$config['facilities_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/facilities/';
+$config['rooms_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/rooms/';
+$config['hotels_dir'] = 'C:/xampp/htdocs/sarti/assets/uploads/hotels/';
 /*
   |--------------------------------------------------------------------------
   | Index File

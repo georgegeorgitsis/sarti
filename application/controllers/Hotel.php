@@ -19,17 +19,15 @@ class Hotel extends MY_F_Controller {
         parent::__construct();
         $this->load->model('hotel_model');
         $this->load->model('location_model');
+        array_push($this->styles, base_url('assets/css/sidebar.css'));
+        $this->loadStyles();
         $this->hotel_id = $this->uri->segment(2);
-        
     }
 
     public function index() {
         $this->loadGalleryStylesheets();
         $this->loadGalleryScripts();
         
-        // var_dump($this->session->userdata());
-        // die();
-
         $hotel = $this->hotel_model->getFHotel($this->hotel_id, $this->lang_id);
         $hotel_image = $this->hotel_model->getFHotelImage($this->hotel_id);
         $hotel_image_thumbs = $this->hotel_model->getFHotelImageThumbs($this->hotel_id);
@@ -45,30 +43,48 @@ class Hotel extends MY_F_Controller {
         
         if(isset($hotel_rooms) && $hotel_rooms){
             $rooms_with_packages = array();
+            $hotel_rooms_distinct_type = array();
             foreach ($hotel_rooms as &$hotel_room) {
                 $hotel_room['prices_amount'] = 0;
-                $hotel_rooms_facilities = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id'], $this->lang_id);
+                $hotel_room['room_facilities'] = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id'], $this->lang_id);
+                
                 // $hotel_rooms_prices = $this->hotel_model->getFRoomsPrices($hotel_room['room_id']);
                 $rooms_with_packages[$hotel_room['room_name']]['available_periods'] = $this->package_model->getPeriodsPerPackage($hotel_room['room_package_id']);
                 
                 $hotel_room['available_periods'] = $this->package_model->getPeriodsPerPackage($hotel_room['room_package_id']);
+                $hotel_room['available_prices'] = 0;
+
                 if($hotel_room['available_periods'] && isset($hotel_room['available_periods'])){
                     foreach($hotel_room['available_periods'] as &$av_period){
+
                         $av_period['all_prices'] = $this->room_model
                             ->getRoomPeriodPricesWithoutAd($hotel_room['room_id'], $av_period['package_period_id']);
                         
                         if($av_period['all_prices']){
+                            $av_period['has_prices'] = false;
+                            $av_period['prices_amount'] = 0;
+                            foreach($av_period['all_prices'] as $price){
+                                
+                                if(isset($price['price']) && $price['price'] > 0){
+                                    if($av_period['has_prices'] == false){
+                                        $av_period['has_prices'] = true;
+                                    }
+                                    $av_period['prices_amount'] += 1; 
+                                    $hotel_room['available_prices'] += 1;
+                                }
+                            }
                             $hotel_room['has_prices'] = true;
                             $hotel_room['prices_amount'] += 1;
                         }
                     }
                 }
+                $hotel_rooms_distinct_type[$hotel_room['room_type_id']] = $hotel_room;
             }
-
-            $hotel_rooms_distinct_type = array();
-            $hotel_rooms_distinct_type[$hotel_rooms[0]['room_type_id']] = $hotel_rooms[0];
             $this->view_data['rooms_distinct_type'] = $hotel_rooms_distinct_type;
         }
+
+        // echo '<pre>' . var_dump($hotel_rooms[1]) . '</pre>';
+        // die();
 
         $this->view_data['hotel'] = $hotel;
         $this->view_data['hotel_image'] = $hotel_image;
@@ -76,6 +92,7 @@ class Hotel extends MY_F_Controller {
         $this->view_data['hotel_image_thumbs'] = $hotel_image_thumbs;
         $this->view_data['hotel_facilities'] = $hotel_facilities;
         $this->view_data['hotel_rooms'] = $hotel_rooms;
+
         if(isset($hotel_rooms_facilities) && $hotel_rooms_facilities){
             $this->view_data['hotel_rooms_facilities'] = $hotel_rooms_facilities;
         }

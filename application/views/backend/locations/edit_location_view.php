@@ -22,7 +22,9 @@
                                     <div id="tabs-<?= $language['lang_id'] ?>">
                                         <div class="col-md-12 form-group">
                                             <label><?= $language['lang_name'] ?> Location Name</label>
-                                            <input class="form-control" type="text" name="location_name_<?= $language['lang_id'] ?>" value="<?= $locationLocales[$language['lang_id']]['location_name']; ?>"/>
+                                            <input class="form-control" type="text" 
+                                                name="location_name_<?= $language['lang_id'] ?>" 
+                                                value="<?= isset($locationLocales[$language['lang_id']]) ? $locationLocales[$language['lang_id']]['location_name'] : ""?>"/>
                                         </div>
                                     </div>
                                 <?php } ?>

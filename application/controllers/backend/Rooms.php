@@ -132,38 +132,16 @@ class Rooms extends MY_Controller {
             $groundPlan = $this->input->post('ground_plan');
             if ($groundPlan != NULL)
                 $roomData['ground_plan_id'] = $groundPlan;
+
             $roomFacilities = $this->input->post('facilities');
 
-            /*
-              if ($_FILES['room_thumb']['error'] == 0) {
-              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["room_thumb"]["name"]);
-              $target_file = $this->upload_dir . $image_name;
-              $uploadOk = 1;
-              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
-              if ($_FILES["room_thumb"]["size"] > 500000) {
-              $uploadOk = 0;
-              }
-              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-              $uploadOk = 0;
-              }
-              if ($uploadOk == 0) {
-
-              } else {
-              if (move_uploaded_file($_FILES["room_thumb"]["tmp_name"], $target_file)) {
-              $roomData['room_thumb'] = $image_name;
-              }
-              }
-              }
-             * 
-             */
             $room_id = $this->room_model->addRoom($roomData);
 
             if ($room_id && is_numeric($room_id)) {
                 $addRoomFacilities = array();
                 $addRoomFacilities['room_id'] = $room_id;
-                foreach ($roomFacilities as $h_f_key => $h_f) {
-                    $addRoomFacilities['facility_id'] = $h_f['facility_id'];
+                foreach ($roomFacilities as $h_f) {
+                    $addRoomFacilities['facility_id'] = $h_f;
                     $this->room_model->addRoomFacilities($addRoomFacilities);
                 }
 
@@ -175,7 +153,7 @@ class Rooms extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'rooms');
+            redirect($this->admin_url . 'rooms/editRoom/'.$room_id);
         }
     }
 
@@ -276,40 +254,14 @@ class Rooms extends MY_Controller {
 
             $roomFacilities = $this->input->post('facilities');
 
-            /*
-              if ($_FILES['room_thumb']['error'] == 0) {
-              $roomData = $this->room_model->getRoom($hotelId);
-              unlink($this->upload_dir . $roomData['room_thumb']);
-              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["room_thumb"]["name"]);
-              $target_file = $this->upload_dir . $image_name;
-              $uploadOk = 1;
-              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
-              if ($_FILES["room_thumb"]["size"] > 500000) {
-              $uploadOk = 0;
-              }
-              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-              $uploadOk = 0;
-              }
-              if ($uploadOk == 0) {
-
-              } else {
-              if (move_uploaded_file($_FILES["room_thumb"]["tmp_name"], $target_file)) {
-              $roomData['room_thumb'] = $image_name;
-              }
-              }
-              }
-             * 
-             */
-
             $this->room_model->editRoom($roomData);
 
             if ($roomData['room_id'] && is_numeric($roomData['room_id'])) {
                 $this->room_model->deleteRoomFacilities($roomData['room_id']);
                 $addRoomFacilities = array();
                 $addRoomFacilities['room_id'] = $roomData['room_id'];
-                foreach ($roomFacilities as $h_f_key => $h_f) {
-                    $addRoomFacilities['facility_id'] = $h_f['facility_id'];
+                foreach ($roomFacilities as  $h_f) {
+                    $addRoomFacilities['facility_id'] = $h_f;
                     $this->room_model->addRoomFacilities($addRoomFacilities);
                 }
 
@@ -321,7 +273,7 @@ class Rooms extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'rooms');
+            redirect($this->admin_url . 'rooms/editRoom/'. $roomData['room_id']);
         }
     }
 
@@ -373,7 +325,7 @@ class Rooms extends MY_Controller {
                 }
             }
             $this->session->set_flashdata('message', 'Row Insert');
-            redirect($this->admin_url . 'rooms');
+            redirect($this->admin_url . 'rooms/editRoomPrices/'.$addPeriodPrice['room_id']);
         }
     }
 
@@ -399,15 +351,15 @@ class Rooms extends MY_Controller {
                             $packagePeriodNew[$packagePeriodId]['prices'][$i]['price'] = $savedPeriods['price'];
 
                             $packagePeriodNew[$packagePeriodId]['extras']['special_offer'] = $savedPeriods['special_offer'];
-                            $packagePeriodNew[$packagePeriodId]['extras']['early_booking'] = $savedPeriods['early_booking'];
-                            $packagePeriodNew[$packagePeriodId]['extras']['early_booking_until'] = $savedPeriods['early_booking_until'];
+                            // $packagePeriodNew[$packagePeriodId]['extras']['early_booking'] = $savedPeriods['early_booking'];
+                            // $packagePeriodNew[$packagePeriodId]['extras']['early_booking_until'] = $savedPeriods['early_booking_until'];
                             $packagePeriodNew[$packagePeriodId]['extras']['is_active'] = $savedPeriods['is_active'];
                         } else {
                             $packagePeriodNew[$packagePeriodId]['prices'][$i]['adults'] = $i;
                             $packagePeriodNew[$packagePeriodId]['prices'][$i]['price'] = 0;
                             $packagePeriodNew[$packagePeriodId]['extras']['special_offer'] = 0;
-                            $packagePeriodNew[$packagePeriodId]['extras']['early_booking'] = 0;
-                            $packagePeriodNew[$packagePeriodId]['extras']['early_booking_until'] = 0;
+                            // $packagePeriodNew[$packagePeriodId]['extras']['early_booking'] = 0;
+                            // $packagePeriodNew[$packagePeriodId]['extras']['early_booking_until'] = 0;
                             $packagePeriodNew[$packagePeriodId]['extras']['is_active'] = 0;
                         }
                     }
@@ -440,8 +392,8 @@ class Rooms extends MY_Controller {
                         $insertData['adults'] = $i;
                         $insertData['price'] = $this->input->post('price_' . $val['package_period_id'] . '_' . $i);
                         $insertData['special_offer'] = $this->input->post('special_offer_' . $val['package_period_id']);
-                        $insertData['early_booking'] = $this->input->post('early_booking_' . $val['package_period_id']);
-                        $insertData['early_booking_until'] = $this->input->post('early_booking_until_' . $val['package_period_id']);
+                        // $insertData['early_booking'] = $this->input->post('early_booking_' . $val['package_period_id']);
+                        // $insertData['early_booking_until'] = $this->input->post('early_booking_until_' . $val['package_period_id']);
                         $insertData['is_active'] = $this->input->post('is_active_' . $val['package_period_id']);
 
                         $this->room_model->addRoomPriceForPeriod($insertData);
@@ -524,7 +476,7 @@ class Rooms extends MY_Controller {
                     $delete_file = NULL;
                     $delete_file = $this->input->post('delete_file_' . $image['ground_plan_id']);
                     if ($delete_file && !empty($delete_file) && $delete_file == 1) {
-                        unlink($this->config->item('upload_dir') . $image['ground_plan_image']);
+                        unlink($this->config->item('upload_dir').'ground_plans/'. $image['ground_plan_image']);
                         $this->room_model->deleteGroundPlan($image['ground_plan_id']);
                     }
                 }
@@ -541,7 +493,7 @@ class Rooms extends MY_Controller {
                 if ($file['error'] == 0) {
                     $original_file_name = $file['name'];
                     $file_name = $i . "_" . strtotime(date("d-m-Y")) . "_" . basename(str_replace(" ", "_", $file['name']));
-                    $target_dir = $this->config->item('upload_dir');
+                    $target_dir = $this->config->item('upload_dir').'ground_plans/';
                     $target_file = $target_dir . $file_name;
 
                     if (move_uploaded_file($file['tmp_name'], $target_file)) {

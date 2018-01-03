@@ -71,7 +71,7 @@ class Location_model extends CI_Model {
     public function addLocation($locationData) {
         $this->db->insert('locations', $locationData);
         if ($this->db->affected_rows() == 1)
-            return true;
+            return $this->db->insert_id();
         return false;
     }
 
@@ -91,7 +91,7 @@ class Location_model extends CI_Model {
 
     public function editLocationLocale($locationLocale) {
         $this->db->where('location_id', $locationLocale['location_id'])->where('lang_id', $locationLocale['lang_id'])->update('location_locales', $locationLocale);
-        if ($this->db->affected_rows() == 1)
+        if ($this->db->affected_rows() > 0)
             return TRUE;
         return FALSE;
     }

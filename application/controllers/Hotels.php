@@ -97,18 +97,29 @@ class Hotels extends MY_F_Controller {
     }
 
     public function searchHotels() {
+        // $allotment = false;
         $this->session->unset_userdata('search');
         $this->view_data['is_search'] = 1;
         $packageType = $this->uri->segment(3);
         $package_period_id = null;
         $checkin = null;
         $checkout = null;
+
         if ($packageType == 1) {
-            $checkin = $this->input->get('checkin');
-            $checkout = $this->input->get('checkout');
+            $checkinInput = $this->input->get('checkin');
+            $checkinTime = strtotime($checkinInput);
+            $checkin = date('Y-m-d', $checkinTime);
+            $checkoutInput = $this->input->get('checkout');
+            $checkoutTime = strtotime($checkoutInput);
+            $checkout = date('Y-m-d', $checkoutTime);
         } else {
+            // $allotment = false;
             $package_period_id = $this->input->get('p');
+            $period = $this->package_model->getPackagePeriod($package_period_id);
+            $checkin = $period['period_from'];
+            $checkout = $period['period_to'];
         }
+
         $adults = $this->input->get('a');
 
         $search['packageType'] = $packageType;
@@ -133,21 +144,23 @@ class Hotels extends MY_F_Controller {
                 
                 $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
                 $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
-                $this->hotels[$hotel_id]['main_facilities'] = $this->hotel_model->getFHotelMainFacilities($hotel_id, $this->lang_id);
-
+                $this->hotels[$hotel_id]['facilities'] = $this->hotel_model->getFHotelFacilities($hotel_id, $this->lang_id);
+                
                 $this->hotels[$hotel_id]['rooms'] = $this->getRoomsPerHotelId($hotel_id, $checkin, $checkout, $adults, $packageType, $package_period_id);
                 $this->hotels[$hotel_id]['min_price'] = $this->hotel_model->getFRoomsMinPrice($hotel_id);
                 $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
                 $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
             }
         }
+        // die();
     }
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null, $package_period_id = null) {
         $this->paginateHotels();
-        if (!$checkin && !$checkout) {
-            $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_period_id, $this->conf['per_page'], $this->page, $this->lang_id);
-        } elseif ($checkin && $checkout) {
+        
+        $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType, $package_period_id, $this->conf['per_page'], $this->page, $this->lang_id);
+         
+        if (false) {
             //psakse gia ta package period pou kaliptoyn olo to fasma tou checkin checkout, kai checkare na kaliptoun kathe imera anazitisis
             
             $begin = DateTime::createFromFormat("d/m/Y", $checkin);
@@ -236,7 +249,13 @@ class Hotels extends MY_F_Controller {
                 }
             }
         }
-        return $rooms;
+        if(isset($rooms)){
+            return $rooms;
+        }
+        else{
+            return null;
+        }
+        
     }
 
     public function filterHotels($destination = null, $boards = null, $room_types = null, 
@@ -297,10 +316,33 @@ class Hotels extends MY_F_Controller {
     protected function paginateHotels() {
         $hotelsCount = $this->hotel_model->getFHotelsCount();
         $this->load->library('pagination');
-        $this->conf['base_url'] = base_url('hotels');
+        $this->conf['base_url'] = base_url('hotels/index');
         $this->conf['total_rows'] = $hotelsCount['count'];
         $this->conf['per_page'] = 10;
-        $this->conf['uri_segment'] = 3;
+        $this->conf['uri_segment'] = 4;
+        $this->conf['prefix'] = "?page=";
+         $this->conf['full_tag_open'] = '<nav aria-label="Page navigation"><ul class="pagination">';
+         $this->conf['full_tag_close'] = '</ul></nav>';
+         $this->conf['first_link'] = '&laquo; First';
+         $this->conf['first_tag_open'] = '<li class="prev page">';
+         $this->conf['first_tag_close'] = '</li>';
+         $this->conf['last_link'] = 'Last &raquo;';
+         $this->conf['last_tag_open'] = '<li class="next page">';
+         $this->conf['last_tag_close'] = '</li>';
+         $this->conf['next_link'] = 'Next &rarr;';
+         $this->conf['next_tag_open'] = '<li class="next page">';
+         $this->conf['next_tag_close'] = '</li>';
+         $this->conf['prev_link'] = '&larr; Previous';
+         $this->conf['prev_tag_open'] = '<li class="prev page">';
+         $this->conf['prev_tag_close'] = '</li>';
+         $this->conf['cur_tag_open'] = '<li class="active"><a href="">';
+         $this->conf['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
+         $this->conf['num_tag_open'] = '<li class="page">';
+         $this->conf['num_tag_close'] = '</li>';
+        //  $this->conf['display_pages'] = FALSE;
+        // 
+         $this->conf['anchor_class'] = 'follow_link';
+
         $this->pagination->initialize($this->conf);
         $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
         $this->view_data['links'] = $this->pagination->create_links();

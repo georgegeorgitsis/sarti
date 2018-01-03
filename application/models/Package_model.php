@@ -270,11 +270,12 @@ class Package_model extends CI_Model {
         return FALSE;
     }
 
-    public function editPackagePeriod($packagePeriod) {
-        $this->db->where('package_id', $packagePeriod['package_period_id'])
-        ->update('package_periods', $packagePeriod);
-        if ($this->db->affected_rows() == 1)
+    public function editPackagePeriod($id, $packagePeriod) {
+
+        $this->db->where('package_period_id', $id)->update('package_periods', $packagePeriod);
+        if ($this->db->affected_rows() == 1){
             return TRUE;
+        }
         return FALSE;
     }
 

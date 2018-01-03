@@ -28,9 +28,47 @@ class Facility_model extends CI_Model {
         return FALSE;
     }
 
-    public function getFacilities() {
+    public function getCategories(){
         $qry = $this->db->select('*')
+                ->from('facility_categories')
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
+    public function addCategory($category) {
+        $this->db->insert('facility_categories', $category);
+        if ($this->db->affected_rows() == 1)
+            return $this->db->insert_id();
+        return FALSE;
+    }
+    public function getCategory($id) {
+        $qry = $this->db->select('*')
+                ->from('facility_categories')
+                ->where('id', $id)
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->row_array();
+        return FALSE;
+    }
+    public function editCategory($category) {
+        $this->db->where('id', $category['id'])->update('facility_categories', $category);
+        if ($this->db->affected_rows() == 1)
+            return TRUE;
+        return FALSE;
+    }
+    public function deleteCategory($id) {
+        $this->db->delete('facility_categories', array('id' => $id));
+        if ($this->db->affected_rows() > 0)
+            return true;
+        return false;
+    }
+
+    public function getFacilities() {
+        $qry = $this->db->select('*' )
                 ->from('facilities')
+                ->join('facility_categories', 'facilities.category_id = facility_categories.id', 'left')
                 ->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();

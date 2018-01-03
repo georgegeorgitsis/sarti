@@ -1400,6 +1400,16 @@ class Migration_init extends CI_Migration {
                 'type' => 'INT',
                 'default' => '1',
             ),
+            'early_booking' => array(
+                'type' => 'FLOAT',
+            ),
+            'early_booking_until' => array(
+                'type' => 'DATE',
+            ),
+            'eb_is_active' => array(
+                'type' => 'INT',
+                'default' => '1'
+            )
         ));
         $this->dbforge->add_field('package_created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('package_id', TRUE);
@@ -1423,6 +1433,25 @@ class Migration_init extends CI_Migration {
             )
         );
         $this->db->insert_batch('packages', $data);
+
+
+        $this->dbforge->drop_table('hotel_packages', TRUE);
+        $this->dbforge->add_field(array(
+            'id' => array(
+                'type' => 'INT',
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'hotel_id' => array(
+                'type' => 'INT'
+            ),
+            'package_id' => array(
+                'type' => 'INT'
+            )
+        ));
+        $this->dbforge->add_field('created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('hotel_packages');
 
         // Drop table 'room_locales' if it exists
         $this->dbforge->drop_table('package_locales', TRUE);
@@ -1509,56 +1538,56 @@ class Migration_init extends CI_Migration {
         $data = array(
             array(
                 'package_id' => '2',
-                'period_from' => '2017-08-01',
-                'period_to' => '2017-08-08',
+                'period_from' => '2018-08-01',
+                'period_to' => '2018-08-08',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '2',
-                'period_from' => '2017-08-10',
-                'period_to' => '2017-08-17',
+                'period_from' => '2018-08-10',
+                'period_to' => '2018-08-17',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '2',
-                'period_from' => '2017-08-20',
-                'period_to' => '2017-08-27',
+                'period_from' => '2018-08-20',
+                'period_to' => '2018-08-27',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '3',
-                'period_from' => '2017-08-20',
-                'period_to' => '2017-08-30',
+                'period_from' => '2018-08-20',
+                'period_to' => '2018-08-30',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '3',
-                'period_from' => '2017-08-30',
-                'period_to' => '2017-09-9',
+                'period_from' => '2018-08-30',
+                'period_to' => '2018-09-9',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '3',
-                'period_from' => '2017-09-10',
-                'period_to' => '2017-09-21',
+                'period_from' => '2018-09-10',
+                'period_to' => '2018-09-21',
                 'package_active' => '1'
             ),
              array(
                 'package_id' => '1',
-                'period_from' => '2017-08-01',
-                'period_to' => '2017-08-08',
+                'period_from' => '2018-08-01',
+                'period_to' => '2018-08-08',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '1',
-                'period_from' => '2017-08-10',
-                'period_to' => '2017-08-17',
+                'period_from' => '2018-08-10',
+                'period_to' => '2018-08-17',
                 'package_active' => '1'
             ),
             array(
                 'package_id' => '1',
-                'period_from' => '2017-08-20',
-                'period_to' => '2017-08-27',
+                'period_from' => '2018-08-20',
+                'period_to' => '2018-08-27',
                 'package_active' => '1'
             ),
         );
@@ -1586,12 +1615,6 @@ class Migration_init extends CI_Migration {
             ),
             'special_offer' => array(
                 'type' => 'FLOAT',
-            ),
-            'early_booking' => array(
-                'type' => 'FLOAT',
-            ),
-            'early_booking_until' => array(
-                'type' => 'DATE',
             ),
             'is_active' => array(
                 'type' => 'INT',

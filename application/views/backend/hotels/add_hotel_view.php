@@ -93,15 +93,11 @@
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Facilities</label><br/>
-                        <div class="form-control clearfix" style="height: auto">
-                            <?php foreach ($facilities as $facility) { ?>
-                                <div class="col-md-3" style="border: 1px solid #ddd; margin-right: 5px;">
-                                    <label for="facility-<?= $facility['facility_id']; ?>"><?= $facility['facility_type'] ?>: </label>
-                                    Enable<input id="facility-<?= $facility['facility_id']; ?>" type="checkbox" name="facilities[]" value="<?= $facility['facility_id']; ?>"> - 
-                                    is main?<input id="facility-main-<?= $facility['facility_id']; ?>" type="checkbox" name="facilities_main[]" value="<?= $facility['facility_id']; ?>"><br/>
-                                </div>
-                            <?php } ?>
-                        </div>
+                        <select class="js-select form-control" name="facilities[]" multiple="multiple">
+                            <?php foreach ($facilities as $facility) : ?>
+                                <option value="<?=$facility['facility_id']?>"><?=$facility['facility_type']?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Longitude</label>
@@ -140,3 +136,9 @@
     </section>
 </section>
 
+
+<script>
+    $(window).load(function () {
+        $('.js-select').select2();
+    });
+</script>

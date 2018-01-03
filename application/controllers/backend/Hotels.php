@@ -89,44 +89,20 @@ class Hotels extends MY_Controller {
             $hotelData['package_id'] = $this->input->post('package_id');
             $hotelData['hotel_active'] = $this->input->post('hotel_active');
             $hotelData['hotel_featured'] = $this->input->post('hotel_featured');
+
             $hotelFacilities = $this->input->post('facilities');
-            $hotelFacilitiesMain = $this->input->post('facilities_main');
-
-            /*
-              if ($_FILES['hotel_thumb']['error'] == 0) {
-              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
-              $target_file = $this->upload_dir . $image_name;
-              $uploadOk = 1;
-              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
-              if ($_FILES["hotel_thumb"]["size"] > 500000) {
-              $uploadOk = 0;
-              }
-              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-              $uploadOk = 0;
-              }
-              if ($uploadOk == 0) {
-
-              } else {
-              if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
-              $hotelData['hotel_thumb'] = $image_name;
-              }
-              }
-              }
-             * 
-             */
+            
+            
             $hotel_id = $this->hotel_model->addHotel($hotelData);
 
             if ($hotel_id && is_numeric($hotel_id)) {
                 $addHotelFacilities = array();
                 $addHotelFacilities['hotel_id'] = $hotel_id;
-                foreach ($hotelFacilities as $h_f_key => $h_f) {
+                foreach ($hotelFacilities as $h_f) {
+                    
                     $addHotelFacilities['facility_id'] = $h_f['facility_id'];
-                    if (in_array($h_f['facility_id'], $hotelFacilitiesMain)) {
-                        $addHotelFacilities['is_main'] = 1;
-                    } else {
-                        $addHotelFacilities['is_main'] = 0;
-                    }
+                    $addHotelFacilities['is_main'] = 0;
+
                     $this->hotel_model->addHotelFacilities($addHotelFacilities);
                 }
                 foreach ($hotel_locale as $h_l_key => $h_l) {
@@ -137,7 +113,7 @@ class Hotels extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'hotels');
+            redirect($this->admin_url . 'hotels/editHotel/'. $hotel_id);
         }
     }
 
@@ -209,34 +185,8 @@ class Hotels extends MY_Controller {
             $hotelData['package_id'] = $this->input->post('package_id');
             $hotelData['hotel_active'] = $this->input->post('hotel_active');
             $hotelData['hotel_featured'] = $this->input->post('hotel_featured');
+
             $hotelFacilities = $this->input->post('facilities');
-            $hotelFacilitiesMain = $this->input->post('facilities_main');
-
-            /*
-              if ($_FILES['hotel_thumb']['error'] == 0) {
-              $hotelData = $this->hotel_model->getHotel($hotelId);
-              unlink($this->upload_dir . $hotelData['hotel_thumb']);
-              $image_name = strtotime(date('Y-m-d H:i:s')) . "_" . basename($_FILES["hotel_thumb"]["name"]);
-              $target_file = $this->upload_dir . $image_name;
-              $uploadOk = 1;
-              $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
-              if ($_FILES["hotel_thumb"]["size"] > 500000) {
-              $uploadOk = 0;
-              }
-              if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF") {
-              $uploadOk = 0;
-              }
-              if ($uploadOk == 0) {
-
-              } else {
-              if (move_uploaded_file($_FILES["hotel_thumb"]["tmp_name"], $target_file)) {
-              $hotelData['hotel_thumb'] = $image_name;
-              }
-              }
-              }
-             * 
-             */
 
             $this->hotel_model->editHotel($hotelData);
 
@@ -244,13 +194,9 @@ class Hotels extends MY_Controller {
                 $this->hotel_model->deleteHotelFacilities($hotelData['hotel_id']);
                 $addHotelFacilities = array();
                 $addHotelFacilities['hotel_id'] = $hotelData['hotel_id'];
-                foreach ($hotelFacilities as $h_f_key => $h_f) {
+                foreach ($hotelFacilities as $h_f) {
                     $addHotelFacilities['facility_id'] = $h_f;
-                    if (in_array($h_f, $hotelFacilitiesMain)) {
-                        $addHotelFacilities['is_main'] = 1;
-                    } else {
-                        $addHotelFacilities['is_main'] = 0;
-                    }
+                    $addHotelFacilities['is_main'] = 0;
                     $this->hotel_model->addHotelFacilities($addHotelFacilities);
                 }
 
@@ -262,11 +208,12 @@ class Hotels extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'hotels');
+            redirect($this->admin_url . 'hotels/editHotel/'.$hotelData['hotel_id']);
         }
     }
 
     public function images() {
+        // $this->load->library('imageResize');
         $hotel_id = $this->uri->segment(4);
 
         $this->form_validation->set_rules('images', 'File', 'trim|xss_clean');
@@ -308,11 +255,26 @@ class Hotels extends MY_Controller {
             foreach ($files as $file) {
                 if ($file['error'] == 0) {
                     $original_file_name = $file['name'];
-                    $file_name = $hotel_id . "_" . $i . "_" . strtotime(date("d-m-Y")) . "_" . basename(str_replace(" ", "_", $file['name']));
+                    $file_name = $hotel_id . "_". strtotime(date("Y")) . "_" . basename(str_replace(" ", "_", $file['name']));
                     $target_dir = $this->config->item('upload_dir');
                     $target_file = $target_dir . $file_name;
 
                     if (move_uploaded_file($file['tmp_name'], $target_file)) {
+                        
+                        // $config['image_library'] = 'gd2';
+                        // $config['source_image'] = $target_file;
+                        // $config['create_thumb'] = FALSE;
+                        // $config['maintain_ratio'] = TRUE;
+                        // $config['width']         = 870;
+                        // $config['height']       = 520;
+                        
+                        // $this->load->library('image_lib', $config);
+                        
+                        // if ( ! $this->image_lib->resize())
+                        // {
+                        //         var_dump( $this->image_lib->display_errors());
+                        //         die();
+                        // }
                         $imageData['hotel_id'] = $hotel_id;
                         $imageData['image_name'] = $file_name;
                         $imageData['image_original_name'] = $original_file_name;

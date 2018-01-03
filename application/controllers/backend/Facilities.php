@@ -23,9 +23,76 @@ class Facilities extends MY_Controller {
         $this->showFacilities();
     }
 
+    public function categories(){
+        $categories = $this->facility_model->getCategories();
+        $this->view_data['categories'] = $categories;
+        $this->load->admintemplate('backend/facilities/categories_view', $this->view_data);
+    }
+    public function addCategory() {
+        $this->form_validation->set_rules('category', 'Name', 'required|trim');
+
+        if ($this->form_validation->run() == FALSE) {
+            
+            $this->load->admintemplate('backend/facilities/add_category', $this->view_data);
+        } 
+        else {
+            $category['description'] = $this->input->post('category');
+
+            $id = $this->facility_model->addCategory($category);
+            if ($id && is_numeric($id)) {
+                $this->session->set_flashdata('message', 'Row inserted');
+            } else {
+                $this->session->set_flashdata('error', 'Row problem');
+            }
+            redirect($this->admin_url . 'facilities/editCategory/'. $id);
+        }
+    }
+    public function editCategory() {
+        $this->form_validation->set_rules('category', 'Facility Type', 'required|trim');
+
+        if ($this->form_validation->run() == FALSE) {
+            $id = $this->uri->segment(4);
+            $category = $this->facility_model->getCategory($id);
+
+            $this->view_data['category'] = $category;
+            $this->load->admintemplate('backend/facilities/edit_category', $this->view_data);
+        } else {
+            $id = $this->input->post('id');
+            $category['id'] = $id;
+            $category['description'] = $this->input->post('category');
+
+
+            $this->facility_model->editCategory($category);
+
+            if ($category['id'] && is_numeric($category['id'])) {
+                $this->session->set_flashdata('message', 'Row updated');
+            } else {
+                $this->session->set_flashdata('error', 'Row problem');
+            }
+            redirect($this->admin_url . 'facilities/editCategory/'. $category['id']);
+        }
+    }
+    public function deleteCategory() {
+        $id = $this->uri->segment(4);
+
+        if ($id && is_numeric($id)) {
+            if ($this->facility_model->deleteCategory($id)) {
+                $this->session->set_flashdata('message', 'Row Deleted');
+            } else {
+                $this->session->set_flashdata('error', 'Row Locale Problem');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Row Problem');
+        }
+        redirect($this->admin_url . 'facilities/categories');
+    }
+
+
     public function showFacilities() {
         $facilities = $this->facility_model->getFacilities();
         $this->view_data['facilities'] = $facilities;
+        // var_dump($facilities);
+        // die();
         $this->load->admintemplate('backend/facilities/facilities_view', $this->view_data);
     }
 
@@ -40,6 +107,7 @@ class Facilities extends MY_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             $this->view_data['languages'] = $languages;
+            $this->view_data['categories'] = $this->facility_model->getCategories();
             $this->load->admintemplate('backend/facilities/add_facility_view', $this->view_data);
         } else {
             $facility_locale = array();
@@ -71,6 +139,16 @@ class Facilities extends MY_Controller {
                     }
                 }
             }
+            $category_id = $this->input->post('category_id');
+            if(isset($category_id) && $category_id != 0){
+                $facilityData['category_id'] = $category_id;
+            }
+            $is_main = $this->input->post('is_main');
+            if(isset($is_main) && $is_main == "on"){
+                $facilityData['is_main'] = 1;
+            }
+            
+            
             $facility_id = $this->facility_model->addFacility($facilityData);
 
             if ($facility_id && is_numeric($facility_id)) {
@@ -82,7 +160,7 @@ class Facilities extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'facilities');
+            redirect($this->admin_url . 'facilities/editFacility/'. $facility_id);
         }
     }
 
@@ -100,6 +178,7 @@ class Facilities extends MY_Controller {
             }
             $this->view_data['facility'] = $facilityData;
             $this->view_data['facilityLocale'] = $facilityLocales;
+            $this->view_data['categories'] = $this->facility_model->getCategories();
             $this->view_data['languages'] = $languages;
             $this->load->admintemplate('backend/facilities/edit_facility_view', $this->view_data);
         } else {
@@ -137,6 +216,14 @@ class Facilities extends MY_Controller {
                     }
                 }
             }
+            $category_id = $this->input->post('category_id');
+            if(isset($category_id) && $category_id != 0){
+                $facilityData['category_id'] = $category_id;
+            }
+            $is_main = $this->input->post('is_main');
+            if(isset($is_main) && $is_main == "on"){
+                $facilityData['is_main'] = 1;
+            }
 
             $this->facility_model->editFacility($facilityData);
 
@@ -149,7 +236,7 @@ class Facilities extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'facilities');
+            redirect($this->admin_url . 'facilities/editFacility/'. $facilityData['facility_id']);
         }
     }
 

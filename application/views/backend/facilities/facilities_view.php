@@ -7,8 +7,9 @@
             <table class="table table-striped table-bordered" id="facilities" width="100%">
                 <thead>
                     <tr>
-                        <th>Facility ID</th>
+                        <!-- <th>Facility ID</th> -->
                         <th>Facility Type</th>
+                        <th>Category</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -16,8 +17,13 @@
                     <?php if (isset($facilities) && !empty($facilities)) : ?>
                         <?php foreach ($facilities as $facility): ?>
                             <tr>
-                                <td><?= $facility['facility_id'] ?></td>
+                                
                                 <td><?= $facility['facility_type'] ?></td>
+                                <?php if(isset($facility['description'])):?>
+                                <td><?= $facility['description'] ?></td>
+                                <?php else:?>
+                                <td>-</td>
+                                <?php endif;?>
                                 <td>
                                     <a class='btn btn-info' href='<?= $admin_url . 'facilities/editFacility/' . $facility['facility_id']; ?>'>Edit</a>
                                     |

@@ -35,6 +35,24 @@
                         <?php } ?>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <label>Early Booking (%)</label>
+                    <input type="text" class="form-control" name="early_booking"/>
+                </div>
+                <div class="col-md-12">
+                    <label>Early Booking Until</label>
+                    <input type="text" class="form-control early_booking_until"  name="early_booking_until"/>
+                </div>
+
+                <div class="col-md-12">
+                    <label>Is Early Booking Active</label>
+                    <select name="eb_is_active">
+                        <option value="0" >No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
                 <div class="col-md-12">
                     <div class="col-md-12 form-group">
                         <button type="submit" class="btn btn-success">Add</button>
@@ -45,3 +63,15 @@
     </section>
 </section>
 
+<script type="text/javascript">
+
+    $(window).load(function () {
+        $(".early_booking_until").datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            minDate: new Date(),
+            startDate: new Date()
+        });
+    })
+
+</script>

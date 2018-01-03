@@ -1,0 +1,43 @@
+
+.flex{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.flex-start{
+    justify-content: flex-start;
+}
+
+.flex-end{
+    justify-content: flex-end;
+}
+
+.flex-between{
+    justify-content: space-between;
+}
+
+.flex-around{
+    justify-content: space-around;
+}
+
+.flex-center{
+    justify-content: center;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}

@@ -88,9 +88,12 @@
                     <div class="col-md-12 form-group">
                         <label>Floor</label>
                         <select name="floor" class="form-control">
-                            <option value="basement">basement</option>
-                            <option value="ground_floor">ground floor</option>
-                            <option value="upper_floor" selected="selected">upper floor</option>
+                            <option value="Basement">Basement</option>
+                            <option value="Ground Floor">Ground Floor</option>
+                            <option value="Upper Floor" selected="selected">Upper Floor</option>
+                            <option value="First Floor">First Floor</option>
+                            <option value="Second Floor">Second Floor</option>
+                            <option value="Third Floor">Third Floor</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">
@@ -102,14 +105,11 @@
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Facilities</label><br/>
-                        <div class="form-control">
-                            <?php foreach ($facilities as $facility) { ?>
-                                <label for="facility-<?= $facility['facility_id']; ?>"><?= $facility['facility_type'] ?></label> <input id="facility-<?= $facility['facility_id']; ?>" <?php
-                                if (in_array($facility['facility_id'], $hotelFacilities)) {
-                                    echo "checked='checked'";
-                                }
-                                ?> type="checkbox" name="facilities[]" value="<?= $facility['facility_id']; ?>"> &nbsp; &nbsp;<?php } ?>
-                        </div>
+                        <select class="js-select form-control" name="facilities[]" multiple="multiple">
+                            <?php foreach ($facilities as $facility) : ?>
+                                <option value="<?=$facility['facility_id']?>"><?=$facility['facility_type']?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Min Persons</label>
@@ -150,10 +150,10 @@
                             <?php foreach ($ground_plans as $image) { ?>
                                 <div class="col-md-3">
                                     <div class="file-div clearfix">
-                                        <a target="_blank" href="<?= base_url('assets/uploads/' . $image['ground_plan_image']) ?>">
+                                        <a target="_blank" href="<?= base_url('assets/uploads/ground_plans/' . $image['ground_plan_image']) ?>">
                                             <?= $image['ground_plan_original_image'] ?>
                                         </a>
-                                        <img style="max-width:100px;" src="<?= base_url('assets/uploads/' . $image['ground_plan_image']) ?>"/>
+                                        <img style="max-width:100px;" src="<?= base_url('assets/uploads/ground_plans/' . $image['ground_plan_image']) ?>"/>
                                         <br/><br/>
                                         Select Ground Plan <input type="radio" value="<?= $image['ground_plan_id'] ?>" name="ground_plan"/>
                                     </div>
@@ -175,3 +175,8 @@
         </div>
     </section>
 </section>
+<script>
+    $(window).load(function () {
+        $('.js-select').select2();
+    });
+</script>

@@ -14,10 +14,10 @@
                         <?php foreach ($images as $image) { ?>
                             <div class="col-md-3">
                                 <div class="file-div clearfix">
-                                    <a target="_blank" href="<?= base_url('assets/uploads/' . $image['ground_plan_image']) ?>">
+                                    <a target="_blank" href="<?= base_url('assets/uploads/ground_plans/' . $image['ground_plan_image']) ?>">
                                         <?= $image['ground_plan_original_image'] ?>
                                     </a>
-                                    <img style="max-width:100px;" src="<?= base_url('assets/uploads/' . $image['ground_plan_image']) ?>"/>
+                                    <img style="max-width:100px;" src="<?= base_url('assets/uploads/ground_plans/' . $image['ground_plan_image']) ?>"/>
                                     <br/><br/>
                                     Delete Image? <input type="checkbox" value="1" name="delete_file_<?= $image['ground_plan_id'] ?>"/>
                                 </div>

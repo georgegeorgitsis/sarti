@@ -49,8 +49,8 @@ class MY_F_Controller extends CI_Controller {
         } elseif (!empty($chose_lang)) {
             $this->language = $this->session->userdata('language');
         } else {
-            $this->language = "gr";
-            $this->session->set_userdata('language', 'gr');
+            $this->language = "en";
+            $this->session->set_userdata('language', 'en');
         }
         $this->view_data['lang'] = $this->language;
 

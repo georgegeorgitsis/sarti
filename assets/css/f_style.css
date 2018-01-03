@@ -1,16 +1,23 @@
 body {
-    color: #6B6B6B;
-    background: #f9f9f9;
-    font-family: 'Open sans', sans-serif;
-    padding: 0px !important;
-    margin: 0px !important;
+    color: #0b0b0b;
+    /* background: #f9f9f9; */
+    background-color: #f0f8ff;
+    font-family: 'Raleway', sans-serif;
+    padding: 0;
+    margin: 0;
     font-size: 1.2rem;
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-weight: inherit;
-    margin: 0;
+    margin: 6px 0;
     padding: 0;
 }
+.h1, .h2, .h3, h1, h2, h3{
+    font-family: 'Lato', sans-serif;
+}
+.h4, .h5, .h6, h4, h5, h6{
+    font-family: 'Raleway', sans-serif;
+}
+
 .no-padding {
     padding: 0;
 }
@@ -115,9 +122,9 @@ aside .title:before {
     background-color: #fff;
     margin-bottom: 15px;
     font-weight: 200;
-    -webkit-box-shadow: 1px 1px 4px 0px rgba(56,56,56,1);
+    /* -webkit-box-shadow: 1px 1px 4px 0px rgba(56,56,56,1);
     -moz-box-shadow: 1px 1px 4px 0px rgba(56,56,56,1);
-    box-shadow: 1px 1px 4px 0px rgba(56,56,56,1);
+    box-shadow: 1px 1px 4px 0px rgba(56,56,56,1); */
 
 }
 .each-hotel .main-facility img {
@@ -131,11 +138,12 @@ aside .title:before {
     min-height: 155px;
     padding: 5px 10px;
 }
-.each-hotel .hotel-title h3{
+.each-hotel .hotel-title{
     border-bottom: 1px solid #bebebe;
+}
+.each-hotel .hotel-title h3{
     padding-bottom: 5px;
     padding-left: 15px;
-    padding-top: 5px;
 }
 .each-hotel .location-name {
     color: #60A0CF;
@@ -197,36 +205,6 @@ aside .title:before {
     min-height: 125px;
 }
 
-.flex{
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-
-.flex-col{
-    flex-direction: column;
-}
-
-.flex-start{
-    justify-content: flex-start;
-}
-
-.flex-end{
-    justify-content: flex-end;
-}
-
-.flex-between{
-    justify-content: space-between;
-}
-
-.flex-around{
-    justify-content: space-around;
-}
-
-.flex-center{
-    justify-content: center;
-}
 
 .auto-ml{
     margin-left: auto;
@@ -270,6 +248,9 @@ aside .title:before {
 .icon{
     height: 25px;
 }
+.icon-small{
+    height: 18px;
+}
 
 .people-img{
     
@@ -279,9 +260,57 @@ aside .title:before {
 
 .fixed-carousel{
     background-color: #555555;
-    height: 420px;
+    height: 520px;
     width: 100%;
+    max-width: 1024px;
 }
+
+#main-carousel{
+    width: 100%;
+    height: 520px;
+}
+#main-carousel .item{
+    height: 520px;
+    width: 100%;
+    background-size: cover; 
+    margin: 0px auto; 
+    background-repeat: no-repeat;
+}
+#thumb-carousel{
+    height: 45px;
+}
+#thumb-carousel .item{
+    height: 45px;
+    background-size: cover; 
+    margin: 0px auto; 
+    background-repeat: no-repeat;
+}
+ 
+.owl-theme .owl-nav [class*='owl-'] {
+    transition: all .3s ease;
+}
+.owl-theme .owl-nav [class*='owl-'].disabled:hover {
+    background-color: #D6D6D6;
+}
+#main-carousel.owl-theme {
+    position: relative;
+}
+#main-carousel.owl-theme .owl-next,
+#main-carousel.owl-theme .owl-prev {
+    width: 22px;
+    height: 40px;
+    margin-top: -20px;
+    position: absolute;
+    top: 50%;
+}
+#main-carousel.owl-theme .owl-prev {
+    left: 10px;
+}
+#main-carousel.owl-theme .owl-next {
+    right: 10px;
+}
+  
+
 
 
 .panel-flat{
@@ -446,7 +475,6 @@ span.label-span{
 
 .room-prices{
     background-color: rgb(255, 255, 255);
-    border: solid 1px rgba(206, 206, 206, 0.61);
 }
 
 table.room-prices-table tbody tr td{
@@ -456,3 +484,59 @@ table.room-prices-table tbody tr td{
 .calendar .ui-datepicker-inline{
     width: 100%;
 }
+
+.first-room-row{
+    border-top: 3px solid #0c7abf;
+}
+
+.flex-cell{
+    display: flex;
+    flex-direction: column;
+}
+
+.special_offer_price{
+    font-size: 1.4rem;
+    color: #0c7abf;
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+.before_special_offer_price{
+    color: #747474;
+    font-weight: 300;
+    text-decoration: line-through;
+    align-self: flex-end;
+}
+
+.floor-plan{
+    padding: 6px;
+    max-width: 180px;
+}
+
+.lSPager{
+    max-height: 52px;
+}
+.lSSlideWrapper{
+    height: 520px;
+}
+.lSSlideWrapper ul{
+    height: 100%;
+}
+.sliderItem{
+    background-color: #555555;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.sliderItem img{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.no-margin{
+    margin: 0;
+}
+

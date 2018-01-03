@@ -53,10 +53,10 @@ class Locations extends MY_Controller {
             }
 
             $location_id = $this->location_model->addLocation($locationData);
-            if ($location_id && is_numeric($location_id)) {
+            if ($location_id) {
                 foreach ($location_locale as $p_l_key => $p_l) {
                     $location_locale[$p_l_key]['location_id'] = $location_id;
-                    $this->package_model->addLocationLocale($location_locale[$p_l_key]);
+                    $this->location_model->addLocationLocale($location_locale[$p_l_key]);
                 }
 
                 $this->session->set_flashdata('message', 'Row inserted');
@@ -76,10 +76,11 @@ class Locations extends MY_Controller {
             $locationData = $this->location_model->getLocation($locationId);
             $tempLocationLocales = $this->location_model->getLocationLocales($locationId);
             $locationLocales = array();
-            foreach ($tempLocationLocales as $p_l_key => $p_l) {
-                $locationLocales[$p_l['lang_id']] = $p_l;
+            if($tempLocationLocales && count($tempLocationLocales) > 0){
+                foreach ($tempLocationLocales as $p_l_key => $p_l) {
+                    $locationLocales[$p_l['lang_id']] = $p_l;
+                }
             }
-
 
             $this->view_data['location'] = $locationData;
             $this->view_data['locationLocales'] = $locationLocales;
@@ -99,11 +100,13 @@ class Locations extends MY_Controller {
 
             $this->location_model->editLocation($locationData);
 
-            if ($locationData['location_id'] && is_numeric($locationData['location_id'])) {
+            if ($locationData['location_id']) {
                 foreach ($location_locale as $p_l_key => $p_l) {
                     $location_locale[$p_l_key]['location_id'] = $locationData['location_id'];
-                    $this->location_model->editLocationLocale($location_locale[$p_l_key]);
+                    var_dump($this->location_model->editLocationLocale($location_locale[$p_l_key]));
+                    var_dump($location_locale[$p_l_key]);
                 }
+                die();
                 $this->session->set_flashdata('message', 'Row updated');
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
