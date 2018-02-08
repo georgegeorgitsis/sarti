@@ -206,6 +206,29 @@ class Package_model extends CI_Model {
         return false;
     }
 
+    // public function getPeriodsForDatesPerPackage($checkin = null, $checkout = null, $package_id) {
+    //     $this->db->select('*')
+    //             ->from('package_periods')
+    //             ->join('packages', 'packages.package_id=package_periods.package_id')
+    //             ->where('package_periods.package_id', $package_id);
+
+    //     if($checkin && $checkout){
+    //         if ($packageType == 1 ) {
+    //             $this->db->where('package_periods.period_from <= ', $checkin);
+    //             $this->db->where('package_periods.period_to >= ', $checkout);
+    //         }
+    //         else{
+    //             $this->db->where('package_periods.period_from = ', $checkin);
+    //             $this->db->where('package_periods.period_to = ', $checkout);
+    //         }
+    //     }
+
+    //     $qry = $this->db->get();
+    //     if ($qry->num_rows() > 0)
+    //         return $qry->result_array();
+    //     return false;
+    // }
+
     public function getPeriodsPerPackage($packageId) {
         $qry = $this->db->select('*')
                 ->from('package_periods')

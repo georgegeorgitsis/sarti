@@ -7,7 +7,7 @@
             <th>Occupants</th>
             <th>Price</th>
             <th>Request a reservation</th>
-        </tr>
+        </tr> 
     </thead>
     <tbody>
     <?php foreach ($hotel_rooms as $room): ?>

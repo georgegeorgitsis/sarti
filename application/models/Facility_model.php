@@ -22,6 +22,8 @@ class Facility_model extends CI_Model {
                 ->from('facilities')
                 ->join('facility_locales', 'facility_locales.facility_id=facilities.facility_id')
                 ->where('facility_locales.lang_id', $lang_id)
+                ->order_by("facilities.order", "asc")
+                ->order_by("facilities.facility_type", "asc")
                 ->get();
         if ($qry->num_rows() > 0)
             return $qry->result_array();

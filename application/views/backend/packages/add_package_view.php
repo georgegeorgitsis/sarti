@@ -3,6 +3,7 @@
         <div class="row">
             <form method="POST" action="<?= $this->config->item('admin_url') . 'packages/addPackage' ?>">
                 <div class="col-md-12">
+                    <div class="row">
                     <div class="col-md-12 form-group">
                         <label>Package Type</label>
                         <input class="form-control" type="text" name="package_type" value="<?php echo set_value('package_type'); ?>"/>
@@ -15,6 +16,8 @@
                             <option value="3">10 Days</option>
                         </select>
                     </div>
+                    </div>
+                    <div class="row">
                     <div class="tabs">
                         <ul>
                             <?php if (isset($languages) && !empty($languages)) { ?>
@@ -33,6 +36,7 @@
                                 </div>
                             <?php } ?>
                         <?php } ?>
+                    </div>
                     </div>
                 </div>
 

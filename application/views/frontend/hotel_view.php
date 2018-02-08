@@ -71,7 +71,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 sticky">
 
             <div class="col-md-12 no-padding">
                 <div class="md-box accommodation-search clearfix">
@@ -160,15 +160,30 @@
                     Facilities
                 </h3>
                 <div class="col-md-12 no-padding flex flex-wrap">
-                    <?php foreach ($hotel_facilities as $hotel_facility): ?>
-                        <span class="icon-sign flex">
-                            <?php if(isset($hotel_facility['facility_icon']) && trim($hotel_facility['facility_icon']) != ""): ?>
-                            <span class="flex flex-center">
-                                <img class="icon" src="<?= base_url('assets/uploads/facilities/'.$hotel_facility['facility_icon']) ?>" alt="Facility icon">
-                            </span>
-                            <?php endif; ?>
-                            <h5><?= $hotel_facility['facility_name'] ?> </h5>
-                        </span>
+                    <?php foreach ($hotel_facilities as $hotel_facility_cat): ?>
+                        <div class="hv_facility_categories">
+                            <ul id="accordion_<?= $hotel_facility_cat['id'] ?>">
+                                <li>
+                                    <a data-toggle="collapse" 
+                                        data-parent="#accordion_<?= $hotel_facility_cat['id'] ?>" href="#sub_<?= $hotel_facility_cat['id'] ?>">
+                                        <h4>
+                                            <?= $hotel_facility_cat['description'] ?> 
+                                        </h4>
+                                    </a>
+                                </li>
+                                <ul class="sub-list collapse" id="sub_<?= $hotel_facility_cat['id'] ?>">
+                                <?php foreach($hotel_facility_cat['facilities'] as $fac): ?>
+                                <li class="flex flex-start">
+                                <?php if(isset($fac['facility_icon']) && trim($fac['facility_icon']) != ""): ?>
+                                    <img class="icon" src="<?= base_url('assets/uploads/facilities/'.$fac['facility_icon']) ?>" alt="Facility icon">
+                                <?php endif; ?>
+                                <h5><?= $fac['facility_name'] ?> </h5>
+                                </li>
+                                <?php endforeach;?>
+                                </ul>
+                            </ul>
+                        </div>
+                        
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -176,7 +191,102 @@
 
             <?php if(isset($hotel_rooms) && $hotel_rooms):?>
             <div class="row mt">
-                <?php require_once(VIEWPATH . 'frontend/price_list.php'); ?>                
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <?php foreach($hotel_rooms as $room):?>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading_<?= $room['room_id']?>">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?= $room['room_id']?>" 
+                                    aria-expanded="true" aria-controls="collapse_<?= $room['room_id']?>">
+                                    <?= ucfirst($room['room_type_name']) ?> - 
+                                    <?php if( isset($room['floor']) && $room['floor'] == 'basement' ):?>   
+                                    <?= ucfirst($room['floor']) ?> 
+                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'ground_floor' ):?> 
+                                    Ground Floor
+                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'upper_floor' ):?>
+                                    Upper Floor
+                                    <?php endif;?>
+                                </a>
+                            </h4>
+                            </div>
+                            <div id="collapse_<?= $room['room_id']?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_<?= $room['room_id']?>">
+                            <div class="panel-body">
+                            <table class="table table-responsive table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Nights</th>
+                                    <th>Adults</th>
+                                    <th>Price</th>
+                                    <th>Request a reservation</th>
+                                </tr> 
+                            </thead>
+                            <tbody>
+                            <?php if(isset($room['has_prices']) && $room['has_prices']): ?>
+                                <?php foreach ($room['available_periods'] as $period_key => $room_period): ?>
+                                    <?php if(($room_period['has_prices'] && (isset($room_period['all_prices'][0]) 
+                                        && $room_period['all_prices'][0]['price'] >0))):?>
+                                        <?php if($room_period['has_prices']): ?>
+                                            <td >
+                                                <span>
+                                                    <?= date("d-m-y", strtotime($room_period['period_from'])) ." - ". date("d-m-y", strtotime($room_period['period_to'])) ?>
+                                                </span>
+                                            </td>
+                                            <td >
+                                                <?php if($room_period['is_allotment']):?>
+                                                
+                                                <?php else:?>
+                                                <span>
+                                                    <?php 
+                                                        $date_from = new DateTime($room_period['period_from']); 
+                                                        $date_to = new DateTime($room_period['period_to']);
+                                                    ?>
+                                                    <?= $date_to->diff($date_from)->format("%a") ?> 
+                                                </span>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
+                                        <?php if(isset($room_period['all_prices'][0]) && $room_period['all_prices'][0]['price'] >0): ?>
+                                            <td>
+                                                <select class="adults_select" name="adults_select" id="adults_select_<?= $room['room_id']?>" 
+                                                    data-room-id="<?= $room['room_id']?>" data-period-id="<?=$room_period['package_period_id']?>">
+                                                    <?php for($j = $room['min_adults']; $j <= $room['max_adults']; $j++): ?>
+                                                        <option value="<?=$j?>"><?=$j?></option>
+                                                    <?php endfor;?>
+                                                </select>
+                                            </td>
+                                            
+                                            <td class="flex-cell" id="price<?= $room['room_id']?>_<?=$room_period['package_period_id']?>">
+                                                <?php if(isset($room_period['all_prices'][0]['special_offer']) 
+                                                    && $room_period['all_prices'][0]['special_offer']>0): ?>
+                                                <span class="special_offer_price">
+                                                    <?= ($room_period['all_prices'][0]['price']) - ($room_period['all_prices'][0]['price']*$room_period['all_prices'][0]['special_offer']/100) ?>
+                                                    &euro;
+                                                </span>
+                                                <span class="before_special_offer_price"> 
+                                                    <?= $room_period['all_prices'][0]['price'] ?> &euro;
+                                                </span>
+                                                <?php else:?>
+                                                    <?= $room_period['all_prices'][0]['price'] ?> &euro;
+                                                <?php endif;?>    
+                                            </td>
+                                        <?php endif;?>
+                                        <td>
+                                            <a href="<?= base_url('hotel/requestBooking/'. $room['room_id'].'/'.$room_period['package_period_id']) ?>" type="button" class="btn btn-success small-btn">
+                                                Request
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php endif;?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            </tbody>
+                            </table>
+                            </div>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                </div>            
             </div>
             <?php endif; ?>
         </div>
@@ -188,7 +298,7 @@
     <?php if (isset($hotel['latitude'] ) && isset($hotel['longitude']) && trim($hotel['latitude']) != "" && trim($hotel['longitude']) != ""):?>
         var hotel_lat = <?=$hotel['latitude']?>;
         var hotel_lng = <?=$hotel['longitude']?>;
-        var zoom = 14;
+        var zoom = 16;
     <?php else: ?>
         var hotel_lat = 40.0981789;
         var hotel_lng = 23.973239;
@@ -210,6 +320,27 @@
     }
 
     $(document).ready(function() {
+
+        $('.adults_select').change(function(){
+            var room = $(this).data('room-id');
+            var period = $(this).data('period-id');
+            var adults = $(this).val();
+            var query = new Object();
+            query.room = room;
+            query.period = period;
+            query.adults = adults;
+
+            $.ajax({
+                type: "GET",
+                url: "<?= base_url('hotel/getPeriodPriceForAdults') ?>",
+                data: query
+            }).done(function(data) {
+                console.log(data);
+                $('#price'+room+"_"+period).empty().append(data);
+
+            });
+        });
+
         $('.datatables').DataTable();
 
         $('#imageGallery').lightSlider({
@@ -279,6 +410,21 @@
                 $('#p10').empty().append(data);
 
             });
+        });
+        $('#10per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
+        });
+        $('#7per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
+        });
+        $('#allot-per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
         });
     });
 

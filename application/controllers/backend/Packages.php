@@ -96,7 +96,7 @@ class Packages extends MY_Controller {
             $packageData['is_package_type'] = $this->input->post('is_package_type');
             
             $packageData['early_booking'] = $this->input->post('early_booking');
-            $packageData['early_booking_until'] = $this->input->post('early_booking_until');
+            $packageData['early_booking_until'] = date('Y-m-d', strtotime($this->input->post('early_booking_until')));
             $packageData['eb_is_active'] = $this->input->post('eb_is_active');
 
             $package_locale = array();
@@ -118,7 +118,7 @@ class Packages extends MY_Controller {
             } else {
                 $this->session->set_flashdata('error', 'Row problem');
             }
-            redirect($this->admin_url . 'packages/seditPackage/'.$packageData['package_id']);
+            redirect($this->admin_url . 'packages/editPackage/'.$packageData['package_id']);
         }
     }
 
@@ -163,8 +163,8 @@ class Packages extends MY_Controller {
         } else {
             $packagePeriod = array();
             $packagePeriod['package_id'] = $this->input->post('package_id');
-            $packagePeriod['period_from'] = $this->input->post('period_from');
-            $packagePeriod['period_to'] = $this->input->post('period_to');
+            $packagePeriod['period_from'] = date('Y-m-d', strtotime($this->input->post('period_from')));
+            $packagePeriod['period_to'] = date('Y-m-d', strtotime($this->input->post('period_to')));
             $packagePeriod['package_active'] = $this->input->post('package_active');
 
             if ($this->package_model->addPackagePeriod($packagePeriod)) {

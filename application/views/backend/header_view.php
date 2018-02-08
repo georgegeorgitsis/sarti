@@ -24,7 +24,7 @@
         <?php } ?>
         
         <script src="<?= base_url('assets/js/jquery.js'); ?>"></script>
-        <script src="<?= base_url('assets/js/jquery-1.8.3.min.js'); ?>"></script>
+        <!-- <script src="<?= "" //base_url('assets/js/jquery-1.8.3.min.js'); ?>"></script> -->
         <script src="<?= base_url('assets/js/jquery-ui-1.9.2.custom.min.js'); ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/js/bootstrap.min.js'); ?>"></script>
         <script src="<?= base_url('assets/js/jquery.nicescroll.js'); ?>" type="text/javascript"></script>

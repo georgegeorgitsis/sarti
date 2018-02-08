@@ -3,6 +3,7 @@
         <div class="row">
             <form method="POST" action="<?= $this->config->item('admin_url') . 'packages/addPackagePeriod' ?>">
                 <div class="col-md-12">
+                <div class="row">
                     <div class="col-md-12 form-group">
                         <label>Package</label>
                         <select name="package_id" class="form-control">
@@ -19,6 +20,8 @@
                         </select>
                     </div>
                 </div>
+                </div>
+                
                 <div class="col-md-12">
                     <div class="col-md-12 form-group">
                         <label>Period From</label>

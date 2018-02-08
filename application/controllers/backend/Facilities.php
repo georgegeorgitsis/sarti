@@ -139,6 +139,12 @@ class Facilities extends MY_Controller {
                     }
                 }
             }
+
+            $fac_order = $this->input->post('order');
+            if(isset($fac_order) && $fac_order >= 0){
+                $facilityData['order'] = $fac_order;
+            }
+
             $category_id = $this->input->post('category_id');
             if(isset($category_id) && $category_id != 0){
                 $facilityData['category_id'] = $category_id;
@@ -216,6 +222,12 @@ class Facilities extends MY_Controller {
                     }
                 }
             }
+
+            $fac_order = $this->input->post('order');
+            if(isset($fac_order) && $fac_order >= 0){
+                $facilityData['order'] = $fac_order;
+            }
+
             $category_id = $this->input->post('category_id');
             if(isset($category_id) && $category_id != 0){
                 $facilityData['category_id'] = $category_id;

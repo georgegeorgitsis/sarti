@@ -93,7 +93,14 @@ class MY_F_Controller extends CI_Controller {
 
     protected function getRoomTypes() {
         $roomTypes = $this->room_model->getRoomTypes();
-        $this->view_data['room_types'] = $roomTypes;
+        $room_types_arr = [];
+        foreach($roomTypes as $room_type){
+            $first_word = explode(' ',trim($room_type['room_type_name']));
+            if(!in_array($first_word[0], $room_types_arr)){
+                array_push($room_types_arr, $first_word[0]);
+            }
+        }
+        $this->view_data['room_types'] = $room_types_arr;
     }
 
     protected function getBoards() {

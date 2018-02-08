@@ -47,6 +47,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
+                            <label> Order (0-1000)</label>
+                            <input class="form-control" type="text" name="order" value="<?= $facility['order'] ?>" required="required"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
                             <label>Is Main</label>
                             <input type="checkbox" name="is_main" <?= ($facility['is_main'] == 1) ? "checked" : "" ?> />
                         </div>

@@ -91,9 +91,6 @@
                             <option value="Basement">Basement</option>
                             <option value="Ground Floor">Ground Floor</option>
                             <option value="Upper Floor" selected="selected">Upper Floor</option>
-                            <option value="First Floor">First Floor</option>
-                            <option value="Second Floor">Second Floor</option>
-                            <option value="Third Floor">Third Floor</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">

@@ -9,18 +9,22 @@
 
         <title>Sarti.gr</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:300,400,500&amp;subset=latin-ext" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <!-- <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:300,400,500&amp;subset=latin-ext" rel="stylesheet"> -->
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/> -->
+        <link href="<?= base_url('assets/css/fonts.css'); ?>" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.min.css'); ?>">
         <link href="<?= base_url('assets/css/bootstrap-theme_f.min.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/front/flexbox.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />    
         <link href="<?= base_url('assets/css/jquery-ui-1.10.4.min.css'); ?>" rel="stylesheet"/>
         <link href="<?= base_url('assets/css/jCalendar.css'); ?>" rel="stylesheet"/>
+        <link href="<?= base_url('assets/css/select2.min.css'); ?>" rel="stylesheet"/>
 
         <link href="<?= base_url('assets/css/vendor/lightslider.min.css'); ?>" rel="stylesheet"/>
         <link href="<?= base_url('assets/css/vendor/lightgallery.min.css'); ?>" rel="stylesheet"/>
+        <link href="<?= base_url('assets/css/vendor/bootstrap-slider.min.css'); ?>" rel="stylesheet"/>
 
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/vendor/datatables/datatables.min.css'); ?>">
   
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.min.css'); ?>"/>
 

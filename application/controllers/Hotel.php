@@ -24,6 +24,36 @@ class Hotel extends MY_F_Controller {
         $this->hotel_id = $this->uri->segment(2);
     }
 
+    public function getPeriodPriceForAdults(){
+        $roomID = $this->input->get('room');
+        $periodID = $this->input->get('period');
+        $adults = $this->input->get('adults');
+
+        $room_price = $this->room_model->getRoomPeriodPrices($roomID, $periodID, $adults);
+        $html = '';
+        if($room_price){
+            if($room_price['special_offer']>0){
+                $html = '<span class="special_offer_price">
+                '.(($room_price['price']) - 
+                ($room_price['price']*$room_price['special_offer']/100)).'
+                &euro;
+            </span>
+            <span class="before_special_offer_price"> 
+                '. $room_price['price'] .' &euro;
+            </span>';
+            }
+            else{
+                $html = $room_price['price'] .' &euro;';
+            }
+        }
+        else{
+            $html = "Not available";
+        }
+
+        echo $html;
+
+    }
+
     public function index() {
         $this->loadGalleryStylesheets();
         $this->loadGalleryScripts();
@@ -31,7 +61,7 @@ class Hotel extends MY_F_Controller {
         $hotel = $this->hotel_model->getFHotel($this->hotel_id, $this->lang_id);
         $hotel_image = $this->hotel_model->getFHotelImage($this->hotel_id);
         $hotel_image_thumbs = $this->hotel_model->getFHotelImageThumbs($this->hotel_id);
-        $hotel_facilities = $this->hotel_model->getFHotelFacilities($this->hotel_id, $this->lang_id);
+        $hotel_facilities = $this->hotel_model->getFHotelFacilitiesAndCategories($this->hotel_id, $this->lang_id, true);
         $hotel_rooms = $this->hotel_model->getFRooms($this->hotel_id);
         $location_locales = $this->location_model->getLocationLocalesForLang($hotel['location_id'], $this->lang_id);
         $hotel_images = $this->hotel_model->getFHotelImages($this->hotel_id);
