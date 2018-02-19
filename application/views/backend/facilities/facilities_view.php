@@ -9,6 +9,9 @@
                     <tr>
                         <!-- <th>Facility ID</th> -->
                         <th>Facility Type</th>
+                        <th>Order</th>
+                        <th>Is Main</th>
+                        <th>Main Order</th>
                         <th>Category</th>
                         <th>Action</th>
                     </tr>
@@ -19,6 +22,9 @@
                             <tr>
                                 
                                 <td><?= $facility['facility_type'] ?></td>
+                                <td><?= $facility['order'] ?></td>
+                                <td><?= $facility['is_main'] ?></td>
+                                <td><?= $facility['main_order'] ?></td>
                                 <?php if(isset($facility['description'])):?>
                                 <td><?= $facility['description'] ?></td>
                                 <?php else:?>

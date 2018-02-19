@@ -1,45 +1,62 @@
+.offer-banner{
+    padding: 6px 32px;
+    position: absolute;
+    font-size: 1.1em;
+    text-align: center;
+    text-transform: uppercase;
+    background: #C2872F;
+    left: -4%;
+    transform: rotate(-45deg);
+    top: 15%;
+    color: #F2F2F2;
+    z-index: 99999;
+}
 .bg-light-cyan{
-    background-color: #5BA1D2;
+    background-color: #62A1CD;
     color: #fefefe;
 }
 .bg-cyan{
-    background-color: #3B87BD;
+    background-color: #5992BA;
     color: #fefefe;
 }
 .bg-light-green{
-    background-color: #1de047;
+    background-color: #27BE92;
     color: #1b1b1b;
 }
 .bg-green{
-    background-color: #18d240;
+    background-color: #21A37D;
     color: #fefefe;
 }
 .bg-light-orange{
-    background-color: #FFBC65; 
+    background-color: #FD9B3A; 
     color: #1b1b1b;
 }
 .bg-orange{
-    background-color: #FF9D1D;
+    background-color: #E38B34;
     color: #1b1b1b;
 }
 
+.btn-info:hover, .btn-info:focus{
+    background-color: #62A1CD;
+}
+
 .txt-light-cyan{
-    color: #5BA1D2;
+    color: #62A1CD;
 }
 .txt-cyan{
-    color: #3B87BD;
+    color: #5992BA;
 }
 .txt-light-green{
-    color: #1de047;
+    color: #27BE92;
 }
 .txt-green{
-    color: #18d240;
+    color: #21A37D;
 }
 .txt-light-orange{
-    color: #FFBC65;
+    color: #FD9B3A;
 }
 .txt-orange{
-    color: #FF9D1D;
+    color: #E38B34;
 }
 a:focus, a:hover {
     text-decoration: none;
@@ -47,7 +64,7 @@ a:focus, a:hover {
 body {
     color: #0b0b0b;
     /* background: #f9f9f9; */
-    background-color: #f4f4f4;
+    background-color: #fcfcfc;
     font-family: 'Lato', sans-serif;
     padding: 0;
     margin: 0;
@@ -76,6 +93,11 @@ body {
 .no-margin{
     margin: 0;
 }
+.mx-2{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
 .btn {
     background-image: none;
     border: none;
@@ -83,6 +105,10 @@ body {
 }
 .bg-white {
     background-color: #fff;
+}
+
+.p-14{
+    padding: 14px 8px;
 }
 
 
@@ -98,12 +124,13 @@ body {
     color: #60a0cf;
 }
 .hotels-count {
-    background-color: #fff;
-    padding: 8px 0px;
+    /* background-color: #fff; */
+    margin-bottom: 10px;
+    padding: 9px 2px;
     min-height: 44px;
     text-align: center;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
 }
 .accommodation-search {
     padding: 5px;
@@ -152,22 +179,31 @@ aside .title:before {
 
 /* HOTELS LIST */
 .hotels-sorting {
-    background-color: #fff;
+    /* background-color: #fff; */
     margin-bottom: 10px;
-    padding: 8px 15px;
+    padding: 16px 2px;
 }
 .md-box{
-    -webkit-box-shadow: 1px 2px 4px #a0a0a0;
-    -moz-box-shadow: 1px 2px 4px #a0a0a0;
-    box-shadow: 1px 2px 4px #a0a0a0;
+    box-shadow: 0px 1px 12px #c4c4c4;
+    -webkit-box-shadow: 0px 1px 12px #c4c4c4;
+    -moz-box-shadow: 0px 1px 12px #c4c4c4;
 }
 .each-hotel {
-    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+    background-color: #fbfbfb;
     margin-bottom: 15px;
     font-weight: 200;
-    box-shadow: 1px 2px 4px #a0a0a0;
-    -webkit-box-shadow: 1px 2px 4px #a0a0a0;
-    -moz-box-shadow: 1px 2px 4px #a0a0a0;
+    box-shadow: 0px 1px 12px #c4c4c4;
+    -webkit-box-shadow: 0px 1px 12px #c4c4c4;
+    -moz-box-shadow: 0px 1px 12px #c4c4c4;
+
+}
+.each-hotel:hover {
+    background-color: #fff;
+    box-shadow: 0px 1px 18px #c4c4c4;
+    -webkit-box-shadow: 0px 1px 18px #c4c4c4;
+    -moz-box-shadow: 0px 1px 18px #c4c4c4;
 
 }
 .each-hotel .main-facility img {
@@ -179,8 +215,9 @@ aside .title:before {
     flex-direction: column;
 }
 .hotels-main-image img {
-    max-width: 100%;
-    max-height: 100%; 
+    height: 252px;
+    object-fit: cover;
+    width: 100%;
     margin: auto;  
 }
 .hotel-box-wrapper {
@@ -210,7 +247,7 @@ aside .title:before {
     margin-top: 5px;
 }
 .each-hotel .read-more a {
-    color: #60A0CF;
+    color: #5992BA;
 }
 .each-hotel .hotel-title a {
     display: block;
@@ -231,7 +268,7 @@ aside .title:before {
     border-radius: 0;
     background-image: none;
     box-shadow: 0;
-    border-bottom: 5px solid #64a1fd;
+    border-bottom: 5px solid #5992BA;
 }
 
 .navbar-flat li{
@@ -244,7 +281,7 @@ aside .title:before {
 
 .navbar-flat li.active a{
     color: #fff;
-    background-color: #64a1fd;
+    background-color: #5992BA;
 }
 
 .header-lrg{
@@ -710,7 +747,7 @@ table.room-prices-table tbody tr td{
 }
 
 .search-display{
-    padding: 6px 12px;
+    padding: 8px 2px;
     font-size: 1.4em;
     margin: 0;
 }

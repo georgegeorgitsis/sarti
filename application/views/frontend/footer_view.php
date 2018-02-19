@@ -27,6 +27,13 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
+<script>
+    $(document).ready(function() {
+        $('.loader-wrapper').hide();
+
+    });
+</script>
+
 
 </body>
 </html>

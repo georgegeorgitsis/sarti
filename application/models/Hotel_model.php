@@ -1,16 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Hotels
- *
- * @author George-pc
- */
 class Hotel_model extends CI_Model {
 
     public function __construct() {
@@ -93,7 +82,7 @@ class Hotel_model extends CI_Model {
                 ->where('hotels.hotel_active', 1)
                 ->where('room_package_prices.price >', 0)
                 ->where('room_package_prices.is_active ', 1);
-                
+
         if (isset($packageType)) {
             $this->db->where('packages.is_package_type', $packageType);
         }
@@ -123,6 +112,7 @@ class Hotel_model extends CI_Model {
             return $qry->row_array();
         return FALSE;
     }
+
 
     public function getFHotels($checkin = null, $checkout = null, $adults = null, $packageType = null, 
         $limit = null, $start = null, $lang_id) {
@@ -162,9 +152,6 @@ class Hotel_model extends CI_Model {
             $this->db->limit($limit, $start);
         }
         $qry = $this->db->get();
-
-        // echo $this->db->last_query();
-        // die();
         
         if ($qry->num_rows() > 0)
             return $qry->result_array();
@@ -174,12 +161,14 @@ class Hotel_model extends CI_Model {
     public function getFRoomsPerCriteria($hotel_id, $checkin = null, $checkout = null, $adults = null, 
         $packageType = null) {
         $this->db->select('*')
-                ->from('rooms')
-                ->where('rooms.hotel_id', $hotel_id)
-                ->where('rooms.room_active', 1)
-                ->join('room_types', 'rooms.room_type_id=room_types.room_type_id', 'inner')
+                ->from('room_package_prices')
+                ->join('rooms', 'rooms.room_id=room_package_prices.room_id', 'inner')
+                ->join('package_periods', 'package_periods.package_period_id=room_package_prices.package_period_id', 'inner')
                 ->join('packages', 'rooms.room_package_id=packages.package_id', 'inner')
-                ->join('package_periods', 'package_periods.package_id=packages.package_id', 'inner');
+                ->join('room_types', 'rooms.room_type_id=room_types.room_type_id', 'inner')
+                ->where('room_package_prices.price != 0')
+                ->where('rooms.hotel_id', $hotel_id)
+                ->where('rooms.room_active', 1);
 
         if ($packageType) {
             $this->db->where('packages.is_package_type', $packageType);
@@ -196,16 +185,19 @@ class Hotel_model extends CI_Model {
             }
         }
 
-        // if ($adults) {
-        //     // $this->db->where('rooms.min_adults <=', $adults);
-        //     // $this->db->where('rooms.max_adults >=', $adults);
-        //     $this->db->where('room_package_prices.adults', $adults);
-        // }
+        if ($adults) {
+            // $this->db->where('rooms.min_adults <=', $adults);
+            // $this->db->where('rooms.max_adults >=', $adults);
+            $this->db->where('room_package_prices.adults', $adults);
+        }
+
+        $this->db->order_by('room_package_prices.price', 'ASC');
 
         $qry = $this->db->get();
         
-        if ($qry->num_rows() > 0)
+        if ($qry->num_rows() > 0){
             return $qry->result_array();
+        }
         return FALSE;
     }
 
@@ -223,7 +215,6 @@ class Hotel_model extends CI_Model {
                 ->order_by('room_package_prices.price', 'ASC')
                 ->limit(1)
                 ->get();
-        // var_dump($qry->row_array());
         
         if ($qry->num_rows() > 0)
             return $qry->row_array();
@@ -286,10 +277,76 @@ class Hotel_model extends CI_Model {
         return false;
     }
 
-    
+    public function getFHotelsFiltered1($hotels_array, $destination = null, $boards = null, $room_types = null, 
+        $facilities = null, $sorting_title = null, $sorting_price = null, $floors=null,
+        $limit=null, $start=null) {
+        $this->db->select('DISTINCT(hotels.hotel_id)')
+                ->from('room_package_prices')
+                ->join('rooms', 'rooms.room_id=room_package_prices.room_id', 'inner')
+                ->join('package_periods', 'package_periods.package_period_id=room_package_prices.package_period_id', 'inner')
+                ->join('packages', 'rooms.room_package_id=packages.package_id', 'inner')
+                ->join('room_types', 'rooms.room_type_id=room_types.room_type_id', 'inner')
+                ->join('hotels', 'hotels.hotel_id = rooms.hotel_id')
+                ->where('hotels.hotel_active', 1)
+                ->where('room_package_prices.price >', 0)
+                ->where_in('hotels.hotel_id', $hotels_array);
+        
+        if ($destination) {
+            $this->db->where('hotels.location_id', $destination);
+        }
+        if($floors){
+            $this->db->where_in('rooms.floor', $floors);
+        }
+        if ($boards) {
+            $this->db->where_in('rooms.board_id', $boards);
+        }
+        if ($room_types) {
+            $this->db->where('(room_types.room_type_name LIKE "%'.$room_types[0].'%" ESCAPE "!")' );
+            if(count($room_types) > 1){
+                for($i = 1; $i < count($room_types); $i++){
+                    $this->db->or_where('(room_types.room_type_name LIKE "%'.$room_types[$i].'%" ESCAPE "!")' );
+                }
+            }
+        }
+        if ($facilities) {
+            $this->db->join('hotel_facilities', 'hotels.hotel_id=hotel_facilities.hotel_id');
+            $this->db->where_in('hotel_facilities.facility_id', $facilities);
+        }
+
+        if(isset($sorting_price) || isset($sorting_title)){
+            if($sorting_title == "title-asc"){
+                $this->db->order_by('hotel_name', 'asc');
+            }
+            else if($sorting_title == "title-desc"){
+                $this->db->order_by('hotel_name', 'desc');
+            }
+            if($sorting_price == "price-asc"){
+                $this->db->order_by('room_package_prices.price', 'asc');
+            }
+            else if($sorting_price == "price-desc"){
+                $this->db->order_by('room_package_prices.price', 'desc');
+            }
+
+        }
+        else{
+            $this->db->order_by('hotel_name', 'asc');
+        }
+
+        if(isset($limit) && isset($start)){
+            $this->db->limit($limit, $start);
+        }
+
+        $qry = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
 
     public function getFHotelsFiltered($hotels_array, $destination = null, $boards = null, $room_types = null, 
-        $facilities = null, $sorting_title = null, $sorting_price = null, $sorting_loc=null, $floors=null) {
+        $facilities = null, $sorting_title = null, $sorting_price = null, $floors=null,
+        $limit=null, $start=null) {
         $this->db->select('DISTINCT(hotels.hotel_id)')
                 ->from('hotels')
                 ->where('hotels.hotel_active', 1)
@@ -298,7 +355,7 @@ class Hotel_model extends CI_Model {
         if ($destination) {
             $this->db->where('hotels.location_id', $destination);
         }
-        if ($boards || $room_types || $facilities || $sorting_price == "price-asc" || $sorting_price == "price-desc" || $floors) {
+        if ($room_types || $facilities || $sorting_price == "price-asc" || $sorting_price == "price-desc" || $floors) {
             $this->db->join('rooms', 'rooms.hotel_id=hotels.hotel_id');
             $this->db->join('room_types', 'rooms.room_type_id=room_types.room_type_id');
         }
@@ -309,39 +366,52 @@ class Hotel_model extends CI_Model {
             $this->db->where_in('rooms.board_id', $boards);
         }
         if ($room_types) {
-            $this->db->like('room_types.room_type_name', $room_types[0]);
+            $this->db->where('(room_types.room_type_name LIKE "%'.$room_types[0].'%" ESCAPE "!")' );
             if(count($room_types) > 1){
                 for($i = 1; $i < count($room_types); $i++){
-                    $this->db->or_like('room_types.room_type_name', $room_types[$i]);
+                    $this->db->or_where('(room_types.room_type_name LIKE "%'.$room_types[$i].'%" ESCAPE "!")' );
                 }
             }
         }
         if ($facilities) {
-            // $this->db->join('room_facilities', 'rooms.room_id=room_facilities.room_id');
             $this->db->join('hotel_facilities', 'hotels.hotel_id=hotel_facilities.hotel_id');
-            // $this->db->where_in('room_facilities.facility_id', $facilities);
             $this->db->where_in('hotel_facilities.facility_id', $facilities);
         }
 
-        if(isset($sorting_price) || isset($sorting_loc) || isset($sorting_title)){
+        if(isset($sorting_price) || isset($sorting_title)){
             if($sorting_title == "title-asc"){
                 $this->db->order_by('hotel_name', 'asc');
             }
             else if($sorting_title == "title-desc"){
                 $this->db->order_by('hotel_name', 'desc');
             }
-            else if($sorting_loc == "loc-asc"){
-                $this->db->join('locations', 'hotels.location_id=locations.location_id');
-                $this->db->order_by('locations.location_name', 'asc');
-            }
-            else if($sorting_loc == "loc-desc"){
-                $this->db->join('locations', 'hotels.location_id=locations.location_id');
-                $this->db->order_by('locations.location_name', 'desc');
-            }
         }
         else{
             $this->db->order_by('hotel_name', 'asc');
         }
+
+        if(isset($limit) && isset($start)){
+            $this->db->limit($limit, $start);
+        }
+
+        $qry = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return FALSE;
+    }
+
+    public function getFHotelTitlesFiltered($hotels_array, $title = null) {
+        $this->db->select('DISTINCT(hotels.hotel_id)')
+                ->from('hotels')
+                ->where('hotels.hotel_active', 1)
+                ->where_in('hotels.hotel_id', $hotels_array);
+        
+        if ($title) {
+            $this->db->like('hotels.hotel_name', $title);
+        }
+        $this->db->order_by('hotel_name', 'asc');
         $qry = $this->db->get();
 
         // echo $this->db->last_query();
@@ -436,6 +506,7 @@ class Hotel_model extends CI_Model {
 
         if($group_categories){
             $this->db->group_by('facility_categories.id');
+            $this->db->order_by("facility_categories.order", "asc");
         }
 
         $qry = $this->db->get();
@@ -452,6 +523,42 @@ class Hotel_model extends CI_Model {
                     ->where('hotel_id', $hotelId)
                     ->where('facility_categories.id', $res['id'])
                     ->where('lang_id', $lang_id);
+                $this->db->order_by("facilities.order", "asc");
+                $qry2 = $this->db->get();
+                if($qry2->num_rows()>0){
+                    $res['facilities'] = $qry2->result_array();
+                }
+            }
+            return $results;
+        }
+            
+        return false;
+    }
+
+    public function getBHotelFacilitiesAndCategories($hotelId, $group_categories=false) {
+        $this->db->select('facility_categories.*')
+                ->from('facility_categories')
+                ->join('facilities', 'facilities.category_id = facility_categories.id', 'inner')
+                ->join('hotel_facilities', 'facilities.facility_id = hotel_facilities.facility_id', 'inner')
+                ->where('hotel_facilities.hotel_id', $hotelId);
+
+        if($group_categories){
+            $this->db->group_by('facility_categories.id');
+        }
+
+        $qry = $this->db->get();
+
+        if ($qry->num_rows() > 0){
+            $results = $qry->result_array();
+            foreach($results as &$res){
+                $qry2 = '';
+                $this->db->select('facility_locales.*, facilities.facility_icon, facilities.is_main as fac_is_main')
+                    ->from('hotel_facilities')
+                    ->join('facilities', 'facilities.facility_id = hotel_facilities.facility_id', 'inner')
+                    ->join('facility_categories', 'facilities.category_id = facility_categories.id', 'inner')
+                    ->join('facility_locales', 'facility_locales.facility_id = hotel_facilities.facility_id', 'inner')
+                    ->where('hotel_id', $hotelId)
+                    ->where('facility_categories.id', $res['id']);
                 $this->db->order_by("facilities.facility_type", "asc");
                 $qry2 = $this->db->get();
                 if($qry2->num_rows()>0){

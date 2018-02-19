@@ -36,6 +36,7 @@ class Package_model extends CI_Model {
         $this->db->select('*')
                 ->from('package_periods')
                 ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->join('rooms', 'packages.package_id=rooms.room_package_id')
                 ->where('packages.is_package_type', 2);
 
         if($fromDate){        
@@ -58,6 +59,7 @@ class Package_model extends CI_Model {
         $this->db->select('*')
                 ->from('package_periods')
                 ->join('packages', 'packages.package_id=package_periods.package_id')
+                ->join('rooms', 'packages.package_id=rooms.room_package_id')
                 ->where('packages.is_package_type', 3);
 
         if($fromDate){

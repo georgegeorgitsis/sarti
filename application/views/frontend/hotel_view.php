@@ -6,18 +6,6 @@
                 <h2 class="text-semibold"><?= $hotel['hotel_name']; ?></h2>
             </div>
             <div class="auto-ml flex flex-end">
-                <span class="icon-sign">
-                    <span class="flex flex-center">
-                        <img class="icon" src="<?= base_url('assets/images/beach.png') ?>" alt="">
-                    </span>
-                    <h5> <?= $hotel['distance_from_sea']  ?>m </h5>
-                </span>
-                <span class="icon-sign">
-                    <span class="flex flex-center">
-                        <img class="icon" src="<?= base_url('assets/images/city.png') ?>" alt="">
-                    </span>
-                    <h5> <?= $hotel['distance_from_center'] ?>m </h5>
-                </span>
                 <?php if(isset($rooms_distinct_type) && $rooms_distinct_type): ?>
                     <?php foreach ($rooms_distinct_type as $hotel_room): ?>
                     <span class="icon-sign">
@@ -31,10 +19,31 @@
                                 <?php endfor;?> 
                             <?php endif;?>
                         </span>
-                        <h5> <?= $hotel_room['room_type_name'] ?> </h5>
+                        <h5> <?= explode(' ',trim($hotel_room['room_type_name']))[0] ?> </h5>
                     </span>
                     <?php endforeach; ?>
                 <?php endif;?>
+                <?php if(isset($main_facility_icons) && $main_facility_icons): ?>
+                    <?php foreach ($main_facility_icons as $main_icon): ?>
+                    <span class="icon-sign">
+                        <span class="flex flex-center">
+                            <img class="icon" src="<?= base_url('assets/uploads/facilities/').$main_icon ?>" alt="">
+                        </span>
+                    </span>
+                    <?php endforeach; ?>
+                <?php endif;?>
+                <span class="icon-sign">
+                    <span class="flex flex-center">
+                        <img class="icon" src="<?= base_url('assets/images/beach.png') ?>" alt="">
+                    </span>
+                    <h5> <?= $hotel['distance_from_sea']  ?>m </h5>
+                </span>
+                <span class="icon-sign">
+                    <span class="flex flex-center">
+                        <img class="icon" src="<?= base_url('assets/images/city.png') ?>" alt="">
+                    </span>
+                    <h5> <?= $hotel['distance_from_center'] ?>m </h5>
+                </span>
             </div>
         </div>
         <div class="col-md-12 flex clearfix">
@@ -74,41 +83,7 @@
         <div class="col-md-3 sticky">
 
             <div class="col-md-12 no-padding">
-                <div class="md-box accommodation-search clearfix">
-                    <form method="GET" action="<?= base_url('hotels/searchHotels/2') ?>">
-                        <div class="col-md-12">
-                            <h4 class="title">Show me the 7 days DEALS</h4>
-                        </div>
-                        <div class="col-md-12">
-                            <label>Periods</label>
-                            <input id="p-7-dp" type="text" class="form-control calendar" placeholder="Select a month">
-                            <select class="form-control" name="p" id="p7" required="required">
-                                <option value="" selected disabled>Select a month in the field above</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row clearfix">
-                                <span class="tcenter col-md-12 no-padding tbold label-span">Capacity</span>
-                                <span class="person-7pack-selection col-md-12 no-padding">
-                                    <?php for ($i = $minMax7Days['max_adults']; $i >= 1; $i--): ?>
-                                        <?php if($i == $minMax7Days['min_adults']):?>
-                                            <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" checked>
-                                            <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                        <?php else:?>
-                                            <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" >
-                                            <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                        <?php endif;?>
-                                    <?php endfor; ?>
-                                </span>      
-                            </div>                          
-                        </div>
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-info">
-                                Search
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                <?php require_once(VIEWPATH . 'frontend/single_hotel_sidebar.php'); ?>
             </div>
             
             
@@ -164,19 +139,13 @@
                         <div class="hv_facility_categories">
                             <ul id="accordion_<?= $hotel_facility_cat['id'] ?>">
                                 <li>
-                                    <a data-toggle="collapse" 
-                                        data-parent="#accordion_<?= $hotel_facility_cat['id'] ?>" href="#sub_<?= $hotel_facility_cat['id'] ?>">
-                                        <h4>
-                                            <?= $hotel_facility_cat['description'] ?> 
-                                        </h4>
-                                    </a>
+                                    <h3>
+                                        <?= $hotel_facility_cat['description'] ?> 
+                                    </h3>
                                 </li>
-                                <ul class="sub-list collapse" id="sub_<?= $hotel_facility_cat['id'] ?>">
+                                <ul class="sub-list collapse in" id="sub_<?= $hotel_facility_cat['id'] ?>">
                                 <?php foreach($hotel_facility_cat['facilities'] as $fac): ?>
                                 <li class="flex flex-start">
-                                <?php if(isset($fac['facility_icon']) && trim($fac['facility_icon']) != ""): ?>
-                                    <img class="icon" src="<?= base_url('assets/uploads/facilities/'.$fac['facility_icon']) ?>" alt="Facility icon">
-                                <?php endif; ?>
                                 <h5><?= $fac['facility_name'] ?> </h5>
                                 </li>
                                 <?php endforeach;?>
@@ -198,13 +167,16 @@
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?= $room['room_id']?>" 
                                     aria-expanded="true" aria-controls="collapse_<?= $room['room_id']?>">
-                                    <?= ucfirst($room['room_type_name']) ?> - 
-                                    <?php if( isset($room['floor']) && $room['floor'] == 'basement' ):?>   
-                                    <?= ucfirst($room['floor']) ?> 
-                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'ground_floor' ):?> 
-                                    Ground Floor
-                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'upper_floor' ):?>
-                                    Upper Floor
+                                    <?= ucfirst($room['room_type_name']) ?>
+                                    <?php if( isset($room['floor']) && $room['floor'] == 'Basement' ):?>   
+                                     - Semi-Basement
+                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'Ground Floor' ):?> 
+                                     - Ground Floor
+                                    <?php elseif( isset($room['floor']) && $room['floor'] == 'Upper Floor' ):?>
+                                     - Upper Floor
+                                    <?php endif;?>
+                                    <?php if( isset($room['sea_view']) && trim($room['sea_view']) != "" && $room['sea_view'] != "0" ):?> 
+                                     - <?= $room['sea_view'] ?>
                                     <?php endif;?>
                                 </a>
                             </h4>

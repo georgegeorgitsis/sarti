@@ -90,8 +90,8 @@ class Hotels extends MY_Controller {
             $hotelData['hotel_active'] = $this->input->post('hotel_active');
             $hotelData['hotel_featured'] = $this->input->post('hotel_featured');
 
-            $hotelFacilities = $this->input->post('facilities');
-            
+
+            $hotelFacilities = $this->input->post('hotel_facilities');
             
             $hotel_id = $this->hotel_model->addHotel($hotelData);
 
@@ -100,7 +100,7 @@ class Hotels extends MY_Controller {
                 $addHotelFacilities['hotel_id'] = $hotel_id;
                 foreach ($hotelFacilities as $h_f) {
                     
-                    $addHotelFacilities['facility_id'] = $h_f['facility_id'];
+                    $addHotelFacilities['facility_id'] = $h_f;
                     $addHotelFacilities['is_main'] = 0;
 
                     $this->hotel_model->addHotelFacilities($addHotelFacilities);
@@ -129,16 +129,23 @@ class Hotels extends MY_Controller {
             $hotelData = $this->hotel_model->getHotel($hotelId);
             $packages = $this->package_model->getPackages();
             $facilities = $this->facility_model->getFacilities();
-            $hotelFacilities = $this->hotel_model->getHotelFacilities($hotelId);
+            $hotelFacilities = $this->hotel_model->getBHotelFacilitiesAndCategories($hotelId, true);
             $locations = $this->location_model->getLocations();
+
+            // echo "<pre>";
+            // var_dump($hotelFacilities);
+            // echo "</pre>";
+            // die();
 
             $hfarr = array();
             $hfarrMain = array();
             if ($hotelFacilities && !empty($hotelFacilities)) {
                 foreach ($hotelFacilities as $hf) {
-                    array_push($hfarr, $hf['facility_id']);
-                    if ($hf['is_main'] == 1) {
-                        array_push($hfarrMain, $hf['facility_id']);
+                    foreach ($hf['facilities'] as $hff) {
+                        array_push($hfarr, $hff['facility_id']);
+                        if ($hff['fac_is_main'] == 1) {
+                            array_push($hfarrMain, $hff['facility_id']);
+                        }
                     }
                 }
             }
@@ -172,6 +179,9 @@ class Hotels extends MY_Controller {
                 array_push($hotel_locale, $temp);
             }
 
+            // var_dump($this->input->post('hotel_facilities'));
+            // die();
+
             $hotelId = $this->input->post('hotel_id');
             $hotelData['hotel_id'] = $hotelId;
             $hotelData['hotel_name'] = $this->input->post('hotel_name');
@@ -186,7 +196,7 @@ class Hotels extends MY_Controller {
             $hotelData['hotel_active'] = $this->input->post('hotel_active');
             $hotelData['hotel_featured'] = $this->input->post('hotel_featured');
 
-            $hotelFacilities = $this->input->post('facilities');
+            $hotelFacilities = $this->input->post('hotel_facilities');
 
             $this->hotel_model->editHotel($hotelData);
 

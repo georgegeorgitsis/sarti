@@ -111,16 +111,18 @@
                     <div class="col-md-12 form-group">
                         <label>Floor</label>
                         <select name="floor" class="form-control">
-                            <option value="basement" <?php if ($room['floor'] == "basement") echo "selected='selected'" ?>>basement</option>
-                            <option value="ground_floor" <?php if ($room['floor'] == "ground_floor") echo "selected='selected'" ?>>ground floor</option>
-                            <option value="upper_floor" <?php if ($room['floor'] == "upper_floor") echo "selected='selected'" ?>>upper floor</option>
+                            <option value="0" <?php if ($room['floor'] == "0") echo "selected='selected'" ?>>None</option>
+                            <option value="Upper Floor" <?php if ($room['floor'] == "upper_floor") echo "selected='selected'" ?>>Upper Floor</option>
+                            <option value="Ground_Floor" <?php if ($room['floor'] == "ground_floor") echo "selected='selected'" ?>>Ground Floor</option>
+                            <option value="Basement" <?php if ($room['floor'] == "basement") echo "selected='selected'" ?>>Semi-Basement</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Sea View</label>
-                        <select name="sea_view">
-                            <option value="0" <?php if ($room['sea_view'] == 0) echo "selected='selected'"; ?>>No</option>
-                            <option value="1" <?php if ($room['sea_view'] == 1) echo "selected='selected'"; ?>>Yes</option>
+                        <select name="sea_view"  class="form-control">
+                            <option value="0" <?php if ($room['sea_view'] = "0") echo "selected='selected'"; ?>>None</option>
+                            <option value="Front Sea View" <?php if ($room['sea_view'] == "Front Sea View") echo "selected='selected'"; ?>>Front Sea View</option>
+                            <option value="Side Sea View"<?php if ($room['sea_view'] == "Side Sea View") echo "selected='selected'"; ?>>Side Sea View</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">

@@ -2,12 +2,18 @@
     <?php foreach ($hotels as $hotel): ?>
         <div class="row">
             <div class="each-hotel clearfix">
+                <?php if( $hotel['min_price_room']['eb_is_active'] == 1 && $hotel['min_price_room']['early_booking'] > 0 && (time()-(60*60*24)) <= strtotime($hotel['min_price_room']['early_booking_until']) ): ?>
+                <span class="offer-banner" > Early Booking </span>
+                <?php elseif($hotel['min_price_room']['special_offer'] > 0): ?>
+                <span class="offer-banner" > Special Offer </span>
+                <?php endif;?>
+                
                 <div class="col-md-12 clearfix">
                     <div class="row flex">
                     <div class="col-md-4 no-padding hotels-main-image">
                         <img src="<?= base_url('assets/uploads/') . $hotel['thumb']['image_name'] ?>"/>
                     </div>
-                    <div class="col-md-8 no-padding clearfix">
+                    <div class="col-md-8 p-14 clearfix">
                         <div class="col-md-12 clearfix">
                             <div class="row hotel-title no-margin flex align-center">    
                                 <div class="col-md-6">
@@ -77,7 +83,11 @@
                                     <div class="col-md-12 no-padding clearfix">
                                         <div class="hotel-desc">
                                             <p>
-                                                <?= mb_substr($hotel['hotel_short_description'], 0, 150) . "..." ?>
+                                                <?php if(isset($hotel['hotel_short_description']) && trim($hotel['hotel_short_description']) != ""):?>
+                                                <?= mb_substr($hotel['hotel_short_description'], 0, 200) . "..." ?>
+                                                <?php else: ?>
+                                                <?= mb_substr($hotel['hotel_long_description'], 0, 200) . "..." ?>
+                                                <?php endif;?>
                                                 <span class="read-more"><a href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>">Read more</a></span>
                                             </p>
                                         </div>
@@ -86,6 +96,30 @@
                             </div>
                             <div class="col-md-3 no-padding from-div"> 
                                 <?php if(isset($hotel['min_price_room']) && $hotel['min_price_room']): ?>
+                                <?php /*
+                                    <div class="flex flex-col" 
+                                        style="background-image: url('<?= base_url('assets/img/calendar-image.png') ?>');
+                                                background-size: cover;">
+                                        <span>starting from</span> 
+                                        <span class="from-price txt-green">
+                                            <?php if( $hotel['min_price_room']['eb_is_active'] == 1 && $hotel['min_price_room']['early_booking'] > 0 && (time()-(60*60*24)) <= strtotime($hotel['min_price_room']['early_booking_until']) ): ?>
+                                                <?= ($hotel['min_price_room']['price']['price'] - ($hotel['min_price_room']['price']['price'] * $hotel['min_price_room']['early_booking']/100))?> 
+                                            <?php elseif($hotel['min_price_room']['price']['special_offer'] > 0): ?>
+                                                <?= ($hotel['min_price_room']['price']['price'] - ($hotel['min_price_room']['price']['price'] * $hotel['min_price_room']['price']['special_offer']/100))?> 
+                                            <?php else:?>
+                                                <?= $hotel['min_price_room']['price']['price']?> 
+                                            <?php endif;?>
+                                            &euro;
+                                        </span>
+                                        <?php if($hotel['min_price_room']['is_package_type'] == 1): ?>
+                                        <span class="from-price-type text-muted">per night</span>
+                                        <?php elseif($hotel['min_price_room']['is_package_type'] == 2) :?>
+                                        <span class="from-price-type text-muted">for 7 day packages</span>
+                                        <?php else: ?>
+                                        <span class="from-price-type text-muted">for 10 day packages</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    */?>
                                     <?php /*<span class="from-label">Starting from</span>
                                     <span class="from-price txt-green"><?= $hotel['min_price_room']['price']['price']?> &euro;</span>
                                     <?php if($hotel['min_price_room']['is_package_type'] == 1): ?>
@@ -104,11 +138,11 @@
                                         <div class="disp-calendar-body flex flex-col flex-center align-center">
                                             <span class="from-price txt-green">
                                                 <?php if( $hotel['min_price_room']['eb_is_active'] == 1 && $hotel['min_price_room']['early_booking'] > 0 && (time()-(60*60*24)) <= strtotime($hotel['min_price_room']['early_booking_until']) ): ?>
-                                                    <?= ($hotel['min_price_room']['price']['price'] - ($hotel['min_price_room']['price']['price'] * $hotel['min_price_room']['early_booking']/100))?> 
-                                                <?php elseif($hotel['min_price_room']['price']['special_offer'] > 0): ?>
-                                                    <?= ($hotel['min_price_room']['price']['price'] - ($hotel['min_price_room']['price']['price'] * $hotel['min_price_room']['price']['special_offer']/100))?> 
+                                                    <?= ($hotel['min_price_room']['price'] - ($hotel['min_price_room']['price'] * $hotel['min_price_room']['early_booking']/100))?> 
+                                                <?php elseif($hotel['min_price_room']['special_offer'] > 0): ?>
+                                                    <?= ($hotel['min_price_room']['price'] - ($hotel['min_price_room']['price'] * $hotel['min_price_room']['special_offer']/100))?> 
                                                 <?php else:?>
-                                                    <?= $hotel['min_price_room']['price']['price']?> 
+                                                    <?= $hotel['min_price_room']['price']?> 
                                                 <?php endif;?>
                                                 &euro;
                                             </span>
@@ -121,9 +155,11 @@
                                             <?php endif; ?>
                                         </div>
                                     </div>
+                                    
                                     <a type="button" href="<?= base_url('hotel/' . $hotel['hotel_id']) ?>" class="btn btn-success bg-green request-btn">
                                         Request Now!
                                     </a>
+
                                 <?php else: ?>
                                     <h5>No offers available at the moment...</h5>
                                     <h6 class="text-slate">Contact property for information</h6>

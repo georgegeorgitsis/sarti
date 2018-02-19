@@ -8,7 +8,8 @@
                 <thead>
                     <tr>
                         <!-- <th>Category ID</th> -->
-                        <th>Facility Type</th>
+                        <th>Category Type</th>
+                        <th>Order</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -18,6 +19,7 @@
                             <tr>
                                 <!-- <td>$category['id'] </td> -->
                                 <td><?= $category['description'] ?></td>
+                                <td><?= $category['order'] ?></td>
                                 <td>
                                     <a class='btn btn-info' 
                                         href='<?= $admin_url . 'facilities/editCategory/' . $category['id']; ?>'>

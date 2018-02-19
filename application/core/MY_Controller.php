@@ -28,8 +28,8 @@ class MY_F_Controller extends CI_Controller {
         $this->getRoomTypes();
         $this->getBoards();
         $this->getFacilities();
-        $this->get7DaysPeriods();
-        $this->get10DaysPeriods();
+        // $this->get7DaysPeriods();
+        // $this->get10DaysPeriods();
         $this->getMinMaxAdults7Days();
         $this->getMinMaxAdults10Days();
         $this->getMinMaxAdultsAllotment();

@@ -23,40 +23,27 @@
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>"> 
-                            <input type="hidden" name="pt" value="2">
+                        <form method="GET" action="<?= base_url('seven-day-packages') ?>">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">Show me the 7 day DEALS</h4>
                             </div>
                             <div class="col-md-12">
-                                <!-- <label>Periods</label> -->
                                 <input id="p-7-dp" type="text" class="form-control calendar" placeholder="Select a month" 
-                                    value="<?= (isset($search) && $search['packageType'] == 2 && $search['checkin']) ? date("F-Y",strtotime($search['checkin'])) : ''?>">
-                                <select name="p" id="p7" required="required">
-                                
+                                    value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 2 && $search['checkin']) ? date("F-Y",strtotime($search['checkin'])) : ''?>">
+                                <select class="mt" name="p" id="p7" required="required">
                                     <option value="" selected disabled>Select a month in the field above</option>
                                 </select>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 mt">
                                 <div class="row clearfix">
                                     <span class="tcenter col-md-12 no-padding tbold label-span txt-cyan">Persons</span>
-                                    
                                     <span class="person-7pack col-md-12 no-padding">
-                                        <span> <b>1</b> </span>
+                                        <span> <b>2</b> </span>
                                         <input class="data-slider" id="7per" name="a" data-slider-id='7perSlider' type="text" 
-                                            data-slider-min="1" 
+                                            data-slider-min="2" 
                                             data-slider-max="6" data-slider-step="1" 
-                                            data-slider-value="<?= (isset($search) && $search['packageType'] == 2 && $search['adults']) ? $search['adults'] : 2 ?>"/>
+                                            data-slider-value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 2 && $search['adults']) ? $search['adults'] : 2 ?>"/>
                                         <span><b>6</b> </span>
-                                        <!-- <?php /* for ($i = 6; $i >= 1; $i--): ?>
-                                            <?php if($i == $minMax7Days['min_adults'] || $i == 2):?>
-                                                <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" checked>
-                                                <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                            <?php else:?>
-                                                <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" >
-                                                <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                            <?php endif;?>
-                                        <?php endfor; */ ?> -->
                                     </span>      
                                 </div>                          
                             </div>
@@ -73,28 +60,26 @@
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>">
-                        <input type="hidden" name="pt" value="3">
+                        <form method="GET" action="<?= base_url('ten-day-packages') ?>">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">Show me the 9-15 day DEALS</h4>
                             </div>
                             <div class="col-md-12">
-                                <!-- <label>Periods</label> -->
                                 <input type="text" id="p-10-dp" class="form-control calendar" placeholder="Select a month"
-                                    value="<?= (isset($search) && $search['packageType'] == 3 && $search['checkin']) ? date("F-Y",strtotime($search['checkin'])) : ''?>"/>
-                                <select name="p" id="p10" required="required">
+                                    value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 3 && $search['checkin']) ? date("F-Y",strtotime($search['checkin'])) : ''?>"/>
+                                <select class="mt" name="p" id="p10" required="required">
                                     <option value="" selected disabled>Select a month in the field above.</option>
                                 </select>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 mt">
                                 <div class="row clearfix">
                                     <span class="tcenter col-md-12 no-padding tbold label-span txt-cyan">Persons</span>
                                     <span class="person-10pack col-md-12 no-padding">
-                                        <span> <b>1</b> </span>
+                                        <span> <b>2</b> </span>
                                         <input class="data-slider" id="10per" name="a" data-slider-id='10perSlider' type="text" 
-                                            data-slider-min="1" 
+                                            data-slider-min="2" 
                                             data-slider-max="6" data-slider-step="1" 
-                                            data-slider-value="<?= (isset($search) && $search['packageType'] == 3 && $search['adults']) ? $search['adults'] : 2 ?>"/>
+                                            data-slider-value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 3 && $search['adults']) ? $search['adults'] : 2 ?>"/>
                                         <span><b>6</b> </span>
                                     </span>      
                                 </div>                          
@@ -111,34 +96,33 @@
             <div class="form-group clearfix">
                 <div class="col-md-12 no-padding">
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>">
-                        <input type="hidden" name="pt" value="1">
+                        <form method="GET" action="<?= base_url('allotment-packages') ?>">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">I have the dates</h4>
                             </div>
                             <div class="col-md-12 check-box">
                                 <label class="txt-cyan">Checkin</label>
                                 <input type="text" name="checkin"
-                                    value="<?= (isset($search) && $search['packageType'] == 1 && $search['checkin']) ? date("d-m-Y",strtotime($search['checkin'])) :  date('d-m-Y') ?>"
+                                    value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 1 && $search['checkin']) ? date("d-m-Y",strtotime($search['checkin'])) :  date('d-m-Y') ?>"
                                     required="required"/> 
                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
-                            <div class="col-md-12 check-box">
+                            <div class="col-md-12 check-box mt">
                                 <label class="txt-cyan">Checkout</label>
                                 <input type="text" name="checkout" 
-                                    value="<?= (isset($search) && $search['packageType'] == 1 && $search['checkout']) ? date("d-m-Y",strtotime($search['checkout'])) :  date('d-m-Y', strtotime(' +1 day')) ?>"
+                                    value="<?= (isset($search) && isset($search['packageType']) && isset($search['packageType']) && $search['packageType'] == 1 && $search['checkout']) ? date("d-m-Y",strtotime($search['checkout'])) :  date('d-m-Y', strtotime(' +1 day')) ?>"
                                     required="required"/> 
                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 mt">
                                 <div class="row clearfix">
                                     <span class="tcenter col-md-12 no-padding tbold label-span txt-cyan">Persons</span>
                                     <span class="person-allot col-md-12 no-padding">
-                                        <span> <b>1</b> </span>
+                                        <span> <b>2</b> </span>
                                         <input class="data-slider" id="allot-per" name="a" data-slider-id='allot-perSlider' type="text" 
-                                            data-slider-min="1" 
+                                            data-slider-min="2" 
                                             data-slider-max="6" data-slider-step="1" 
-                                            data-slider-value="<?= (isset($search) && $search['packageType'] == 1 && $search['adults']) ? $search['adults'] : 2 ?>"/>
+                                            data-slider-value="<?= (isset($search) && isset($search['packageType']) && $search['packageType'] == 1 && $search['adults']) ? $search['adults'] : 2 ?>"/>
                                         <span><b>6</b> </span>
                                     </span>      
                                 </div>                          
@@ -177,7 +161,9 @@
                         </div>
                         <?php foreach ($room_types as $type): ?>
                             <div class="col-md-12">
-                                <input type="checkbox" name="room_type" class="room-type" value="<?= $type ?>"> <?= $type ?>
+                                <input type="checkbox" name="room_type" class="room-type" value="<?= $type ?>"
+                                <?= isset($search) && isset( $search['filters']['room_types'] ) && in_array($type, $search['filters']['room_types']) ? "checked" : "" ?>>
+                                <?= $type ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -244,34 +230,26 @@
 
 <script type="text/javascript">
     function grabData() {
-        
         // sorting
         var sortingTitle = $('select[name="sort-select-title"]').val();
         var sortingPrice = $('select[name="sort-select-price"]').val();
-        var sortingLoc = $('select[name="sort-select-loc"]').val();
-
         var search_destination = $("select[name='search_destination']").val();
-
         var selected_floors = [];
         $("input[name='floor']:checked").each(function () {
             selected_floors.push($(this).val());
         });
-
         var selected_room_types = [];
         $("input[name='room_type']:checked").each(function () {
             selected_room_types.push($(this).val());
         });
-
         var selected_boards = [];
         $("input[name='board']:checked").each(function () {
             selected_boards.push($(this).val());
         });
-
         var selected_facilities = [];
         $("input[name='facility']:checked").each(function () {
             selected_facilities.push($(this).val());
         });
-
         var jsonFilters = new Object();
         jsonFilters.destination = search_destination;
         jsonFilters.room_types = selected_room_types;
@@ -279,22 +257,27 @@
         jsonFilters.facilities = selected_facilities;
         jsonFilters.floors = selected_floors;
         jsonFilters.sortingTitle = sortingTitle;   
-        jsonFilters.sortingPrice = sortingPrice;   
-        jsonFilters.sortingLoc = sortingLoc;
+        jsonFilters.sortingPrice = sortingPrice;
+        
+        <?php if( isset($package_type) && trim($package_type) != "" ): ?>
+        jsonFilters.packageType = "<?= $package_type ?>";
+        <?php endif; ?>
 
         return jsonFilters;
     }
 
     function ajaxFiltering() {
         jsonFilters = grabData();
-
+        $('.loader-wrapper').toggle();
         $.post("<?= base_url('hotels/ajaxFilters') ?>", jsonFilters, function (result) {
 
         })
         .done(function (result) {
+            var parsed = JSON.parse(result);
             $(".hotels-list").html();
-            $(".hotels-list").html(result);
-            $("#hotels-count-num").val($(".each-hotel").length);
+            $(".hotels-list").html(parsed.html);
+            $("#hotels-count-num").html(parsed.total_count);
+            $('.loader-wrapper').toggle();
         })
         .fail(function () {
             alert("An error occured while calculating the total price. Please contact the adminstrator for further information");
@@ -387,7 +370,7 @@
         });
 
 
-        <?php if(isset($search) && !empty($search)): ?>
+        <?php if(isset($search) && !empty($search) && isset($search['packageType'])): ?>
             var searchPackage = "<?= $search['packageType'] ?>";
             
             var date = new Date("<?= $search['checkin'] ?>"), y = date.getFullYear(), m = date.getMonth();
@@ -415,9 +398,6 @@
                     $('#p10').empty().append(data);
                 });
             }
-            else if (searchPackage == 1){
-
-            }
         <?php endif; ?>
 
         $(".filters input[type='checkbox']").click(function () {
@@ -431,9 +411,6 @@
             ajaxFiltering();
         });
         $("#sort-select-price").change(function(){
-            ajaxFiltering();
-        });
-        $("#sort-select-loc").change(function(){
             ajaxFiltering();
         });
     });

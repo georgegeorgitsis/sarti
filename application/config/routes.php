@@ -53,4 +53,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'hotels';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
 $route['hotel/(:num)'] = 'hotel/index/$1';
+
+$route['seven-day-packages'] = 'hotels/seven_day_packages';
+$route['ten-day-packages'] = 'hotels/ten_day_packages';
+$route['allotment-packages'] = 'hotels/allot_packages';

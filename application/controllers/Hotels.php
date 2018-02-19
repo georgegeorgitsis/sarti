@@ -6,8 +6,10 @@ class Hotels extends MY_F_Controller {
     protected $page;
     protected $hotels;
     protected $hotel_ids = array();
+    protected $all_hotel_ids = array();
     protected $hotels_count = 0;
     protected $is_search = false;
+    protected $pagination_url;
 
     public function __construct() {
         parent::__construct();
@@ -37,80 +39,230 @@ class Hotels extends MY_F_Controller {
     }
 
     public function index() {
-        $this->handle_search();
-
+        $clear_search = $this->input->get('clear');
+        $this->pagination_url = base_url("/");
+        $index_search = $this->session->userdata('index_search');
+        if(isset($clear_search) && $clear_search == 1){
+            $this->is_search = false;
+            $this->session->unset_userdata('index_search');
+            $this->getHotel_ids();
+            $this->parseHotels();
+        }
+        else{
+            $this->getHotel_ids();
+            // $this->parseHotels();
+            if(isset( $index_search['filters'] ) && count($index_search['filters']) > 0){   
+                // $this->is_search = false;/
+                $this->is_search = true;
+                // $this->filterHotels($index_search['filters']['destination'], $index_search['filters']['boards'], 
+                //     $index_search['filters']['room_types'], $index_search['filters']['facilities'], 
+                //     $index_search['filters']['sorting_title'], $index_search['filters']['sorting_price'], $index_search['filters']['floors']);
+                $this->filterHotels($index_search);
+                $this->view_data['search'] = $index_search;
+            }
+            else{
+                $this->parseHotels();
+            }
+        }
+        $this->view_data['is_search'] = $this->is_search;
         $this->view_data['hotels'] = $this->hotels;
         $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
-    private function handle_search(){
-        $this->session->unset_userdata('search');
-        $packageType = $this->input->get('pt');
-        if(isset($packageType)){
-            $this->is_search = true;
-            $this->view_data['is_search'] = 1;
-        }
-        else{
+    public function seven_day_packages(){
+        $clear_search = $this->input->get('clear');
+        $this->pagination_url = base_url("seven-day-packages");
+        if(isset($clear_search) && $clear_search == 1){
             $this->is_search = false;
-        }
-        $package_period_id = null;
-        $checkin = null;
-        $checkout = null;
-
-        if ($packageType == 1) {
-            $checkinInput = $this->input->get('checkin');
-            $checkinTime = strtotime($checkinInput);
-            $checkin = date('Y-m-d', $checkinTime);
-            $checkoutInput = $this->input->get('checkout');
-            $checkoutTime = strtotime($checkoutInput);
-            $checkout = date('Y-m-d', $checkoutTime);
-            $date1 = new DateTime($checkin);
-            $date2 = new DateTime($checkout);
-
-            $numberOfNights= $date2->diff($date1)->format("%a"); 
-            $this->view_data['number_of_nights'] = $numberOfNights;
-        } else {
-            $package_period_id = $this->input->get('p');
-            $period = $this->package_model->getPackagePeriod($package_period_id);
-            $checkin = date("Y-m-d", strtotime($period['period_from']));
-            $checkout = date("Y-m-d", strtotime($period['period_to']));
-        }
-
-        $adults = $this->input->get('a');
-
-        $search['packageType'] = $packageType;
-        $search['package_id'] = $package_period_id;
-        $search['checkin'] = $checkin;
-        $search['checkout'] = $checkout;
-        $search['adults'] = $adults;
-
-        $this->session->set_userdata('search', $search);
-        $this->view_data['search'] = $this->session->userdata('search');
-        if(isset($packageType)){
-            $this->getHotel_ids($checkin, $checkout, $adults, $packageType);
-            $this->parseHotels($checkin, $checkout, $adults, $packageType);
-        }
-        else{
+            $this->session->unset_userdata('seven_d_search');
             $this->getHotel_ids();
             $this->parseHotels();
         }
-        // echo "<pre>";
-        // var_dump($this->hotels);
-        // echo "</pre>";
-        // die();
-        
+        else{
+            $package_period_id = $this->input->get('p');
+            $this->is_search = true;
+            if(isset($package_period_id) && trim($package_period_id) != ""){
+                $period = $this->package_model->getPackagePeriod($package_period_id);
+                $checkin = date("Y-m-d", strtotime($period['period_from']));
+                $checkout = date("Y-m-d", strtotime($period['period_to']));
+
+                $adults = $this->input->get('a');
+                $search['packageType'] = 2;
+                $search['checkin'] = $checkin;
+                $search['checkout'] = $checkout;
+                $search['adults'] = $adults;
+
+                $this->session->unset_userdata('seven_d_search');
+                $this->session->set_userdata('seven_d_search', $search);
+                $this->view_data['search'] = $this->session->userdata('seven_d_search');
+
+                $this->getHotel_ids($checkin, $checkout, $adults, $search['packageType']);
+                $this->parseHotels($checkin, $checkout, $adults, $search['packageType']);
+            }
+            else{
+                $session_search = $this->session->userdata('seven_d_search');
+                if(isset($session_search) && !empty($session_search)){
+                    $this->is_search = true;
+                    $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                
+                    if(isset($session_search['filters']) && count($session_search['filters']) > 0){
+                        $this->filterHotels($session_search);
+                    }
+                    else{
+                        $this->parseHotels($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    }
+                    $this->view_data['search'] = $session_search;
+                }
+                else{
+                    $this->is_search = false;
+                    $this->getHotel_ids();
+                    $this->parseHotels();
+                }
+            }
+        }
+        $this->view_data['package_type'] = 2;
+        $this->view_data['is_search'] = $this->is_search;
+        $this->view_data['hotels'] = $this->hotels;
+        $this->load->template('frontend/hotels_view', $this->view_data);
+    }
+
+    public function ten_day_packages(){
+        $clear_search = $this->input->get('clear');
+        $this->pagination_url = base_url("ten-day-packages");
+        if(isset($clear_search) && $clear_search == 1){
+            $this->session->unset_userdata('ten_d_search');
+            $this->getHotel_ids(null, null, null, 3);
+            $this->parseHotels(null, null, null, 3);
+            $this->is_search = false;
+        }
+        else{
+            $package_period_id = $this->input->get('p');
+            $this->is_search = true;
+            if(isset($package_period_id) && trim($package_period_id) != ""){
+                $period = $this->package_model->getPackagePeriod($package_period_id);
+                $checkin = date("Y-m-d", strtotime($period['period_from']));
+                $checkout = date("Y-m-d", strtotime($period['period_to']));
+
+                $adults = $this->input->get('a');
+                $search['packageType'] = 3;
+                $search['checkin'] = $checkin;
+                $search['checkout'] = $checkout;
+                $search['adults'] = $adults;
+
+                $this->session->unset_userdata('ten_d_search');
+                $this->session->set_userdata('ten_d_search', $search);
+                $this->view_data['search'] = $this->session->userdata('ten_d_search');
+
+                $this->getHotel_ids($checkin, $checkout, $adults, $search['packageType']);
+                $this->parseHotels($checkin, $checkout, $adults, $search['packageType']);
+            }
+            else{
+                $session_search = $this->session->userdata('ten_d_search');
+                if(isset($session_search) && !empty($session_search)){
+                    $this->is_search = true;
+                    $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                        // echo "<pre>";
+                        // var_dump($this->all_hotel_ids);
+                        // echo "</pre>";
+                    if(isset($session_search['filters']) && count($session_search['filters']) > 0){
+                        // echo "<pre>";
+                        // var_dump($session_search);
+                        // echo "</pre>";
+                        // die();
+                        $this->filterHotels($session_search);
+                        // echo "<pre>";
+                        // var_dump($this->all_hotel_ids);
+                        // echo "</pre>";
+                        // die();
+                    }
+                    else{
+                        $this->parseHotels($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    }
+                    $this->view_data['search'] = $session_search;
+                }
+                else{
+                    $this->is_search = false;
+                    $this->getHotel_ids();
+                    $this->parseHotels();
+                }
+            }
+        }
+        $this->view_data['package_type'] = 3;
+        $this->view_data['is_search'] = $this->is_search;
+        $this->view_data['hotels'] = $this->hotels;
+        $this->load->template('frontend/hotels_view', $this->view_data);
+    }
+
+    public function allot_packages(){
+        $clear_search = $this->input->get('clear');
+        $this->pagination_url = base_url("allotment-packages");
+        if(isset($clear_search) && $clear_search == 1){
+            $this->session->unset_userdata('allot_search');
+            $this->getHotel_ids();
+            $this->parseHotels();
+            $this->is_search = false;
+        }
+        else{
+            $checkinInput = $this->input->get('checkin');
+            $checkoutInput = $this->input->get('checkout');
+            $this->is_search = true;
+            if(isset($checkinInput) && isset($checkoutInput) && trim($checkinInput) != "" && trim($checkoutInput) != ""){
+                $checkinTime = strtotime($checkinInput);
+                $checkin = date('Y-m-d', $checkinTime);
+                $checkoutTime = strtotime($checkoutInput);
+                $checkout = date('Y-m-d', $checkoutTime);
+                $date1 = new DateTime($checkin);
+                $date2 = new DateTime($checkout);
+
+                $numberOfNights= $date2->diff($date1)->format("%a"); 
+                $this->view_data['number_of_nights'] = $numberOfNights;
+
+                $adults = $this->input->get('a');
+                $search['packageType'] = 1;
+                $search['checkin'] = $checkin;
+                $search['checkout'] = $checkout;
+                $search['adults'] = $adults;
+
+                $this->session->unset_userdata('allot_search');
+                $this->session->set_userdata('allot_search', $search);
+                $this->view_data['search'] = $this->session->userdata('allot_search');
+
+                $this->getHotel_ids($checkin, $checkout, $adults, $search['packageType']);
+                $this->parseHotels($checkin, $checkout, $adults, $search['packageType']);
+            }
+            else{
+                $session_search = $this->session->userdata('allot_search');
+                if(isset($session_search) && !empty($session_search)){
+                    $this->is_search = true;
+                    $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    if(isset($session_search['filters']) && count($session_search['filters']) > 0){
+                        $this->filterHotels($session_search);
+                    }
+                    else{
+                        $this->parseHotels($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    }
+                    $this->view_data['search'] = $session_search;
+                }
+                else{
+                    $this->is_search = false;
+                    $this->getHotel_ids();
+                    $this->parseHotels();
+                }
+            }
+        }
+        $this->view_data['package_type'] = 1;
+        $this->view_data['is_search'] = $this->is_search;
+        $this->view_data['hotels'] = $this->hotels;
+        $this->load->template('frontend/hotels_view', $this->view_data);
     }
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null) {
-        $this->count_hotels($checkin, $checkout, $adults, $packageType);
-        $this->paginateHotels();
-        $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
-            $this->conf['per_page'], $this->page, $this->lang_id); 
-    }
+        // $this->count_hotels($checkin, $checkout, $adults, $packageType);
+        $this->all_hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
+            null, null, $this->lang_id);
 
-    protected function get_all_hotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null) {
-        $this->count_hotels($checkin, $checkout, $adults, $packageType);
         $this->paginateHotels();
+
         $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
             $this->conf['per_page'], $this->page, $this->lang_id); 
     }
@@ -122,95 +274,152 @@ class Hotels extends MY_F_Controller {
 
     protected function parseHotels($checkin = null, $checkout = null, $adults = null, 
         $packageType = null) {
+
         if (isset($this->hotel_ids) && !empty($this->hotel_ids)) {
-            foreach ($this->hotel_ids as $hotel) {
+            $this->view_data['total_hotel_count'] = count($this->all_hotel_ids);
+            foreach ($this->hotel_ids as $key => $hotel) {  
 
                 $hotel_id = $hotel['hotel_id'];
-                $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
-                $this->hotels[$hotel_id]['rooms_distinct_types'] = [];
-                $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
-                $this->hotels[$hotel_id]['facilities'] = $this->hotel_model->getFHotelFacilities($hotel_id, $this->lang_id);
-                $hotel_rooms = $this->hotel_model->getFRoomsPerCriteria($hotel_id, $checkin, $checkout, $adults, $packageType);
                 
-                foreach($hotel_rooms as &$room){
-                    $type_arr = explode(' ',trim($room['room_type_name']));
-                    if(!array_key_exists($type_arr[0], $this->hotels[$hotel_id]['rooms_distinct_types'])){
-                        $this->hotels[$hotel_id]['rooms_distinct_types'] [$type_arr[0]] = ['min_adults'=> $room['min_adults'], 'max_adults'=> $room['max_adults'], 'type'=> $type_arr[0]];
+                $hotel_rooms = $this->hotel_model->getFRoomsPerCriteria($hotel_id, $checkin, $checkout, $adults, $packageType);
+                if(isset($hotel_rooms) && !empty($hotel_rooms)){
+                    $this->hotels[$hotel_id] = $this->hotel_model->getFHotel($hotel_id, $this->lang_id);
+                    $this->hotels[$hotel_id]['rooms_distinct_types'] = [];
+                    $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
+                    $this->hotels[$hotel_id]['facilities'] = $this->hotel_model->getFHotelFacilities($hotel_id, $this->lang_id);
+                    foreach($hotel_rooms as &$room){
+                        $type_arr = explode(' ',trim($room['room_type_name']));
+                        if(!array_key_exists($type_arr[0], $this->hotels[$hotel_id]['rooms_distinct_types'])){
+                            $this->hotels[$hotel_id]['rooms_distinct_types'] [$type_arr[0]] = ['min_adults'=> $room['min_adults'], 'max_adults'=> $room['max_adults'], 'type'=> $type_arr[0]];
+                        }
+                    }
+                    $this->hotels[$hotel_id]['rooms'] = $hotel_rooms;
+    
+                    if(isset($this->hotels[$hotel_id]['rooms']) && count($this->hotels[$hotel_id]['rooms']) > 0){
+                        $this->hotels[$hotel_id]['min_price_room'] = $hotel_rooms[0];
                     }
                     
-                    if(isset($checkin) && isset($checkout) && isset($packageType)){
-                        if(isset($adults)){
-                            $room_price = $this->room_model->getRoomPeriodPrices($room['room_id'], $room['package_period_id'], $adults);
-                            // if($room_price['is_active'] == 1){
-                                $room['price'] = $room_price;
-                            // }
-                        }
-                        else{
-                            $room_prices = $this->room_model->getRoomPeriodPricesWithoutAd($room['room_id'], $room['package_period_id']);
-                        }
-                    }
-                    else{
-                        $room_periods = $this->package_model->getPeriodsPerPackage($room['room_package_id']);
-                        if($room_periods){
-                            $prices = [];
-                            
-                            foreach ($room_periods as $key => $value) {
-                                $period_prices = $this->room_model->getRoomPeriodPricesWithoutAd($room['room_id'], $value['package_period_id']);
-                                // if($period_prices['is_active'] == 1){
-                                    $prices[] = $period_prices[0];
-                                // }
-                            }
-                            
-                            $min_per_price = 9999;
-                            $min_per_price_room = null;
-                            foreach ($prices as $pkey => $pvalue) {
-                                if($pvalue['price'] > 0 && $pvalue['price'] <= $min_per_price){
-                                    $min_per_price = $pvalue['price'];
-                                    $min_per_price_room = $pvalue;
-                                }
-                            }
-                            $room['price'] = $min_per_price_room;
-                        }
-                        else{
-
-                        }
-                    }
+                    $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
+                    $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
                 }
-                $this->hotels[$hotel_id]['rooms'] = $hotel_rooms;
-
-                $min_price = 9999;
-                $min_price_room = null;
-                foreach($hotel_rooms as $room_r){
-                    if($room_r['price'] && isset($room_r['price']['price']) && $room_r['price']['price'] > 0 
-                        && $room_r['price']['price'] <= $min_price){
-                        
-                        $min_price = $room_r['price']['price'];
-                        $min_price_room = $room_r;
-                    }
+                else{
+                    // unset($this->hotel_ids[$key]);
+                    // unset($this->all_hotel_ids[$key]);
                 }
-                if(isset($this->hotels[$hotel_id]['rooms']) && count($this->hotels[$hotel_id]['rooms']) > 0){
-                    $this->hotels[$hotel_id]['min_price_room'] = $min_price_room;
-                }
-                
-                $location_name = $this->hotel_model->getFHotelLocationName($hotel_id, $this->lang_id);
-                $this->hotels[$hotel_id]['location_name'] = $location_name['location_name'];
             }
         }
     }
 
-    public function filterHotels($destination = null, $boards = null, $room_types = null, 
-                            $facilities = null, $sorting_title= null, $sorting_price= null, $sorting_loc=null, $floors=null) {
+    public function filterHotels($session_data) {
         $hotels_array = array();
-
-        foreach ($this->hotel_ids as $h_id) {
+        foreach ($this->all_hotel_ids as $h_id) {
             array_push($hotels_array, $h_id['hotel_id']);
         }
+        // echo "<pre>";
+        // var_dump($hotels_array);
+        // echo "</pre>";
+        
+        if($hotels_array && !empty($hotels_array)){
+            if (isset($session_data['filters']) && count($session_data['filters']) > 0) {
+                $this->all_hotel_ids = $this->hotel_model->getFHotelsFiltered($hotels_array, $session_data['filters']['destination'],
+                $session_data['filters']['boards'], $session_data['filters']['room_types'], $session_data['filters']['facilities'],
+                $session_data['filters']['sorting_title'], $session_data['filters']['sorting_price'], $session_data['filters']['floors']);
+                // echo "<pre>";
+                // var_dump($this->all_hotel_ids);
+                // echo "</pre>";
+    
+                $this->hotel_ids = $this->hotel_model->getFHotelsFiltered($hotels_array, $session_data['filters']['destination'],
+                $session_data['filters']['boards'], $session_data['filters']['room_types'], $session_data['filters']['facilities'],
+                $session_data['filters']['sorting_title'], $session_data['filters']['sorting_price'], $session_data['filters']['floors'], $this->conf['per_page'], $this->page);
+                // echo "<pre>";
+                // var_dump($this->hotel_ids);
+                // echo "</pre>";
+                // die();
 
-        if ($hotels_array && !empty($hotels_array)) {
-            $this->hotel_ids = $this->hotel_model
-                ->getFHotelsFiltered($hotels_array, $destination, $boards, $room_types, 
-                $facilities, $sorting_title, $sorting_price, $sorting_loc, $floors);
+            }
+            if( isset($session_data['packageType']) && trim($session_data['packageType']) != "" ){
+                $this->parseHotels($session_data['checkin'], $session_data['checkout'], $session_data['adults'], 
+                    $session_data['packageType']);    
+            }
+            else{
+                $this->parseHotels();
+            }
+                        
+            $this->view_data['hotels'] = $this->hotels;
+        }
+    }
+
+    public function ajaxFilters() {
+        if ($this->input->is_ajax_request()) {
+            $filters = [];
+
+            $destination = $this->input->post('destination');
+            $filters['destination'] = $destination;
+            $boards = $this->input->post('boards');
+            $filters['boards'] = $boards;
+            $room_types = $this->input->post('room_types');
+            $filters['room_types'] = $room_types;
+            $facilities = $this->input->post('facilities');
+            $filters['facilities'] = $facilities;
+            $sorting_title = $this->input->post('sortingTitle');
+            $filters['sorting_title'] = $sorting_title;
+            $sorting_price = $this->input->post('sortingPrice');
+            $filters['sorting_price'] = $sorting_price;
+            $floors = $this->input->post('floors');
+            $filters['floors'] = $floors;
+
+            $package_type = $this->input->post('packageType');
+            $session_search = array();
+            if(isset($package_type)){
+                if($package_type == 1){
+                    $this->pagination_url = base_url("allotment-packages");
+                    $session_search = $this->session->userdata('allot_search');
+                    $session_search['filters'] = $filters;
+                    $this->session->unset_userdata('allot_search');
+                    $this->session->set_userdata('allot_search', $session_search);
+                }
+                elseif($package_type == 2){
+                    $this->pagination_url = base_url("seven-d-packages");
+                    $session_search = $this->session->userdata('seven_d_search');
+                    $session_search['filters'] = $filters;
+                    $this->session->unset_userdata('seven_d_search');
+                    $this->session->set_userdata('seven_d_search', $session_search);
+                }
+                elseif($package_type == 3){
+                    $this->pagination_url = base_url("ten-d-packages");
+                    $session_search = $this->session->userdata('ten_d_search');
+                    $session_search['filters'] = $filters;
+                    $this->session->unset_userdata('ten_d_search');
+                    $this->session->set_userdata('ten_d_search', $session_search);
+                }
+                $this->handleSessionSearch($package_type);
+            }
+            else{
+                $this->pagination_url = base_url("");
+                $session_search = $this->session->userdata('index_search');
+                $session_search['filters'] = $filters;
+                $this->session->unset_userdata('index_search');
+                $this->session->set_userdata('index_search', $session_search);
+                $this->handleSessionSearch();
+            }
+            $this->filterHotels($session_search);
             
+            $response = array();
+            $hotels_view = $this->load->view('frontend/hotels_list', $this->view_data, TRUE);
+            $response['html'] = $hotels_view;
+            $response['total_count'] = count($this->all_hotel_ids);
+            echo json_encode($response);
+        }
+    }
+
+    public function filterHotelTitles($title = null) {
+        $hotels_array = array();
+
+        foreach ($this->all_hotel_ids as $h_id) {
+            array_push($hotels_array, $h_id['hotel_id']);
+        }
+        if ($hotels_array && !empty($hotels_array)) {
+            $this->hotel_ids = $this->hotel_model->getFHotelTitlesFiltered($hotels_array, $title);
             $this->parseHotels();
             $this->view_data['hotels'] = $this->hotels;
             $hotels_view = $this->load->view('frontend/hotels_list', $this->view_data, TRUE);
@@ -218,61 +427,50 @@ class Hotels extends MY_F_Controller {
         }
     }
 
-    public function ajaxFilters() {
+    public function title_filter() {
         if ($this->input->is_ajax_request()) {
             $this->handleSessionSearch();
-            $destination = $this->input->post('destination');
-            $boards = $this->input->post('boards');
-            $room_types = $this->input->post('room_types');
-            $facilities = $this->input->post('facilities');
-            $sorting_title = $this->input->post('sortingTitle');
-            $sorting_price = $this->input->post('sortingPrice');
-            $sorting_loc = $this->input->post('sortingLoc');
-            $floors = $this->input->post('floors');
+            $query = $this->input->get('query');
 
-            $this->filterHotels($destination, $boards, $room_types, $facilities, $sorting_title, $sorting_price, $sorting_loc, $floors);
+            $this->filterHotelTitles( $query);
         }
     }
 
-    protected function handleSessionSearch() {
-        $search = $this->session->userdata('search');
-        $package_period_id = null;
+    protected function handleSessionSearch($package_type = null) {
         $checkin = null;
         $checkout = null;
         $adults = null;
-        if (isset($search) && !empty($search)) {
-            if ($search['packageType'] == 1) {
-                $checkin = $search['checkin'];
-                $checkout = $search['checkout']; 
-                $adults = $search['adults'];
-            } else {
-                $packageType = $search['packageType'];
-                $package_period_id = $search['package_id'];
-                $adults = $search['adults'];
+        
+        if (isset($package_type) && trim($package_type) != "") {
+            if ($package_type == 2) {
+                $search = $this->session->userdata('seven_d_search');
             }
-            $this->getHotel_ids($checkin, $checkout, $adults, $packageType, $package_period_id);
-        } else {
+            elseif( $package_type == 3 ){
+                $search = $this->session->userdata('ten_d_search');
+            } 
+            elseif( $package_type == 1 ) {
+                $search = $this->session->userdata('allot_search');
+            }
+            
+            // echo "<pre>";
+            // var_dump($search);
+            // echo "</pre>";
+            // die();
+
+            $checkin = $search['checkin'];
+            $checkout = $search['checkout'];
+            $adults = $search['adults'];
+            $this->getHotel_ids($checkin, $checkout, $adults, $package_type);
+        } 
+        else {
             $this->getHotel_ids();
         }
     }
 
     protected function paginateHotels() {
+        $this->conf['base_url'] = $this->pagination_url;
 
-        $search = $this->session->userdata('search');
-        if(isset($search) && $this->is_search){
-            $checkin = $search['checkin'];
-            $checkout = $search['checkout']; 
-            $adults = $search['adults'];
-            $packageType = $search['packageType'];
-            $package_period_id = $search['package_id'];
-
-            $this->conf['base_url'] = base_url('hotels/index?pt='.$packageType.'&checkin='.$checkin
-                .'&checkout='.$checkout.'&p='.$package_period_id.'&a='.$adults);
-        }
-        else{
-            $this->conf['base_url'] = base_url('hotels/index');
-        }
-        $hotelsCount = $this->hotels_count['total'];
+        $hotelsCount = count($this->all_hotel_ids);
 
         $this->load->library('pagination');
         $this->conf['anchor_class'] = 'follow_link';
@@ -304,6 +502,7 @@ class Hotels extends MY_F_Controller {
 
         $this->pagination->initialize($this->conf);
         $this->page = ($this->input->get('page')) ? $this->input->get('page') : 0;
+        
         $this->view_data['links'] = $this->pagination->create_links();
     }
 
@@ -334,7 +533,7 @@ class Hotels extends MY_F_Controller {
                     $from = new DateTime($package['period_from']);
                     $to = new DateTime($package['period_to']);
                     $overnights = $to->diff($from)->format("%a"); 
-                    $search = $this->session->userdata('search');
+                    $search = $this->session->userdata('seven_d_search');
 
                     if(isset($search['checkin']) && isset($search['checkout'])){
                         $search_checkin = new DateTime($search['checkin']);
@@ -385,7 +584,7 @@ class Hotels extends MY_F_Controller {
                     $from = new DateTime($package['period_from']);
                     $to = new DateTime($package['period_to']);
                     $overnights = $to->diff($from)->format("%a"); 
-                    $search = $this->session->userdata('search');
+                    $search = $this->session->userdata('ten_d_search');
                     if(isset($search['checkin']) && isset($search['checkout'])){
                         $search_checkin = new DateTime($search['checkin']);
                         $search_checkout = new DateTime($search['checkout']);
@@ -433,158 +632,81 @@ class Hotels extends MY_F_Controller {
             echo $response;
         }
     }
+
+    private function handle_search(){
+        $packageType = $this->input->get('pt');
+        $clear_search = $this->input->get('clear');
+
+        if(isset($clear_search) && $clear_search == 1){
+
+        }
+        elseif(isset($packageType)){
+            if($packageType == 1){
+                $this->is_search = true;
+                $this->view_data['is_search'] = 1;
+            }
+            elseif($packageType == 2){
+                $this->is_search = true;
+                $this->view_data['is_search'] = 1;
+            }
+            elseif($packageType == 3){
+                $this->is_search = true;
+                $this->view_data['is_search'] = 1;
+            }
+            else{
+                $this->session->unset_userdata('seven_d_search');
+                $this->session->unset_userdata('ten_d_search');
+                $this->session->unset_userdata('allot_search');
+                $this->is_search = false;
+            }
+        }
+
+        $this->view_data['is_search'] = $this->is_search;
+        $package_period_id = null;
+        $checkin = null;
+        $checkout = null;
+
+        if ($packageType == 1) {
+            $checkinInput = $this->input->get('checkin');
+            $checkinTime = strtotime($checkinInput);
+            $checkin = date('Y-m-d', $checkinTime);
+            $checkoutInput = $this->input->get('checkout');
+            $checkoutTime = strtotime($checkoutInput);
+            $checkout = date('Y-m-d', $checkoutTime);
+            $date1 = new DateTime($checkin);
+            $date2 = new DateTime($checkout);
+
+            $numberOfNights= $date2->diff($date1)->format("%a"); 
+            $this->view_data['number_of_nights'] = $numberOfNights;
+        } else {
+            $package_period_id = $this->input->get('p');
+            $period = $this->package_model->getPackagePeriod($package_period_id);
+            $checkin = date("Y-m-d", strtotime($period['period_from']));
+            $checkout = date("Y-m-d", strtotime($period['period_to']));
+        }
+
+        $adults = $this->input->get('a');
+
+        $search['packageType'] = $packageType;
+        $search['package_id'] = $package_period_id;
+        $search['checkin'] = $checkin;
+        $search['checkout'] = $checkout;
+        $search['adults'] = $adults;
+
+        $room_types = $this->input->get('r_type');
+        if(isset($room_types) && (trim($room_types) != "" || count($room_types) > 0)){
+            $search['room_types'] = $room_types;
+        }
+        
+        $this->session->set_userdata('search', $search);
+        $this->view_data['search'] = $this->session->userdata('search');
+        if(isset($packageType)){
+            $this->getHotel_ids($checkin, $checkout, $adults, $packageType);
+            $this->parseHotels($checkin, $checkout, $adults, $packageType);
+        }
+        else{
+            $this->getHotel_ids();
+            $this->parseHotels();
+        }
+    }
 }
-
-// public function searchHotels() {
-//     $this->session->unset_userdata('search');
-//     $this->view_data['is_search'] = 1;
-//     $packageType = $this->input->get('pt');
-//     $package_period_id = null;
-//     $checkin = null;
-//     $checkout = null;
-
-//     if ($packageType == 1) {
-//         $checkinInput = $this->input->get('checkin');
-//         $checkinTime = strtotime($checkinInput);
-//         $checkin = date('Y-m-d', $checkinTime);
-//         $checkoutInput = $this->input->get('checkout');
-//         $checkoutTime = strtotime($checkoutInput);
-//         $checkout = date('Y-m-d', $checkoutTime);
-//         $date1 = new DateTime($checkin);
-//         $date2 = new DateTime($checkout);
-
-//         $numberOfNights= $date2->diff($date1)->format("%a"); 
-//         $this->view_data['number_of_nights'] = $numberOfNights;
-//     } else {
-//         $package_period_id = $this->input->get('p');
-//         $period = $this->package_model->getPackagePeriod($package_period_id);
-//         $checkin = date("Y-m-d", strtotime($period['period_from']));
-//         $checkout = date("Y-m-d", strtotime($period['period_to']));
-//     }
-
-//     $adults = $this->input->get('a');
-
-//     $search['packageType'] = $packageType;
-//     $search['package_id'] = $package_period_id;
-//     $search['checkin'] = $checkin;
-//     $search['checkout'] = $checkout;
-//     $search['adults'] = $adults;
-
-//     $this->session->set_userdata('search', $search);
-//     $this->view_data['search'] = $this->session->userdata('search');
-
-//     $this->getHotel_ids($checkin, $checkout, $adults, $packageType);
-//     $this->parseHotels($checkin, $checkout, $adults, $packageType);
-
-    
-    
-//     $this->load->template('frontend/hotels_view', $this->view_data);
-// }
-
-// protected function getRoomsPerHotelId($hotel_id, $checkin = null, $checkout = null, $adults = null, 
-//         $packageType = null, $package_period_id = null) {
-//         if (!$checkin && !$checkout) {
-//             $rooms = $this->hotel_model->getFRoomsPerCriteria($hotel_id, $checkin, $checkout, $adults, $packageType);
-//         } 
-//         else {
-//             //psakse gia ta package period pou kaliptoyn olo to fasma tou checkin checkout, kai checkare na kaliptoun kathe imera anazitisis
-//             $begin = new DateTime($checkin);
-//             $end = new DateTime($checkout);
-
-//             $interval = DateInterval::createFromDateString('1 day');
-//             $period = new DatePeriod($begin, $interval, $end);
-
-//             $legit_packages = array();
-//             foreach ($period as $dt) {
-//                 $legit_day_packages = array();
-//                 $day = $dt->format("Y-m-d");
-//                 $periods_found = $this->hotel_model->findFPackagePeriodsPerDay($day);
-
-//                 if ($periods_found) {
-//                     foreach ($periods_found as $p_f_key => $p_f) {
-//                         array_push($legit_day_packages, $p_f['package_id']);
-//                     }
-//                 }
-//                 array_push($legit_packages, $legit_day_packages);
-//             }
-
-
-//             $first = $legit_packages[0];
-//             for ($i = 0; $i < count($legit_packages); $i++) {
-
-//                 $result = array_intersect($first, $legit_packages[$i]);
-//                 $first = $result;
-//             }
-
-//             //to result krataei osa pakets periods exoun sinexomenes imeres, gia tis imeres pou epsakse o xristis
-//             //gia kathe package period id, prepei na vroume ta dwmatia pou exoun timi
-//             if (isset($result) && !empty($result)) {
-//                 foreach ($result as $package_period_id) {
-//                     $valid_hotels = array();
-//                     $rooms = $this->hotel_model->getFRoomsForPackagePeriod($hotel_id, $package_period_id);
-//                 }
-//             }
-//         }
-//         if(isset($rooms)){
-//             return $rooms;
-//         }
-//         else{
-//             return null;
-//         }
-        
-//     }
-
-
-// protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null) {
-
-//     $this->paginateHotels();
-    
-//     $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
-//         $this->conf['per_page'], $this->page, $this->lang_id);
-     
-//     if (false) {
-//         // psakse gia ta package period pou kaliptoyn olo to fasma tou checkin checkout, 
-//         // kai checkare na kaliptoun kathe imera anazitisis
-        
-//         $begin = DateTime::createFromFormat("d/m/Y", $checkin);
-//         $end = DateTime::createFromFormat("d/m/Y", $checkout);
-//         $interval = DateInterval::createFromDateString('1 day');
-//         $period = new DatePeriod($begin, $interval, $end);
-
-//         $legit_packages = array();
-//         foreach ($period as $dt) {
-//             $legit_day_packages = array();
-//             $day = $dt->format("Y-m-d");
-//             $periods_found = $this->hotel_model->findFPackagePeriodsPerDay($day);
-
-//             if ($periods_found) {
-//                 foreach ($periods_found as $p_f_key => $p_f) {
-//                     array_push($legit_day_packages, $p_f['package_id']);
-//                 }
-//             }
-//             array_push($legit_packages, $legit_day_packages);
-//         }
-
-//         $first = $legit_packages[0];
-//         for ($i = 0; $i < count($legit_packages); $i++) {
-
-//             $result = array_intersect($first, $legit_packages[$i]);
-//             $first = $result;
-//         }
-
-//         //to result krataei osa pakets periods exoun sinexomenes imeres, gia tis imeres pou epsakse o xristis
-//         //gia kathe package period id, prepei na vroume ta dwmatia pou to ipostirizoun, ara kai ta hotels toys
-//         if (isset($result) && !empty($result)) {
-//             foreach ($result as $package_period_id) {
-//                 $valid_hotels = array();
-//                 $valid_hotels = $this->hotel_model->getFHotelsPerRoomForPackagePeriod($package_period_id);
-
-//                 if ($valid_hotels) {
-//                     foreach ($valid_hotels as $hotel) {
-//                         array_push($this->hotel_ids, $hotel);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }

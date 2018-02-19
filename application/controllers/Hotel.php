@@ -19,6 +19,7 @@ class Hotel extends MY_F_Controller {
         parent::__construct();
         $this->load->model('hotel_model');
         $this->load->model('location_model');
+        $this->load->model('package_model');
         array_push($this->styles, base_url('assets/css/sidebar.css'));
         $this->loadStyles();
         $this->hotel_id = $this->uri->segment(2);
@@ -57,7 +58,9 @@ class Hotel extends MY_F_Controller {
     public function index() {
         $this->loadGalleryStylesheets();
         $this->loadGalleryScripts();
-        
+        $has_seven = false;
+        $has_ten= false;
+        $has_allot = false;
         $hotel = $this->hotel_model->getFHotel($this->hotel_id, $this->lang_id);
         $hotel_image = $this->hotel_model->getFHotelImage($this->hotel_id);
         $hotel_image_thumbs = $this->hotel_model->getFHotelImageThumbs($this->hotel_id);
@@ -66,20 +69,41 @@ class Hotel extends MY_F_Controller {
         $location_locales = $this->location_model->getLocationLocalesForLang($hotel['location_id'], $this->lang_id);
         $hotel_images = $this->hotel_model->getFHotelImages($this->hotel_id);
         
+        $hotel_main_facilities_icon = array();
+
+        // echo "<pre>";
+        // var_dump($hotel_facilities);
+        // echo "</pre>";
+        // die();
+
+        if(isset($hotel_facilities) && !empty($hotel_facilities)){
+            foreach($hotel_facilities as $fac_cat){
+                if(isset($fac_cat['facilities'])){
+                    foreach($fac_cat['facilities'] as $facility){
+                        if($facility['fac_is_main']){
+                            array_push($hotel_main_facilities_icon, $facility['facility_icon']);
+                        }
+                    }
+                }
+            }
+        }
+        $this->view_data['main_facility_icons'] = $hotel_main_facilities_icon;
+
         if($location_locales)
             $location = $location_locales;
         else
             $location = $this->location_model->getLocation($hotel['location_id']);
         
         if(isset($hotel_rooms) && $hotel_rooms){
-            $rooms_with_packages = array();
+            $rooms_packages = array();
             $hotel_rooms_distinct_type = array();
             foreach ($hotel_rooms as &$hotel_room) {
                 $hotel_room['prices_amount'] = 0;
                 $hotel_room['room_facilities'] = $this->hotel_model->getFRoomsFacilities($hotel_room['room_id'], $this->lang_id);
-                
+                $room_package = $this->package_model->getPackage($hotel_room['room_package_id']);
+                $rooms_packages[$hotel_room['room_id']] = $room_package;
                 // $hotel_rooms_prices = $this->hotel_model->getFRoomsPrices($hotel_room['room_id']);
-                $rooms_with_packages[$hotel_room['room_name']]['available_periods'] = $this->package_model->getPeriodsPerPackage($hotel_room['room_package_id']);
+                // $rooms_with_packages[$hotel_room['room_name']]['available_periods'] = $this->package_model->getPeriodsPerPackage($hotel_room['room_package_id']);
                 
                 $hotel_room['available_periods'] = $this->package_model->getPeriodsPerPackage($hotel_room['room_package_id']);
                 $hotel_room['available_prices'] = 0;
@@ -111,11 +135,24 @@ class Hotel extends MY_F_Controller {
                 $hotel_rooms_distinct_type[$hotel_room['room_type_id']] = $hotel_room;
             }
             $this->view_data['rooms_distinct_type'] = $hotel_rooms_distinct_type;
+            foreach($rooms_packages as $pack){
+                if($pack['is_package_type'] == 1){
+                    $has_allot = true;
+                }
+                elseif($pack['is_package_type'] == 2){
+                    $has_seven = true;
+                }
+                elseif($pack['is_package_type'] == 3){
+                    $has_ten = true;
+                }
+            }
         }
 
         // echo '<pre>' . var_dump($hotel_rooms[1]) . '</pre>';
         // die();
-
+        $this->view_data['has_seven'] = $has_seven;
+        $this->view_data['has_ten'] = $has_ten;
+        $this->view_data['has_allot'] = $has_allot;
         $this->view_data['hotel'] = $hotel;
         $this->view_data['hotel_image'] = $hotel_image;
         $this->view_data['hotel_images'] = $hotel_images;
@@ -131,6 +168,13 @@ class Hotel extends MY_F_Controller {
         }
         $this->view_data['location'] = $location;
         
+        
+
+        $session_search = $this->session->userdata('search');
+
+        if(isset($session_search) && !empty($session_search)){
+            $this->view_data['search'] = $session_search;
+        }
 
         $this->load->template('frontend/hotel_view', $this->view_data);
     }

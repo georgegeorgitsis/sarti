@@ -4,10 +4,14 @@
             <form method="POST" action="<?= $this->config->item('admin_url') . 'facilities/editFacility' ?>" enctype="multipart/form-data">
                 <input type="hidden" name="facility_id" value="<?= $facility['facility_id']; ?>"/>
                 <div class="col-md-12">
+                <div class="row">
                     <div class="col-md-12 form-group">
                         <label>Facility type</label>
                         <input class="form-control" type="text" name="facility_type" value="<?= $facility['facility_type'] ?>"/>
                     </div>
+                    </div>
+
+                    <div class="row">
 
                     <div class="tabs">
                         <ul>
@@ -27,6 +31,7 @@
                                 </div>
                             <?php } ?>
                         <?php } ?>
+                    </div>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -55,6 +60,13 @@
                         <div class="col-md-12 form-group">
                             <label>Is Main</label>
                             <input type="checkbox" name="is_main" <?= ($facility['is_main'] == 1) ? "checked" : "" ?> />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label> Main Order (0-1000)</label>
+                            <input class="form-control" type="text" name="main_order" 
+                                value="<?= $facility['main_order'] ?>" required="required"/>
                         </div>
                     </div>
                     <div class="col-md-12 form-group">

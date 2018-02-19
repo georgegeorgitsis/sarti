@@ -22,7 +22,7 @@ class Facility_model extends CI_Model {
                 ->from('facilities')
                 ->join('facility_locales', 'facility_locales.facility_id=facilities.facility_id')
                 ->where('facility_locales.lang_id', $lang_id)
-                ->order_by("facilities.order", "asc")
+                ->order_by("facilities.main_order", "asc")
                 ->order_by("facilities.facility_type", "asc")
                 ->get();
         if ($qry->num_rows() > 0)
@@ -68,13 +68,49 @@ class Facility_model extends CI_Model {
     }
 
     public function getFacilities() {
-        $qry = $this->db->select('*' )
-                ->from('facilities')
-                ->join('facility_categories', 'facilities.category_id = facility_categories.id', 'left')
-                ->get();
-        if ($qry->num_rows() > 0)
-            return $qry->result_array();
-        return FALSE;
+        $this->db->select('facility_categories.*')
+                ->from('facility_categories')
+                ->join('facilities', 'facilities.category_id = facility_categories.id', 'inner');
+            
+        $this->db->group_by('facility_categories.id');
+        
+
+        $qry = $this->db->get();
+
+        if ($qry->num_rows() > 0){
+            $results = $qry->result_array();
+            foreach($results as &$res){
+                $qry2 = '';
+                $this->db->select('*')
+                    ->from('facilities')
+                    ->join('facility_categories', 'facilities.category_id = facility_categories.id', 'inner')
+                    ->where('facility_categories.id', $res['id']);
+                $this->db->order_by("facilities.order", "asc");
+                $qry2 = $this->db->get();
+                if($qry2->num_rows()>0){
+                    $res['facilities'] = $qry2->result_array();
+                }
+            }
+            return $results;
+        }
+            
+        return false;
+    }
+
+    public function getFacilitiesOnly() {
+        $this->db->select('facilities.*')
+                ->from('facilities');
+            
+        
+
+        $qry = $this->db->get();
+
+        if ($qry->num_rows() > 0){
+            $results = $qry->result_array();
+            return $results;
+        }
+            
+        return false;
     }
 
     public function getFacility($facilityId) {

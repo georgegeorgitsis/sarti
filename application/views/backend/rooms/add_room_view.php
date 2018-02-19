@@ -88,16 +88,18 @@
                     <div class="col-md-12 form-group">
                         <label>Floor</label>
                         <select name="floor" class="form-control">
-                            <option value="Basement">Basement</option>
+                            <option value="0" selected="selected">None</option>
+                            <option value="Upper Floor">Upper Floor</option>
                             <option value="Ground Floor">Ground Floor</option>
-                            <option value="Upper Floor" selected="selected">Upper Floor</option>
+                            <option value="Basement">Semi-Basement</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Sea View</label>
-                        <select name="sea_view">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <select name="sea_view" class="form-control">
+                            <option value="0">None</option>
+                            <option value="Front Sea View">Front Sea View</option>
+                            <option value="Side Sea View">Side Sea View</option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">

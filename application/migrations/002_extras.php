@@ -30,6 +30,10 @@ class Migration_Extras extends CI_Migration {
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ),
+            'order' => array(
+                'type' => 'INT',
+                'default' => 100
+            ),
         ));
         $this->dbforge->add_field('created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
         $this->dbforge->add_key('id', TRUE);

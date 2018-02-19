@@ -3,11 +3,13 @@
         <div class="row">
             <form method="POST" action="<?= $this->config->item('admin_url') . 'facilities/addFacility' ?>" enctype="multipart/form-data" novalidate>
                 <div class="col-md-12">
+                <div class="row">
                     <div class="col-md-12 form-group">
                         <label>Facility Type</label>
                         <input class="form-control" type="text" name="facility_type" value="<?php echo set_value('facility_type'); ?>"/>
                     </div>
-
+                    </div>
+                    <div class="row">
                     <div class="tabs">
                         <ul>
                             <?php if (isset($languages) && !empty($languages)) { ?>
@@ -26,6 +28,7 @@
                                 </div>
                             <?php } ?>
                         <?php } ?>
+                    </div>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -50,6 +53,12 @@
                         <div class="col-md-12 form-group">
                             <label>Is Main</label>
                             <input type="checkbox" name="is_main" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label> Main Order (0-1000)</label>
+                            <input class="form-control" type="text" name="main_order" value="<?php echo set_value('main_order'); ?>" required="required"/>
                         </div>
                     </div>
                     <div class="row">

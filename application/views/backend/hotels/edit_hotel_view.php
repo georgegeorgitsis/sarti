@@ -100,14 +100,20 @@
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Facilities</label><br/>
-                        <select class="js-select form-control" name="facilities[]" multiple="multiple">
-                            <?php foreach ($facilities as $facility) : ?>
-                                <option value="<?=$facility['facility_id']?>"
-                                    <?= (in_array($facility['facility_id'], $hotelFacilities)) ? "selected" : "" ?>>
-                                    <?=$facility['facility_type']?>
-                                </option>
+                        <div class="row flex flex-wrap flex-start">
+                            <?php foreach ($facilities as $facility_cat) : ?>
+                                <div class="col-md-3 clearfix">
+                                <h3><?= $facility_cat['description'] ?></h3>
+                                <?php foreach ($facility_cat['facilities'] as $facility) : ?>
+                                    <div class="form-group" style="margin-bottom: 8px;">
+                                        <label><?= $facility['facility_type'] ?></label>
+                                        <input type="checkbox" value="<?=$facility['facility_id']?>"
+                                            name="hotel_facilities[]" <?= in_array( $facility['facility_id'], $hotelFacilities) ? "checked" : ""?>>
+                                    </div>
+                                <?php endforeach;?>
+                                </div>
                             <?php endforeach; ?>
-                        </select>
+                        </div>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Longitude</label>
@@ -149,6 +155,11 @@
     </section>
 </section>
 
+<style>
+    .row > .col-md-3:nth-child(4n+1) {
+        clear: both;
+    }
+</style>
 
 <script>
     $(window).load(function () {

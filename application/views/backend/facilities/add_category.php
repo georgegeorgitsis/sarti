@@ -4,10 +4,15 @@
             <form method="POST" action="<?= $this->config->item('admin_url') . 'facilities/addCategory' ?>" enctype="multipart/form-data" novalidate>
                 <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3 form-group">
+                    <div class="col-md-6 form-group">
                         <label>Category</label>
                         <input class="form-control" type="text" name="category" 
                             value="<?php echo set_value('category'); ?>"/>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1form-group">
+                        <label>Category Order</label>
+                        <input class="form-control" type="number" name="order" 
+                            value="<?php echo set_value('order'); ?>"/>
                     </div>
                 </div>
                 </div>

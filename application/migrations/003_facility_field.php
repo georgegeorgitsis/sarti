@@ -15,7 +15,11 @@ class Migration_Facility_Field extends CI_Migration {
             'order' => array(
                 'type' => 'INT',
                 'default' => 100
-            )
+            ),
+            'main_order' => array(
+                'type' => 'INT',
+                'default' => 50
+            ),
         );
         $this->dbforge->add_column('facilities', $field);
 

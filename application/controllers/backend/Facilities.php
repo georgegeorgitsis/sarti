@@ -89,7 +89,7 @@ class Facilities extends MY_Controller {
 
 
     public function showFacilities() {
-        $facilities = $this->facility_model->getFacilities();
+        $facilities = $this->facility_model->getFacilitiesOnly();
         $this->view_data['facilities'] = $facilities;
         // var_dump($facilities);
         // die();
@@ -152,6 +152,10 @@ class Facilities extends MY_Controller {
             $is_main = $this->input->post('is_main');
             if(isset($is_main) && $is_main == "on"){
                 $facilityData['is_main'] = 1;
+            }
+            $fac_main_order = $this->input->post('main_order');
+            if(isset($fac_main_order) && $fac_main_order >= 0){
+                $facilityData['main_order'] = $fac_main_order;
             }
             
             
@@ -235,6 +239,13 @@ class Facilities extends MY_Controller {
             $is_main = $this->input->post('is_main');
             if(isset($is_main) && $is_main == "on"){
                 $facilityData['is_main'] = 1;
+            }
+            else{
+                $facilityData['is_main'] = 0;
+            }
+            $fac_main_order = $this->input->post('main_order');
+            if(isset($fac_main_order) && $fac_main_order >= 0){
+                $facilityData['main_order'] = $fac_main_order;
             }
 
             $this->facility_model->editFacility($facilityData);

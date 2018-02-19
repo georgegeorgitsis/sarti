@@ -988,8 +988,10 @@ class Migration_init extends CI_Migration {
                 'constraint' => '100',
             ),
             'sea_view' => array(
-                'type' => 'INT',
-                'constraint' => '1',
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'null' => TRUE,
+                'default' => null                 
             ),
             'room_thumb' => array(
                 'type' => 'VARCHAR',
