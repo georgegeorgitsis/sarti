@@ -48,6 +48,17 @@ class Location_model extends CI_Model {
         return false;
     }
 
+    public function getLocationLocalesNameForLang($locationId, $lang_id) {
+        $qry = $this->db->select('location_name')
+                ->from('location_locales')
+                ->where('lang_id', $lang_id)
+                ->where('location_id', $locationId)
+                ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->row_array();
+        return false;
+    }
+
     public function getLocation($locationId) {
         $qry = $this->db->select('*')
                 ->from('locations')

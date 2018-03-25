@@ -37,6 +37,14 @@
                             <div class="col-md-12 mt">
                                 <div class="row clearfix">
                                     <span class="tcenter col-md-12 no-padding tbold label-span txt-cyan">Persons</span>
+                                    <div style="width: 100%; display: flex; justify-content:center; height: 34px;">
+                                        <div class="person-icon-search p-i-selected" id="person-i-1" > </div>
+                                        <div class="person-icon-search p-i-selected" id="person-i-2" ></div>
+                                        <div class="person-icon-search" id="person-i-3" ></div>
+                                        <div class="person-icon-search" id="person-i-4"></div>
+                                        <div class="person-icon-search" id="person-i-5" ></div>
+                                        <div class="person-icon-search" id="person-i-6" ></div>
+                                    </div>
                                     <span class="person-7pack col-md-12 no-padding">
                                         <span> <b>2</b> </span>
                                         <input class="data-slider" id="7per" name="a" data-slider-id='7perSlider' type="text" 
@@ -177,7 +185,9 @@
                         </div>
                         <?php foreach ($boards as $board): ?>
                             <div class="col-md-12">
-                                <input type="checkbox" name="board" class="board" value="<?= $board['board_id'] ?>"> <?= $board['board_name'] ?>
+                                <input type="checkbox" name="board" class="board" value="<?= $board['board_id'] ?>"
+                                    <?= isset($search) && isset( $search['filters']['boards'] ) && in_array($board['board_id'], $search['filters']['boards']) ? "checked" : "" ?>> 
+                                <?= $board['board_name'] ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -192,9 +202,10 @@
                         <?php foreach ($facilities as $facility):  ?>
                             <?php if($facility['is_main']): ?>
                             <div class="col-md-12">
-                                <input type="checkbox" name="facility" class="facility" value="<?= $facility['facility_id'] ?>">
+                                <input type="checkbox" name="facility" class="facility" value="<?= $facility['facility_id'] ?>"
+                                    <?= isset($search) && isset( $search['filters']['facilities'] ) && in_array($facility['facility_id'], $search['filters']['facilities']) ? "checked" : "" ?>>
                                 <?php if(isset($facility['facility_icon']) && trim($facility['facility_icon']) != ""): ?> 
-                                <img src="<?= base_url('assets/uploads/facilities/' . $facility['facility_icon']) ?>"/>
+                                    <img src="<?= base_url('assets/uploads/facilities/' . $facility['facility_icon']) ?>"/>
                                 <?php endif;?>
                                 <?= $facility['facility_name'] ?>
                             </div>
@@ -210,15 +221,18 @@
                             <h4 class="title txt-cyan">Floor</h4>
                         </div>
                         <div class="col-md-12">
-                            <input type="checkbox" name="floor" class="floor" value="upper_floor">
+                            <input type="checkbox" name="floor" class="floor" value="upper_floor"
+                            <?= isset($search) && isset( $search['filters']['floors'] ) && in_array("upper_floor", $search['filters']['floors']) ? "checked" : "" ?> >
                             Upper Floor
                         </div>
                         <div class="col-md-12">
-                            <input type="checkbox" name="floor" class="floor" value="ground_floor">
+                            <input type="checkbox" name="floor" class="floor" value="ground_floor"
+                            <?= isset($search) && isset( $search['filters']['floors'] ) && in_array("ground_floor", $search['filters']['floors']) ? "checked" : "" ?>>
                             Ground Floor
                         </div>
                         <div class="col-md-12">
-                            <input type="checkbox" name="floor" class="floor" value="basement">
+                            <input type="checkbox" name="floor" class="floor" value="basement"
+                            <?= isset($search) && isset( $search['filters']['floors'] ) && in_array("basement", $search['filters']['floors']) ? "checked" : "" ?>>
                             Semi - Basement
                         </div>                       
                     </div>
@@ -227,7 +241,21 @@
         </div>
     </div>
 </aside>
+<style>
 
+    .person-icon-search{
+        width: 25px;
+        height: 34px;
+        background-image: url("<?= base_url('assets/images/person/person-azure-1.png') ?>");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .person-icon-search.p-i-selected{
+        background-image: url("<?= base_url('assets/images/person/person-blue.png') ?>");
+    }
+
+</style>
 <script type="text/javascript">
     function grabData() {
         // sorting
@@ -277,6 +305,8 @@
             $(".hotels-list").html();
             $(".hotels-list").html(parsed.html);
             $("#hotels-count-num").html(parsed.total_count);
+            $("#filters_string").html(parsed.filters_string);     
+            $("#clear-btn").removeClass('hidden');
             $('.loader-wrapper').toggle();
         })
         .fail(function () {
@@ -291,10 +321,31 @@
             formatter: function(value) {
                 return 'Persons: ' + value;
             }
+        }).on('slide', function(value){
+            for (i = 2; i <= value; i++) { 
+                $('person-'+i).addClass('p-i-selected');
+            }
+            if(value < 6){
+                for (i = value+1; i <= 6; i++) { 
+                    $('person-'+i).removeClass('p-i-selected');
+                } 
+            }
         });
         $('#7per').bootstrapSlider({
             formatter: function(value) {
                 return 'Persons: ' + value;
+            }
+        }).on('change', function(value){
+            var change = value.value.newValue;
+            for (i = 2; i <= change; i++) { 
+                var el = $('#person-i-'+i);
+                console.log(el);
+                el.addClass('p-i-selected');
+            }
+            if(change < 6){
+                for (i = change+1; i <= 6; i++) { 
+                    $('#person-i-'+i).removeClass('p-i-selected');
+                } 
             }
         });
         $('#allot-per').bootstrapSlider({

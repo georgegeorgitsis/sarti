@@ -19,6 +19,8 @@
                                 <td><?= $package['package_id'] ?></td>
                                 <td><?= $package['package_type'] ?></td>
                                 <td>
+                                    <a class='btn btn-info' href='<?= $admin_url . 'packages/early_bookings?pid=' . $package['package_id']; ?>'>Early Bookings</a>
+                                    |
                                     <a class='btn btn-info' href='<?= $admin_url . 'packages/editPackage/' . $package['package_id']; ?>'>Edit</a>
                                     |
                                     <a class='btn btn-danger' href='<?= $admin_url . 'packages/deletePackage/' . $package['package_id']; ?>' onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>

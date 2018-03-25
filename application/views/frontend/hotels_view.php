@@ -1,16 +1,23 @@
 
 <div class="container">
-    <div class="row flex flex-end">
+    <div class="row flex flex-end" id="search-results">
     <?php if (isset($is_search) && $is_search == true && isset($search)): ?>
         <div class="col-md-6 col-md-offset-3  no-padding">
             <h4 class="text-bold search-display">
                 <?php if(isset($search['checkin'])):?>
-                Your results for: <?= date("d-m-y", strtotime($search['checkin'])) ." - ".date("d-m-y", strtotime($search['checkout']))." for ".$search['adults']. " people" ?>
-                <?php else:?>
+                Your results for: <?= date("d/m/y", strtotime($search['checkin'])) ." - ".date("d/m/y", strtotime($search['checkout']))." for ".$search['adults']. " persons" ?>
                 <?php endif;?>
             </h4>
+            <?php if( isset($filters_string) && trim($filters_string) != "" ): ?>
+                <h5 id="filters_string" class="text-muted">
+                    <?= $filters_string ?>
+                </h5>
+            <?php else: ?>
+                <h5 id="filters_string" class="text-muted">
+                </h5>
+            <?php endif; ?>
         </div>
-        <div class="col-md-2 col-md-offset-1 flex flex-end no-padding">
+        <div class="col-md-2 col-md-offset-1 flex flex-end no-padding align-center">
             <?php if( isset( $package_type ) && trim($package_type) != "" ): ?>
                 <?php if( $package_type == 2 ): ?>
                 <a href="<?= base_url('seven-day-packages?clear=1') ?>" class="btn btn-success bg-light-orange">Clear Search</a>
@@ -22,6 +29,14 @@
             <?php else: ?>
             <a href="<?= base_url('?clear=1') ?>" class="btn btn-success bg-light-orange">Clear Filters</a>
             <?php endif; ?>
+        </div>
+    <?php else: ?>
+        <div class="col-md-6 col-md-offset-3 no-padding">
+            <h5 id="filters_string" class="text-muted">
+            </h5>
+        </div>
+        <div class="col-md-2 col-md-offset-1 flex flex-end no-padding align-center">
+            <a id="clear-btn" href="<?= base_url('?clear=1') ?>" class="btn btn-success bg-light-orange hidden" >Clear Filters</a>
         </div>
     <?php endif; ?>
     </div>
@@ -48,13 +63,13 @@
                                 <option value="title-desc">Descending</option>
                             </select>
                         </div>
-                        <div class="col-md-3 flex flex-end no-padding">
+                        <!-- <div class="col-md-3 flex flex-end no-padding">
                             <select class="form-control" name="sort-select-price" id="sort-select-price">
                                 <option value="none" disabled selected>Price</option> 
                                 <option value="price-asc">Ascending</option>
                                 <option value="price-desc">Descending</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

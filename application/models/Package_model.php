@@ -17,6 +17,57 @@ class Package_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getPackageEarlyBookings($pid){
+        $qry = $this->db->select('early_bookings.*')
+            ->from('early_bookings')
+            ->join('early_booking_packages', 'early_bookings.id=early_booking_packages.early_booking_id')
+            ->where('early_booking_packages.package_id', $pid)
+            ->where('early_bookings.active', true)
+            ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }
+
+    public function getPackageEarlyBooking($ebid){
+        $qry = $this->db->select('early_bookings.*')
+            ->from('early_bookings')
+            ->where('early_bookings.id', $ebid)
+            ->get();
+        if ($qry->num_rows() > 0)
+            return $qry->row_array();
+        return false;
+    }
+
+    public function addPackageEarlyBooking($data){
+        $this->db->insert('early_bookings', $data);
+        if ($this->db->affected_rows() == 1)
+            return $this->db->insert_id();
+        return FALSE;
+    }
+    
+    public function addPackageEarlyBookingPivot($data){
+        $this->db->insert('early_booking_packages', $data);
+        if ($this->db->affected_rows() == 1)
+            return TRUE;
+        return FALSE;
+    }
+
+    public function updatePackageEarlyBooking($data){
+        $this->db->where('id', $data['id'])->update('early_bookings', $data);
+        if ($this->db->affected_rows() == 1)
+            return TRUE;
+        return FALSE;
+    }
+
+    public function deletePackageEarlyBooking($id){
+        $this->db->delete('early_booking_packages', array('early_booking_id' => $id));
+        $this->db->delete('early_bookings', array('id' => $id));
+        if ($this->db->affected_rows() > 0)
+            return true;
+        return false;
+    }
+
     public function getFPackagesByDate($date){
         $qry = $this->db->select('package_periods.*, packages.package_type, rooms.*, hotels.hotel_name, hotels.hotel_id')
             ->from('package_periods')
@@ -31,6 +82,31 @@ class Package_model extends CI_Model {
             return $qry->result_array();
         return false;
     }
+
+    
+    public function getPackagesForHotel($pType, $hotelId, $fromDate = NULL, $toDate = NULL){
+        $this->db->select('*')
+            ->from('package_periods')
+            ->join('packages', 'packages.package_id=package_periods.package_id')
+            ->join('rooms', 'packages.package_id=rooms.room_package_id')
+            ->where('rooms.hotel_id', $hotelId)
+            ->where('packages.is_package_type', $pType);
+
+        if($fromDate){        
+            $this->db->where('package_periods.period_from >=', $fromDate);
+        }
+        else{
+            $this->db->where('package_periods.period_from >= CURDATE()');
+        }
+        if($toDate){
+            $this->db->where('package_periods.period_from <=', $toDate);
+        }        
+        $this->db->order_by('package_periods.period_from');
+        $qry = $this->db->get();
+        if ($qry->num_rows() > 0)
+            return $qry->result_array();
+        return false;
+    }    
 
     public function getF7dayspackages($fromDate = NULL, $toDate = NULL) {
         $this->db->select('*')

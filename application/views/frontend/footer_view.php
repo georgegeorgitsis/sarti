@@ -1,10 +1,8 @@
 
 <!-- col 9 main -->
 </div>
-<footer class="footer flex flex-end">
-    <span class="accreditation">Copyright 2018 - <a href="https://sarti.gr">Sarti.gr</a> </span>
-</footer>
 
+<?php require_once(VIEWPATH . 'frontend/shared/footer.php'); ?>
 
 <!-- WRAPPER -->
 </div>

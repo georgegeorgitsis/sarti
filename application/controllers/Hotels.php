@@ -16,6 +16,9 @@ class Hotels extends MY_F_Controller {
         $this->load->model('hotel_model');
         $this->load->model('package_model');
         $this->load->model('room_model');
+        $this->load->model('board_model');
+        $this->load->model('facility_model');
+        $this->load->model('location_model');
         array_push($this->styles, base_url('assets/css/sidebar.css'));
         $this->loadStyles();
     }
@@ -50,13 +53,9 @@ class Hotels extends MY_F_Controller {
         }
         else{
             $this->getHotel_ids();
-            // $this->parseHotels();
-            if(isset( $index_search['filters'] ) && count($index_search['filters']) > 0){   
-                // $this->is_search = false;/
+            if(isset( $index_search['filters'] ) && count($index_search['filters']) > 0){
+                $this->view_data['filters_string'] = $this->create_filters_string($index_search['filters']);
                 $this->is_search = true;
-                // $this->filterHotels($index_search['filters']['destination'], $index_search['filters']['boards'], 
-                //     $index_search['filters']['room_types'], $index_search['filters']['facilities'], 
-                //     $index_search['filters']['sorting_title'], $index_search['filters']['sorting_price'], $index_search['filters']['floors']);
                 $this->filterHotels($index_search);
                 $this->view_data['search'] = $index_search;
             }
@@ -103,9 +102,15 @@ class Hotels extends MY_F_Controller {
                 $session_search = $this->session->userdata('seven_d_search');
                 if(isset($session_search) && !empty($session_search)){
                     $this->is_search = true;
-                    $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    if( isset($session_search['checkin']) && trim($session_search['checkin']) != "" ){
+                        $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    }
+                    else{
+                        $this->getHotel_ids();
+                    }
                 
                     if(isset($session_search['filters']) && count($session_search['filters']) > 0){
+                        $this->view_data['filters_string'] = $this->create_filters_string($session_search['filters']);
                         $this->filterHotels($session_search);
                     }
                     else{
@@ -160,20 +165,16 @@ class Hotels extends MY_F_Controller {
                 $session_search = $this->session->userdata('ten_d_search');
                 if(isset($session_search) && !empty($session_search)){
                     $this->is_search = true;
-                    $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
-                        // echo "<pre>";
-                        // var_dump($this->all_hotel_ids);
-                        // echo "</pre>";
+                    if( isset($session_search['checkin']) && trim($session_search['checkin']) != "" ){
+                        $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
+                    }
+                    else{
+                        $this->getHotel_ids();
+                    }
+                    
                     if(isset($session_search['filters']) && count($session_search['filters']) > 0){
-                        // echo "<pre>";
-                        // var_dump($session_search);
-                        // echo "</pre>";
-                        // die();
+                        $this->view_data['filters_string'] = $this->create_filters_string($session_search['filters']);
                         $this->filterHotels($session_search);
-                        // echo "<pre>";
-                        // var_dump($this->all_hotel_ids);
-                        // echo "</pre>";
-                        // die();
                     }
                     else{
                         $this->parseHotels($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
@@ -236,6 +237,7 @@ class Hotels extends MY_F_Controller {
                     $this->is_search = true;
                     $this->getHotel_ids($session_search['checkin'], $session_search['checkout'], $session_search['adults'], $session_search['packageType']);
                     if(isset($session_search['filters']) && count($session_search['filters']) > 0){
+                        $this->view_data['filters_string'] = $this->create_filters_string($session_search['filters']);
                         $this->filterHotels($session_search);
                     }
                     else{
@@ -257,14 +259,13 @@ class Hotels extends MY_F_Controller {
     }
 
     protected function getHotel_ids($checkin = null, $checkout = null, $adults = null, $packageType = null) {
-        // $this->count_hotels($checkin, $checkout, $adults, $packageType);
         $this->all_hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
-            null, null, $this->lang_id);
+            null, null, $this->lang_id); 
 
         $this->paginateHotels();
 
         $this->hotel_ids = $this->hotel_model->getFHotels($checkin, $checkout, $adults, $packageType,
-            $this->conf['per_page'], $this->page, $this->lang_id); 
+            $this->conf['per_page'], $this->page, $this->lang_id);
     }
 
     protected function count_hotels($checkin = null, $checkout = null, $adults = null, $packageType = null){
@@ -273,7 +274,7 @@ class Hotels extends MY_F_Controller {
     }
 
     protected function parseHotels($checkin = null, $checkout = null, $adults = null, 
-        $packageType = null) {
+        $packageType = null, $price_filter = null) {
 
         if (isset($this->hotel_ids) && !empty($this->hotel_ids)) {
             $this->view_data['total_hotel_count'] = count($this->all_hotel_ids);
@@ -288,11 +289,24 @@ class Hotels extends MY_F_Controller {
                     $this->hotels[$hotel_id]['thumb'] = $this->hotel_model->getHotelThumb($hotel_id);
                     $this->hotels[$hotel_id]['facilities'] = $this->hotel_model->getFHotelFacilities($hotel_id, $this->lang_id);
                     foreach($hotel_rooms as &$room){
+                        $early_bookings = $this->package_model->getPackageEarlyBookings($room['package_id']);
+                        if(isset( $early_bookings ) && !empty($early_bookings)){
+                            $present_eb = $early_bookings[0];
+                            foreach($early_bookings as $key => $eb){
+                                $valid_until = strtotime($eb['valid_until']);
+                                $present_eb_time = strtotime($present_eb['valid_until']); 
+                                if((time()-(60*60*24)) <= $valid_until && $present_eb_time > $valid_until ){
+                                    $present_eb = $eb;
+                                }
+                            }
+                            $room['early_booking_offer'] = $present_eb;
+                        }
                         $type_arr = explode(' ',trim($room['room_type_name']));
                         if(!array_key_exists($type_arr[0], $this->hotels[$hotel_id]['rooms_distinct_types'])){
                             $this->hotels[$hotel_id]['rooms_distinct_types'] [$type_arr[0]] = ['min_adults'=> $room['min_adults'], 'max_adults'=> $room['max_adults'], 'type'=> $type_arr[0]];
                         }
                     }
+                    
                     $this->hotels[$hotel_id]['rooms'] = $hotel_rooms;
     
                     if(isset($this->hotels[$hotel_id]['rooms']) && count($this->hotels[$hotel_id]['rooms']) > 0){
@@ -306,7 +320,64 @@ class Hotels extends MY_F_Controller {
                     // unset($this->hotel_ids[$key]);
                     // unset($this->all_hotel_ids[$key]);
                 }
+            }   
+            if( isset($price_filter) && trim($price_filter) != "" ){   
+                if($price_filter == "price-asc"){   
+                    $this->hotels = $this->quick_sort_hotel_prices_asc($this->hotels);
+                }
+                else{
+                    $this->hotels = $this->quick_sort_hotel_prices_desc($this->hotels);
+                }
             }
+            // echo "<pre>";
+            // var_dump($this->hotels);
+            // echo "</pre>";
+            // die();
+        }
+    }
+
+    protected function quick_sort_hotel_prices_asc($array){
+        $length = count($array);
+        if($length <= 1){
+            return $array;
+        }
+        else{
+            $pivot = array_values($array)[0];
+            $left = $right = array();
+            for($i = 1; $i < count($array); $i++){
+                $array_val = array_values($array)[$i];
+                if( isset($array_val['min_price_room']['price']) && trim($array_val['min_price_room']['price']) != "" ){    
+                    if($array_val['min_price_room']['price'] < $pivot['min_price_room']['price']){
+                        $left[array_keys($array)[$i]] = $array_val;
+                    }
+                    else{
+                        $right[array_keys($array)[$i]] = $array_val;
+                    }
+                }
+            }
+            return array_merge($this->quick_sort_hotel_prices_desc($left), [ array_keys($array)[0] => $pivot ], $this->quick_sort_hotel_prices_desc($right));
+        }
+    }
+    protected function quick_sort_hotel_prices_desc($array){
+        $length = count($array);
+        if($length <= 1){
+            return $array;
+        }
+        else{
+            $pivot = array_values($array)[0];
+            $left = $right = array();
+            for($i = 1; $i < count($array); $i++){
+                $array_val = array_values($array)[$i];
+                if( isset($array_val['min_price_room']['price']) && trim($array_val['min_price_room']['price']) != "" ){    
+                    if($array_val['min_price_room']['price'] > $pivot['min_price_room']['price']){
+                        $left[array_keys($array)[$i]] = $array_val;
+                    }
+                    else{
+                        $right[array_keys($array)[$i]] = $array_val;
+                    }
+                }
+            }
+            return array_merge($this->quick_sort_hotel_prices_desc($left), [ array_keys($array)[0] => $pivot ], $this->quick_sort_hotel_prices_desc($right));
         }
     }
 
@@ -315,34 +386,34 @@ class Hotels extends MY_F_Controller {
         foreach ($this->all_hotel_ids as $h_id) {
             array_push($hotels_array, $h_id['hotel_id']);
         }
-        // echo "<pre>";
-        // var_dump($hotels_array);
-        // echo "</pre>";
         
         if($hotels_array && !empty($hotels_array)){
             if (isset($session_data['filters']) && count($session_data['filters']) > 0) {
                 $this->all_hotel_ids = $this->hotel_model->getFHotelsFiltered($hotels_array, $session_data['filters']['destination'],
                 $session_data['filters']['boards'], $session_data['filters']['room_types'], $session_data['filters']['facilities'],
                 $session_data['filters']['sorting_title'], $session_data['filters']['sorting_price'], $session_data['filters']['floors']);
-                // echo "<pre>";
-                // var_dump($this->all_hotel_ids);
-                // echo "</pre>";
     
                 $this->hotel_ids = $this->hotel_model->getFHotelsFiltered($hotels_array, $session_data['filters']['destination'],
                 $session_data['filters']['boards'], $session_data['filters']['room_types'], $session_data['filters']['facilities'],
                 $session_data['filters']['sorting_title'], $session_data['filters']['sorting_price'], $session_data['filters']['floors'], $this->conf['per_page'], $this->page);
-                // echo "<pre>";
-                // var_dump($this->hotel_ids);
-                // echo "</pre>";
-                // die();
-
             }
             if( isset($session_data['packageType']) && trim($session_data['packageType']) != "" ){
-                $this->parseHotels($session_data['checkin'], $session_data['checkout'], $session_data['adults'], 
-                    $session_data['packageType']);    
+                if( isset($session_data['filters']['sorting_price']) && trim($session_data['filters']['sorting_price']) != "" ){
+                    $this->parseHotels($session_data['checkin'], $session_data['checkout'], $session_data['adults'], 
+                        $session_data['packageType'], $session_data['filters']['sorting_price']); 
+                }
+                else{
+                    $this->parseHotels($session_data['checkin'], $session_data['checkout'], $session_data['adults'], 
+                        $session_data['packageType']);
+                }                   
             }
             else{
-                $this->parseHotels();
+                if( isset($session_data['filters']['sorting_price']) && trim($session_data['filters']['sorting_price']) != "" ){
+                    $this->parseHotels(null, null, null, null, $session_data['filters']['sorting_price']); 
+                }
+                else{
+                    $this->parseHotels();
+                } 
             }
                         
             $this->view_data['hotels'] = $this->hotels;
@@ -404,7 +475,10 @@ class Hotels extends MY_F_Controller {
             }
             $this->filterHotels($session_search);
             
+
             $response = array();
+
+            $response['filters_string'] = $this->create_filters_string($session_search['filters']);
             $hotels_view = $this->load->view('frontend/hotels_list', $this->view_data, TRUE);
             $response['html'] = $hotels_view;
             $response['total_count'] = count($this->all_hotel_ids);
@@ -436,6 +510,118 @@ class Hotels extends MY_F_Controller {
         }
     }
 
+    protected function create_filters_string($filter_array){
+        $filters_string = "";
+        if(!empty($filter_array)){
+            $first_filter_added = false;
+            if( isset($filter_array['destination']) && trim($filter_array['destination']) != "" ){
+                $filters_string .= "<bold>Destination: </bold>" . 
+                $this->location_model->getLocationLocalesNameForLang($filter_array['destination'], $this->lang_id)['location_name'];
+                $first_filter_added = true;
+            }
+            if( isset($filter_array['room_types']) && !empty($filter_array['room_types']) ){
+                if($first_filter_added){
+                    $filters_string .= " - <bold>Room Type: </bold>";
+                }
+                else{
+                    $filters_string .= "<bold>Room Type:</bold>";
+                    $first_filter_added = true;
+                }
+                foreach($filter_array['room_types'] as $rt_key => $rt){
+                    if($rt_key > 0){
+                        $filters_string .= ",";
+                    }
+                    $filters_string .= " ".$rt;
+                }
+            }
+            if( isset($filter_array['boards']) && !empty($filter_array['boards']) ){
+                if($first_filter_added){
+                    $filters_string .= " - <bold>Board: </bold>";
+                }
+                else{
+                    $filters_string .= "<bold>Board:</bold>";
+                    $first_filter_added = true;
+                }
+                foreach($filter_array['boards'] as $bd_key => $bd){
+                    $board = $this->board_model->getBoard($bd);
+                    if($bd_key > 0){
+                        $filters_string .= ",";
+                    }
+                    $filters_string .= " ".$board['board_name'];
+                }
+            }
+            if( isset($filter_array['facilities']) && !empty($filter_array['facilities']) ){
+                if($first_filter_added){
+                    $filters_string .= " - <bold>Facility: </bold>";
+                }
+                else{
+                    $filters_string .= "<bold>Facility: </bold>";
+                    $first_filter_added = true;
+                }
+                foreach($filter_array['facilities'] as $flt_key => $flt){
+                    $facility = $this->facility_model->getFacility($flt);
+                    if($flt_key > 0){
+                        $filters_string .= ",";
+                    }
+                    $filters_string .= " ".$facility['facility_type'];
+                }
+            }
+            if( isset($filter_array['floors']) && !empty($filter_array['floors']) ){
+                if($first_filter_added){
+                    $filters_string .= " - <bold>Floor: </bold>";
+                }
+                else{
+                    $filters_string .= "<bold>Floor: </bold>";
+                    $first_filter_added = true;
+                }
+                foreach($filter_array['floors'] as $flr_key => $flr){
+                    if($flr_key > 0){
+                        $filters_string .= ",";
+                    }
+                    if($flr == "upper_floor"){
+                        $filters_string .= " Upper Floor";
+                    }
+                    elseif($flr == "ground_floor"){
+                        $filters_string .= " Ground Floor";
+                    }
+                    else{
+                        $filters_string .= " Semi-Basement";
+                    }
+                    
+                }
+            }
+            if( (isset($filter_array['sorting_title']) && trim($filter_array['sorting_title']) != "") 
+                || (isset($filter_array['sorting_price']) && trim($filter_array['sorting_price']) != "")){
+                if($first_filter_added){
+                    $filters_string .= " - <bold>Sorting by: </bold>";
+                }
+                else{
+                    $filters_string .= "<bold>Sorting by: </bold>";
+                    $first_filter_added = true;
+                }
+            }
+            if( isset($filter_array['sorting_title']) && trim($filter_array['sorting_title']) != "" ){
+                $filters_string .= " Title";
+                if($filter_array['sorting_title'] == "title-asc"){
+                    $filters_string .= " Ascending";
+                }
+                else{
+                    $filters_string .= " Descending";
+                }
+            }
+            if( isset($filter_array['sorting_price']) && trim($filter_array['sorting_price']) != "" ){
+                $filters_string .= " Price";
+                if($filter_array['sorting_price'] == "price-asc"){
+                    $filters_string .= " Ascending";
+                }
+                else{
+                    $filters_string .= " Descending";
+                }
+            }
+        }
+        return $filters_string;
+    }
+
     protected function handleSessionSearch($package_type = null) {
         $checkin = null;
         $checkout = null;
@@ -451,11 +637,6 @@ class Hotels extends MY_F_Controller {
             elseif( $package_type == 1 ) {
                 $search = $this->session->userdata('allot_search');
             }
-            
-            // echo "<pre>";
-            // var_dump($search);
-            // echo "</pre>";
-            // die();
 
             $checkin = $search['checkin'];
             $checkout = $search['checkout'];

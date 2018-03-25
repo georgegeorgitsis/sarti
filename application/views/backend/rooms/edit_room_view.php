@@ -112,9 +112,11 @@
                         <label>Floor</label>
                         <select name="floor" class="form-control">
                             <option value="0" <?php if ($room['floor'] == "0") echo "selected='selected'" ?>>None</option>
-                            <option value="Upper Floor" <?php if ($room['floor'] == "upper_floor") echo "selected='selected'" ?>>Upper Floor</option>
-                            <option value="Ground_Floor" <?php if ($room['floor'] == "ground_floor") echo "selected='selected'" ?>>Ground Floor</option>
-                            <option value="Basement" <?php if ($room['floor'] == "basement") echo "selected='selected'" ?>>Semi-Basement</option>
+                            <option value="Upper Floor" <?= ($room['floor'] == "upper_floor" || $room['floor'] == "Upper Floor") ? "selected='selected'" : "" ?>>Upper Floor</option>
+                            <option value="Ground Floor" <?= ($room['floor'] == "ground_floor" || $room['floor'] == "Ground Floor") ? "selected='selected'" :"" ?>>Ground Floor</option>
+                            <option value="Basement" <?= ( $room['floor'] == "basement" || $room['floor'] == "Basement" ) ? "selected='selected'" : "" ?>>
+                                Semi-Basement
+                            </option>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">

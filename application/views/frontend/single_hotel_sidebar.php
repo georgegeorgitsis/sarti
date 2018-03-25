@@ -5,7 +5,7 @@
                 <div class="col-md-12 no-padding">
                     <?php if($has_seven):?>
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>"> 
+                        <form method="GET" action="<?= base_url('hotel/').$hotel['hotel_id'] ?>"> 
                             <input type="hidden" name="pt" value="2">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">Show me the 7 day DEALS</h4>
@@ -30,15 +30,6 @@
                                             data-slider-max="6" data-slider-step="1" 
                                             data-slider-value="<?= (isset($search) && $search['packageType'] == 2 && $search['adults']) ? $search['adults'] : 2 ?>"/>
                                         <span><b>6</b> </span>
-                                        <!-- <?php /* for ($i = 6; $i >= 1; $i--): ?>
-                                            <?php if($i == $minMax7Days['min_adults'] || $i == 2):?>
-                                                <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" checked>
-                                                <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                            <?php else:?>
-                                                <input type="radio" id="7per-rating-<?=$i?>" name="a" value="<?=$i?>" >
-                                                <label for="7per-rating-<?=$i?>"><?=$i?></label>
-                                            <?php endif;?>
-                                        <?php endfor; */ ?> -->
                                     </span>      
                                 </div>                          
                             </div>
@@ -57,7 +48,7 @@
                 <div class="col-md-12 no-padding">
                     <?php if($has_ten):?>
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>">
+                        <form method="GET" action="<?= base_url('hotel/').$hotel['hotel_id'] ?>">
                         <input type="hidden" name="pt" value="3">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">Show me the 9-15 day DEALS</h4>
@@ -97,7 +88,7 @@
                 <div class="col-md-12 no-padding">
                     <?php if($has_allot):?>
                     <div class="md-box accommodation-search clearfix">
-                        <form method="GET" action="<?= base_url('hotels/index') ?>">
+                        <form method="GET" action="<?= base_url('hotel/').$hotel['hotel_id'] ?>">
                         <input type="hidden" name="pt" value="1">
                             <div class="col-md-12">
                                 <h4 class="title tcenter txt-cyan">I have the dates</h4>
@@ -142,4 +133,124 @@
         </div>
     </div>
 </aside>
-    
+
+<script type="text/javascript">
+
+    $(window).load(function () {
+
+        $('#10per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
+        });
+        $('#7per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
+        });
+        $('#allot-per').bootstrapSlider({
+            formatter: function(value) {
+                return 'Persons: ' + value;
+            }
+        });
+        
+        $("input[name='checkout']").datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            minDate: new Date()
+        });
+        $("input[name='checkin']").datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            minDate: new Date()
+        }).on("changeDate", function(e){
+            $("input[name='checkout']").datepicker('setDate', e.date);
+            $("input[name='checkout']").datepicker('setStartDate', e.date);
+        });
+
+        $("#p-7-dp").datepicker({
+            minDate: new Date(),
+            format: "M-yyyy",
+            viewMode: "months", 
+            minViewMode: "months",
+            autoclose: true,
+            startDate: new Date()
+        })
+        .on('changeDate', function(selected){
+            let dateString = selected.date.getFullYear() + "/" + (selected.date.getMonth() + 1) + "/" + selected.date.getDate();
+
+            var dateFilter = new Object();
+            dateFilter.dateFrom = dateString;
+            dateFilter.pType = 2;
+            dateFilter.hotelId = <?= $hotel['hotel_id']?>;
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('hotel/showRoomPeriods') ?>",
+                data: dateFilter
+            }).done(function(data) {
+                $('#p7').empty().append(data);
+            });
+        });
+
+        $('#p-10-dp').datepicker({ 
+            minDate: new Date(),
+            format: "M/yyyy",
+            viewMode: "months", 
+            minViewMode: "months",
+            autoclose: true,
+            startDate: new Date()
+        })
+        .on('changeDate', function(selected){
+            let dateString = selected.date.getFullYear() + "/" + (selected.date.getMonth() + 1) + "/" + selected.date.getDate();
+
+            var dateFilter = new Object();
+            dateFilter.dateFrom = dateString;
+            dateFilter.pType = 3;
+            dateFilter.hotelId = <?= $hotel['hotel_id']?>;
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('hotel/showRoomPeriods') ?>",
+                data: dateFilter
+            }).done(function(data) {
+                $('#p10').empty().append(data);
+
+            });
+        });
+
+
+        <?php if(isset($search) && !empty($search) && isset($search['packageType'])): ?>
+            var searchPackage = "<?= $search['packageType'] ?>";
+            
+            var date = new Date("<?= $search['checkin'] ?>"), y = date.getFullYear(), m = date.getMonth();
+            var firstDay = new Date(y, m, 1);
+            firstDay = moment(firstDay).format("DD-MM-YYYY");
+           
+            var dateFil = new Object();
+            dateFil.dateFrom = firstDay;
+            dateFil.hotelId = <?= $hotel['hotel_id']?>;
+            if(searchPackage == 2){
+                dateFil.pType = 2;
+                $.ajax({
+                    type: "POST",
+                    url: "<?= base_url('hotel/showRoomPeriods') ?>",
+                    data: dateFil
+                }).done(function(data) {
+                    $('#p7').empty().append(data);
+                });
+            }
+            else if(searchPackage == 3){
+                dateFil.pType = 3;
+                $.ajax({
+                    type: "POST",
+                    url: "<?= base_url('hotel/showRoomPeriods') ?>",
+                    data: dateFil
+                }).done(function(data) {
+                    $('#p10').empty().append(data);
+                });
+            }
+            $('html, body').animate({
+                scrollTop: $("#rooms_row").offset().top
+            }, 2000);
+        <?php endif; ?>
+    });
+</script> 

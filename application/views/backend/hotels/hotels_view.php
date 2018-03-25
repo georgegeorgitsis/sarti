@@ -19,6 +19,8 @@
                                 <td><?= $hotel['hotel_id'] ?></td>
                                 <td><?= $hotel['hotel_name'] ?></td>
                                 <td>
+                                    <a class='btn btn-success' href='<?= $admin_url . 'hotels/handleGroundPlans/' . $hotel['hotel_id']; ?>'>Manage Ground Plans</a>
+                                    |
                                     <a class='btn btn-success' href='<?= $admin_url . 'rooms/addRoom/' . $hotel['hotel_id']; ?>'>Add Room</a>
                                     |
                                     <a class='btn btn-info' href='<?= $admin_url . 'hotels/editHotel/' . $hotel['hotel_id']; ?>'>Edit</a>

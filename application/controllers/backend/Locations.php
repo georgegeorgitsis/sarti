@@ -103,10 +103,8 @@ class Locations extends MY_Controller {
             if ($locationData['location_id']) {
                 foreach ($location_locale as $p_l_key => $p_l) {
                     $location_locale[$p_l_key]['location_id'] = $locationData['location_id'];
-                    var_dump($this->location_model->editLocationLocale($location_locale[$p_l_key]));
-                    var_dump($location_locale[$p_l_key]);
+                    $this->location_model->editLocationLocale($location_locale[$p_l_key]);
                 }
-                die();
                 $this->session->set_flashdata('message', 'Row updated');
             } else {
                 $this->session->set_flashdata('error', 'Row problem');

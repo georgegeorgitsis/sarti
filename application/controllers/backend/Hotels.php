@@ -313,4 +313,63 @@ class Hotels extends MY_Controller {
         redirect($this->admin_url . 'hotels');
     }
 
+    public function handleGroundPlans(){
+        $hotelId = $this->uri->segment(4);
+        if ($hotelId && is_numeric($hotelId)) {
+            $hotel_plans = $this->hotel_model->getHotelPlans($hotelId);
+            $this->view_data['hotel_id'] = $hotelId;
+            $this->view_data['plans'] = $hotel_plans;
+            $this->load->admintemplate('backend/hotels/ground_plans', $this->view_data);
+        }
+    }
+
+    public function saveGroundPlans(){
+        $hotelId = $this->input->post('hotel');
+        $this->form_validation->set_rules('plans', 'File', 'trim|xss_clean');
+
+        if ($this->form_validation->run()) {
+            $images = $this->hotel_model->getHotelPlans($hotelId);
+            if (isset($images) && !empty($images)) {
+                foreach ($images as $image) {
+                    $delete_file = NULL;
+                    $delete_file = $this->input->post('delete_file_' . $image['id']);
+                    $description = $this->input->post('plan_description_' . $image['id']);
+                    if ($delete_file && !empty($delete_file) && $delete_file == 1) {
+                        unlink($this->config->item('upload_dir').'ground_plans/'. $image['ground_plan_image']);
+                        $this->hotel_model->deleteGroundPlan($image['id']);
+                    }
+                    elseif(isset($description) && trim($description) != ""){
+                        $this->hotel_model->addPlanDescription($image['id'], $description);
+                    }
+                }
+            }
+
+            $files = array();
+            foreach ($_FILES['plans']['name'] as $num_key => $dummy) {
+                foreach ($_FILES['plans'] as $txt_key => $dummy) {
+                    $files[$num_key][$txt_key] = $_FILES['plans'][$txt_key][$num_key];
+                }
+            }
+            $i = 0;
+            foreach ($files as $file) {
+                if ($file['error'] == 0) {
+                    $original_file_name = $file['name'];
+                    $file_name = $i . "_" . strtotime(date("d-m-Y")) . "_" . basename(str_replace(" ", "_", $file['name']));
+                    $target_dir = $this->config->item('upload_dir').'ground_plans/';
+                    $target_file = $target_dir . $file_name;
+
+                    if (move_uploaded_file($file['tmp_name'], $target_file)) {
+                        $imageData['ground_plan_image'] = $file_name;
+                        $imageData['ground_plan_original_image'] = $original_file_name;
+                        $imageData['hotel_id'] = $hotelId;
+                        $this->hotel_model->addGroundPlan($imageData);
+                    }
+                    $i++;
+                }
+            }
+
+            redirect($this->admin_url . 'hotels/handleGroundPlans/'.$hotelId);
+        }
+    }
+
 }

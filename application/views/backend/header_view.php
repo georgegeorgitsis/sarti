@@ -206,6 +206,28 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
+                            <a class="">
+                                <i class="icon_document_alt"></i>
+                                <span>Banners</span>
+                                <span class="menu-arrow arrow_carrot-right"></span>
+                            </a>
+                            <ul class="sub" <?php if($controller == "boards") echo "style='display:block'" ?>>
+                                <li><a class="" href="<?= $admin_url . 'banners' ?>">All Banners</a></li>
+                                <li><a class="" href="<?= $admin_url . 'banners/add' ?>">Add Banner</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="">
+                                <i class="icon_document_alt"></i>
+                                <span>Menus</span>
+                                <span class="menu-arrow arrow_carrot-right"></span>
+                            </a>
+                            <ul class="sub" <?php if($controller == "boards") echo "style='display:block'" ?>>
+                                <li><a class="" href="<?= $admin_url . 'menus' ?>">All Menus</a></li>
+                                <li><a class="" href="<?= $admin_url . 'menus/add' ?>">Add Menu</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
                             <a href="javascript:;" class="">
                                 <i class="icon_desktop"></i>
                                 <span>Bookings</span>
